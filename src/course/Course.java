@@ -9,6 +9,7 @@ public class Course {
     // TODO courses moeten meerdere modules bevatten vgm, courseID toevoegen aan db
     // van Modules.
     private int moduleId;
+    private boolean certificate;
 
     public String getName() {
         return name;
@@ -56,6 +57,14 @@ public class Course {
 
     public void setModuleId(int moduleId) {
         this.moduleId = moduleId;
+    }
+
+    public void setCertificate(boolean certificate) {
+        this.certificate = certificate;
+    }
+
+    public boolean hasCertificate() {
+        return certificate;
     }
 
 }

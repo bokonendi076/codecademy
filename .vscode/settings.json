@@ -22,6 +22,7 @@
         "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx.media.jar",
         "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx.swing.jar",
         "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx.web.jar",
-        "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar"
+        "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar",
+        "c:\\Program Files\\Eclipse Adoptium\\junit\\junit-platform-console-standalone-1.9.3.jar"
     ]
 }
