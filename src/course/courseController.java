@@ -118,4 +118,24 @@ public class courseController {
         }
     }
 
+    public int getCompletedCursistCount(String courseName) {
+        try {
+            connection = databaseManager.getConnection();
+            String query = "SELECT COUNT(*) FROM Enrollment e " +
+                           "JOIN Course c ON e.CourseName = c.Name " +
+                           "WHERE c.Name = ?";
+    
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, courseName);
+                ResultSet rs = statement.executeQuery();
+    
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; 
+    }
 }

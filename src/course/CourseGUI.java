@@ -228,7 +228,10 @@ public class CourseGUI extends Application {
             infoButton.setOnAction(h -> {
                 String selectedCourse = list.getSelectionModel().getSelectedItem();
                 Course course = courseController.getCourseByName(selectedCourse);
+            
                 if (selectedCourse != null) {
+                    int completedCursistCount = courseController.getCompletedCursistCount(selectedCourse);
+            
                     Alert alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Course Details");
                     alert.setHeaderText(null);
@@ -237,10 +240,10 @@ public class CourseGUI extends Application {
                             + "Introduction Text: " + course.getIntroductionText() + "\n"
                             + "Difficulty Level: " + course.getDifficultyLevel() + "\n"
                             + "Course ID: " + course.getCourseId() + "\n"
-                            + "Module ID: " + course.getModuleId());
+                            + "Module ID: " + course.getModuleId() + "\n"
+                            + "Completed Cursist Count: " + completedCursistCount);
                     alert.showAndWait();
                 }
-
             });
 
         });
