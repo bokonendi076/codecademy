@@ -284,6 +284,36 @@ public class OverViewGUI extends Application {
             BorderPane.setAlignment(titleCertificateOverview, Pos.CENTER);
             titleCertificateOverview.setPadding(new Insets(25, 0, 25, 0));
 
+            generateCertificates.setOnAction(event -> {
+
+                Cursist selectedCursist = ;
+                Course selectedCourse = ; // implementeer deze methode volgens je GUI
+
+                if (selectedCursist != null && selectedCourse != null) {
+                    int selectedCursistID = selectedCursist.getcursistID();
+                    int selectedCourseID = selectedCourse.getCourseId();
+
+                    Map<String, Double> progressMap = cursistController.getProgressPercentageByModule(selectedCursistID,
+                            selectedCourseID);
+
+                    // Toon de resultaten
+                    for (Map.Entry<String, Double> entry : progressMap.entrySet()) {
+                        String moduleName = entry.getKey();
+                        double percentage = entry.getValue();
+
+                        System.out.println("Module: " + moduleName + ", Progress: " + percentage + "%");
+                        // Hier kun je de resultaten weergeven in je GUI of een andere actie ondernemen.
+                    }
+                } else {
+                    // Handel het geval af waarin geen cursist of cursus is geselecteerd
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setTitle("Warning");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Please select a cursist and a course.");
+                    alert.showAndWait();
+                }
+            });
+
             viewCertificates.setOnAction(z -> {
                 // Maak een ComboBox met geslachtsopties
                 ObservableList<String> genderOptions = FXCollections.observableArrayList("Male", "Female", "Other");
