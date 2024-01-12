@@ -47,6 +47,7 @@ public class OverViewGUI extends Application {
     private String thirdTitleWebcast;
     private Button viewCertificates;
     private Certificate certificate;
+    private CertificateController certificateController = new CertificateController();
 
     // Constructor
     public OverViewGUI() {
@@ -166,6 +167,45 @@ public class OverViewGUI extends Application {
             certificateOverviewPane.setTop(titleCertificateOverview);
             BorderPane.setAlignment(titleCertificateOverview, Pos.CENTER);
             titleCertificateOverview.setPadding(new Insets(25, 0, 25, 0));
+
+            viewCertificates.setOnAction(z -> {
+                // Maak een ComboBox met geslachtsopties
+                ObservableList<String> genderOptions = FXCollections.observableArrayList("Male", "Female", "Other");
+                ComboBox<String> genderComboBox = new ComboBox<>(genderOptions);
+
+                // Toon een dialoogvenster met de ComboBox en wacht op gebruikersselectie
+                Dialog<String> dialog = new Dialog<>();
+                dialog.setTitle("Select Gender");
+                dialog.setHeaderText("Please select a gender:");
+
+                // Voeg de ComboBox toe aan het dialoogvenster
+                dialog.getDialogPane().setContent(genderComboBox);
+
+                // Voeg OK en Annuleren knoppen toe aan het dialoogvenster
+                ButtonType buttonTypeOk = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+                dialog.getDialogPane().getButtonTypes().addAll(buttonTypeOk, ButtonType.CANCEL);
+
+                // Wacht op gebruikersselectie
+                Optional<String> result = dialog.showAndWait();
+
+                // Controleer of de gebruiker OK heeft gekozen en voer de actie uit
+                if (result.isPresent() && result.get().equals("OK")) {
+                    // Krijg het geselecteerde geslacht uit de ComboBox
+                    String selectedGender = genderComboBox.getValue();
+
+                    // Vervang CertificateControllerObject met de daadwerkelijke instantie van
+                    // CertificateController
+                    double certificatePercentage = certificateController
+                            .getCertificatePercentageByGender(selectedGender);
+
+                    // Toon het resultaat
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Certificate Percentage");
+                    alert.setHeaderText("Percentage of certificates completed for " + selectedGender);
+                    alert.setContentText(String.format("%.2f%%", certificatePercentage));
+                    alert.showAndWait();
+                }
+            });
 
             certificateOverviewPane.setCenter(layout);
 
