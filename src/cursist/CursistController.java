@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CursistController {
     private DatabaseManager databaseManager;
@@ -184,6 +186,38 @@ public class CursistController {
         }
 
         return cursistIDs;
+    }
+
+    public Map<String, Double> getProgressPercentageByModule(int cursistID, int cursusID) {
+        Map<String, Double> progressMap = new HashMap<>();
+
+        try {
+            String query = "SELECT Module.ModuleName, COALESCE(SUM(ModuleProgress.PercentageComplete), 0) AS TotalPercentage "
+                    +
+                    "FROM Module " +
+                    "LEFT JOIN ModuleProgress ON Module.ModuleID = ModuleProgress.ModuleID " +
+                    "AND ModuleProgress.CursistID = ? " +
+                    "AND ModuleProgress.CursusID = ? " +
+                    "GROUP BY Module.ModuleName";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, cursistID);
+                statement.setInt(2, cursusID);
+
+                ResultSet rs = statement.executeQuery();
+
+                while (rs.next()) {
+                    String moduleName = rs.getString("ModuleName");
+                    double totalPercentage = rs.getDouble("TotalPercentage");
+
+                    progressMap.put(moduleName, totalPercentage);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return progressMap;
     }
 
 }
