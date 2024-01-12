@@ -1,6 +1,8 @@
 package main;
 
 import DatabaseManager.*;
+import certificate.Certificate;
+import certificate.CertificateController;
 import contentItem.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,6 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -42,6 +45,8 @@ public class OverViewGUI extends Application {
     private String firstTitleWebcast;
     private String secondTitleWebcast;
     private String thirdTitleWebcast;
+    private Button viewCertificates;
+    private Certificate certificate;
 
     // Constructor
     public OverViewGUI() {

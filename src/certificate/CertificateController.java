@@ -52,6 +52,27 @@ public class CertificateController {
         return certificates;
     }
 
+    public double getCertificatePercentageByGender(String gender) {
+        try {
+            connection = databaseManager.getConnection();
+            String query = "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM Certificate WHERE CursistGender = ?) " +
+                    "FROM Certificate WHERE CursistGender = ? AND isIssued = true";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, gender);
+                statement.setString(2, gender);
+                ResultSet rs = statement.executeQuery();
+
+                if (rs.next()) {
+                    return rs.getDouble(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
+
     public void saveCertificate(Certificate certificate) {
         try {
             connection = databaseManager.getConnection();
