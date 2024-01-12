@@ -1,13 +1,13 @@
 package certificate;
 
-public class certificate {
+public class Certificate {
     private int certificateId;
     private int grade;
     private String approverName;
     private String cursistEmailAddress;
     private String courseName;
 
-    public certificate(int certificateId, int grade, String approverName, String cursistEmailAddress,
+    public Certificate(int certificateId, int grade, String approverName, String cursistEmailAddress,
             String courseName) {
         this.certificateId = certificateId;
         this.grade = grade;
