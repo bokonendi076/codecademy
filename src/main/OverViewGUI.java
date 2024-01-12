@@ -1,6 +1,7 @@
 package main;
 
 import DatabaseManager.*;
+import cursist.CursistController;
 import certificate.Certificate;
 import certificate.CertificateController;
 import contentItem.*;
@@ -33,7 +34,7 @@ import webcast.Webcast;
 
 public class OverViewGUI extends Application {
     private DatabaseManager db;
-
+    private CursistController cursistController;
     private Connection connection;
     private ListView<String> list;
     private ObservableList<String> items;
@@ -60,6 +61,7 @@ public class OverViewGUI extends Application {
     public Scene OverViewScene(Stage stage) {
         db = new DatabaseManager();
         connection = db.getConnection();
+        CursistController cursistController = new CursistController();
 
         Button backToHomeButton = new Button("< Home");
         backToHomeButton.setStyle("-fx-background-color: #d2b48c;");
@@ -149,28 +151,28 @@ public class OverViewGUI extends Application {
 
             progressPercentage.setOnAction(a -> {
                 Stage courseOverviewStage = new Stage(); // Create a new stage
-            
+
                 Label titleCourseOverView1 = new Label("Please choose a course: ");
-            
+
                 // Retrieve course names
                 List<String> courseNames = getCourseNames();
                 ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
-            
+
                 Button showProgressButton = new Button("Show Average Progress per Module");
                 showProgressButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
-            
+
                 VBox layout2 = new VBox(10, titleCourseOverView1, courseComboBox, showProgressButton, backToHomeButton);
                 layout2.setAlignment(Pos.CENTER);
-            
+
                 BorderPane overViewPane2 = new BorderPane();
                 overViewPane2.setTop(titleCourseOverView1);
                 BorderPane.setAlignment(titleCourseOverView1, Pos.CENTER);
                 titleCourseOverView1.setPadding(new Insets(25, 0, 25, 0));
-            
+
                 overViewPane.setCenter(layout2);
-            
+
                 Scene courseOverviewScene2 = new Scene(overViewPane2, 800, 600);
-            
+
                 showProgressButton.setOnAction(event -> {
                     String selectedCourse = courseComboBox.getValue();
                     if (selectedCourse != null) {
@@ -191,15 +193,71 @@ public class OverViewGUI extends Application {
                         alert.showAndWait();
                     }
                 });
-            
+
                 courseOverviewStage.setScene(courseOverviewScene);
                 courseOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
                 courseOverviewStage.show(); // Show the new stage
             });
 
-        });
+            averageProgressModule.setOnAction(b -> {
+                Stage certificateOverviewStage = new Stage(); // Create a new stage
 
-        
+                Label titleCertificateOverview = new Label("Select an account and course:");
+
+                // Retrieve account emails using the CursistController method
+                ArrayList<String> accountEmails = cursistController.getAllCursistEmailAddress();
+                ComboBox<String> accountComboBox = new ComboBox<>(FXCollections.observableArrayList(accountEmails));
+
+                // Retrieve course names
+                List<String> courseNames = getCourseNames();
+                ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
+
+                Button showProgressButton = new Button("Show Progress per Module (%)");
+                showProgressButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+
+                VBox layout3 = new VBox(10, titleCertificateOverview, accountComboBox, courseComboBox,
+                        showProgressButton, backToHomeButton);
+                layout3.setAlignment(Pos.CENTER);
+
+                BorderPane certificateOverviewPane = new BorderPane();
+                certificateOverviewPane.setTop(titleCertificateOverview);
+                BorderPane.setAlignment(titleCertificateOverview, Pos.CENTER);
+                titleCertificateOverview.setPadding(new Insets(25, 0, 25, 0));
+
+                certificateOverviewPane.setCenter(layout3);
+
+                Scene certificateOverviewScene = new Scene(certificateOverviewPane, 800, 600);
+
+                showProgressButton.setOnAction(event -> {
+                    String selectedAccount = accountComboBox.getValue();
+                    String selectedCourse = courseComboBox.getValue();
+
+                    if (selectedAccount != null && selectedCourse != null) {
+                        // Get and display progress per module as percentage for the selected account
+                        // and course
+                        String progressPerModule = getProgressPerModule(selectedAccount, selectedCourse);
+                        // Display the result (you can customize this part)
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Progress per Module (%)");
+                        alert.setHeaderText(null);
+                        alert.setContentText(progressPerModule);
+                        alert.showAndWait();
+                    } else {
+                        // Handle case where account or course is not selected
+                        Alert alert = new Alert(AlertType.WARNING);
+                        alert.setTitle("Warning");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Please select an account and a course.");
+                        alert.showAndWait();
+                    }
+                });
+
+                certificateOverviewStage.setScene(certificateOverviewScene);
+                certificateOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
+                certificateOverviewStage.show(); // Show the new stage
+            });
+
+        });
 
         certificateOverviewButton.setOnAction(e -> {
 
@@ -323,23 +381,23 @@ public class OverViewGUI extends Application {
     }
 
     private List<String> getCourseNames() {
-    List<String> courseNames = new ArrayList<>();
+        List<String> courseNames = new ArrayList<>();
 
-    try {
-        String sqlQuery = "SELECT DISTINCT Name FROM Course";
-        Connection connection = db.getConnection();
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sqlQuery);
+        try {
+            String sqlQuery = "SELECT DISTINCT Name FROM Course";
+            Connection connection = db.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
 
-        while (resultSet.next()) {
-            String courseName = resultSet.getString("Name");
-            courseNames.add(courseName);
+            while (resultSet.next()) {
+                String courseName = resultSet.getString("Name");
+                courseNames.add(courseName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
 
-    return courseNames;
+        return courseNames;
     }
 
     private String getAverageProgressPerModule(String courseName) {
@@ -379,9 +437,43 @@ public class OverViewGUI extends Application {
             e.printStackTrace();
         }
 
-    return result.toString();
-}
-    
+        return result.toString();
+    }
+
+    public String getProgressPerModule(String accountEmail, String courseName) {
+        StringBuilder result = new StringBuilder();
+
+        try {
+            String query = "SELECT m.Title AS ModuleTitle, AVG(wc.PercentageWatched) AS AverageProgress " +
+                    "FROM WatchedContent wc " +
+                    "JOIN ContentItem ci ON wc.ContentItemID = ci.ContentItemID " +
+                    "JOIN Module m ON ci.ModuleID = m.ModuleID " +
+                    "JOIN Course c ON m.CourseID = c.CourseID " +
+                    "JOIN Cursist cu ON wc.CursistID = cu.CursistID " +
+                    "WHERE cu.EmailAddress = ? AND c.Name = ? " +
+                    "GROUP BY m.Title";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, accountEmail);
+                statement.setString(2, courseName);
+
+                ResultSet rs = statement.executeQuery();
+
+                while (rs.next()) {
+                    String moduleTitle = rs.getString("ModuleTitle");
+                    double averageProgress = rs.getDouble("AverageProgress");
+
+                    result.append(moduleTitle).append(": ").append(String.format("%.2f%%", averageProgress))
+                            .append("\n");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result.toString();
+    }
+
     // Get top three watched webcasts
 
     public String getTopThreeWatchedWebcastsTitles() {
