@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "OverViewGUI",
+      "request": "launch",
+      "mainClass": "main.OverViewGUI",
+      "projectName": "codecademy_ceb05d6e"
+    },
+    {
+      "type": "java",
       "name": "CodeCademy",
       "request": "launch",
       "mainClass": "main.CodeCademy",
