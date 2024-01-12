@@ -1,10 +1,13 @@
 package main;
 
 import DatabaseManager.*;
+import cursist.Cursist;
 import cursist.CursistController;
 import certificate.Certificate;
 import certificate.CertificateController;
 import contentItem.*;
+import course.Course;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javafx.application.Application;

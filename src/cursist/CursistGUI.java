@@ -147,12 +147,11 @@ public class CursistGUI extends Application {
                 LocalDate birthDate = LocalDate.parse(birthDateText);
 
                 // get values from form
-                String gender = genderChoiceBox.getValue(); 
+                String gender = genderChoiceBox.getValue();
                 String address = createAddressField.getText();
                 String city = createCityField.getText();
                 String country = createCountryField.getText();
 
-                
                 Cursist nieuweCursist = new Cursist();
 
                 // set values
