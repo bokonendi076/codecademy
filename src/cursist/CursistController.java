@@ -162,7 +162,7 @@ public class CursistController {
                 statement.setString(1, emailAddress);
                 ResultSet rs = statement.executeQuery();
                 if (rs.next()) {
-                    return rs.getInt("CursistID");
+                    return rs.getInt(1); // Fetch by index instead of column name
                 }
             }
         } catch (SQLException e) {
@@ -204,20 +204,82 @@ public class CursistController {
                 statement.setInt(1, cursistID);
                 statement.setInt(2, cursusID);
 
-                ResultSet rs = statement.executeQuery();
+                try (ResultSet rs = statement.executeQuery()) {
+                    while (rs.next()) {
+                        String moduleName = rs.getString("ModuleName");
+                        double totalPercentage = rs.getDouble("TotalPercentage");
 
-                while (rs.next()) {
-                    String moduleName = rs.getString("ModuleName");
-                    double totalPercentage = rs.getDouble("TotalPercentage");
-
-                    progressMap.put(moduleName, totalPercentage);
+                        progressMap.put(moduleName, totalPercentage);
+                    }
                 }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handel SQLException af op een passende manier voor je applicatie
+        }
+
+        return progressMap;
+    }
+
+    public ArrayList<String> getWebcastTitles() {
+        ArrayList<String> webcastTitles = new ArrayList<>();
+
+        try {
+            ResultSet rs = query("SELECT TitleWebcast FROM Webcast");
+
+            while (rs.next()) {
+                String title = rs.getString("TitleWebcast");
+                webcastTitles.add(title);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return progressMap;
+        return webcastTitles;
+    }
+
+    public int getContentItemID(String title) {
+        try {
+            String query = "SELECT ContentItemID FROM Webcast WHERE TitleWebcast = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, title);
+                ResultSet rs = statement.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt("ContentItemID");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public int getPercentageWatched() {
+        // Implement this method based on your requirements
+        return 0;
+    }
+
+    public void updatePercentageWatched(int cursistID, int contentItemID, int percentageWatched) {
+        try {
+            String query = "UPDATE WatchedContent SET PercentageWatched = ? WHERE CursistID = ? AND ContentItemID = ?";
+            try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
+                updateStatement.setInt(1, percentageWatched);
+                updateStatement.setInt(2, cursistID);
+                updateStatement.setInt(3, contentItemID);
+
+                int rowsAffected = updateStatement.executeUpdate();
+                connection.commit();
+
+                if (rowsAffected == 0) {
+                    // Handle if no rows were updated
+                    SQLException e = new SQLException();
+                    e.printStackTrace();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

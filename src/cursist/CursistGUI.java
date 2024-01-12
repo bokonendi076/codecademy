@@ -144,7 +144,7 @@ public class CursistGUI extends Application {
 
                 // create format for birthdate and parse
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                LocalDate birthDate = LocalDate.parse(birthDateText, formatter);
+                LocalDate birthDate = LocalDate.parse(birthDateText);
 
                 // get values from form
                 String gender = genderChoiceBox.getValue(); 

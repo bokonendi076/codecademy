@@ -5,6 +5,7 @@ import certificate.Certificate;
 import certificate.CertificateController;
 import contentItem.*;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -73,6 +74,7 @@ public class OverViewGUI extends Application {
         Button courseOverviewButton = new Button("Course overviews");
         Button certificateOverviewButton = new Button("Certificate overviews");
         Button webcastOverview = new Button("Webcast overview");
+
         Label welcomeLabel = new Label("Welcome to the overview page! \n" + "    What would you like to see?");
         Insets welcomeLabelPadding = new Insets(
                 25);
@@ -145,7 +147,59 @@ public class OverViewGUI extends Application {
             courseOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.show();
 
+            progressPercentage.setOnAction(a -> {
+                Stage courseOverviewStage = new Stage(); // Create a new stage
+            
+                Label titleCourseOverView1 = new Label("Please choose a course: ");
+            
+                // Retrieve course names
+                List<String> courseNames = getCourseNames();
+                ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
+            
+                Button showProgressButton = new Button("Show Average Progress per Module");
+                showProgressButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+            
+                VBox layout2 = new VBox(10, titleCourseOverView1, courseComboBox, showProgressButton, backToHomeButton);
+                layout2.setAlignment(Pos.CENTER);
+            
+                BorderPane overViewPane2 = new BorderPane();
+                overViewPane2.setTop(titleCourseOverView1);
+                BorderPane.setAlignment(titleCourseOverView1, Pos.CENTER);
+                titleCourseOverView1.setPadding(new Insets(25, 0, 25, 0));
+            
+                overViewPane.setCenter(layout2);
+            
+                Scene courseOverviewScene2 = new Scene(overViewPane2, 800, 600);
+            
+                showProgressButton.setOnAction(event -> {
+                    String selectedCourse = courseComboBox.getValue();
+                    if (selectedCourse != null) {
+                        // Get and display average progress per module for the selected course
+                        String progressPerModule = getAverageProgressPerModule(selectedCourse);
+                        // Display the result (you can customize this part)
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Average Progress per Module");
+                        alert.setHeaderText(null);
+                        alert.setContentText(progressPerModule);
+                        alert.showAndWait();
+                    } else {
+                        // Handle case where no course is selected
+                        Alert alert = new Alert(AlertType.WARNING);
+                        alert.setTitle("Warning");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Please select a course.");
+                        alert.showAndWait();
+                    }
+                });
+            
+                courseOverviewStage.setScene(courseOverviewScene);
+                courseOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
+                courseOverviewStage.show(); // Show the new stage
+            });
+
         });
+
+        
 
         certificateOverviewButton.setOnAction(e -> {
 
@@ -268,6 +322,66 @@ public class OverViewGUI extends Application {
 
     }
 
+    private List<String> getCourseNames() {
+    List<String> courseNames = new ArrayList<>();
+
+    try {
+        String sqlQuery = "SELECT DISTINCT Name FROM Course";
+        Connection connection = db.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sqlQuery);
+
+        while (resultSet.next()) {
+            String courseName = resultSet.getString("Name");
+            courseNames.add(courseName);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return courseNames;
+    }
+
+    private String getAverageProgressPerModule(String courseName) {
+        StringBuilder result = new StringBuilder();
+
+        try {
+            String courseIdQuery = "SELECT CourseID FROM Course WHERE Name = ?";
+            Connection connection = db.getConnection();
+
+            try (PreparedStatement courseIdStatement = connection.prepareStatement(courseIdQuery)) {
+                courseIdStatement.setString(1, courseName);
+                ResultSet courseIdResultSet = courseIdStatement.executeQuery();
+
+                if (courseIdResultSet.next()) {
+                    int courseId = courseIdResultSet.getInt("CourseID");
+
+                    String progressQuery = "SELECT Title, AVG(PercentageWatched) AS AverageProgress " +
+                            "FROM Module " +
+                            "JOIN WatchedContent ON Module.ContentItemID = WatchedContent.ContentItemID " +
+                            "WHERE CourseID = ? " +
+                            "GROUP BY Title";
+
+                    try (PreparedStatement progressStatement = connection.prepareStatement(progressQuery)) {
+                        progressStatement.setInt(1, courseId);
+                        ResultSet progressResultSet = progressStatement.executeQuery();
+
+                        while (progressResultSet.next()) {
+                            String moduleTitle = progressResultSet.getString("Title");
+                            double averageProgress = progressResultSet.getDouble("AverageProgress");
+
+                            result.append(moduleTitle).append(": ").append(averageProgress).append("%\n");
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    return result.toString();
+}
+    
     // Get top three watched webcasts
 
     public String getTopThreeWatchedWebcastsTitles() {

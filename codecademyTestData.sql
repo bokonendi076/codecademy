@@ -69,4 +69,30 @@ VALUES
     ('2024-01-14', 'SQL Mastery', 'cursist7@example.com'),
     ('2024-01-09', 'C# Development', 'cursist8@example.com'),
     ('2024-01-22', 'JavaScript Advanced', 'cursist9@example.com'),
-    ('2024-01
+    ('2024-01');
+
+INSERT INTO Webcast (TitleWebcast, LengthWebcast, DatePublication, URL, NameSpeaker, OrganisationSpeaker, ContentItemID)
+VALUES
+    ('Webcast 1', 60, '2024-01-15', 'http://webcast1.com', 'Speaker 1', 'Organization A', 1),
+    ('Webcast 2', 45, '2024-01-16', 'http://webcast2.com', 'Speaker 2', 'Organization B', 2),
+    ('Webcast 3', 75, '2024-01-17', 'http://webcast3.com', 'Speaker 3', 'Organization C', 3),
+    ('Webcast 4', 90, '2024-01-18', 'http://webcast4.com', 'Speaker 4', 'Organization D', 4),
+    ('Webcast 5', 120, '2024-01-19', 'http://webcast5.com', 'Speaker 5', 'Organization E', 5),
+    ('Webcast 6', 55, '2024-01-20', 'http://webcast6.com', 'Speaker 6', 'Organization F', 6),
+    ('Webcast 7', 80, '2024-01-21', 'http://webcast7.com', 'Speaker 7', 'Organization G', 7),
+    ('Webcast 8', 100, '2024-01-22', 'http://webcast8.com', 'Speaker 8', 'Organization H', 8),
+    ('Webcast 9', 65, '2024-01-23', 'http://webcast9.com', 'Speaker 9', 'Organization I', 9),
+    ('Webcast 10', 110, '2024-01-24', 'http://webcast10.com', 'Speaker 10', 'Organization J', 10);
+
+INSERT INTO WatchedContent (ContentItemID, CursistID, PercentageWatched)
+VALUES
+    (1, 101, 75),
+    (2, 102, 50),
+    (3, 103, 90),
+    (4, 104, 60),
+    (5, 105, 80),
+    (6, 106, 70),
+    (7, 107, 45),
+    (8, 108, 85),
+    (9, 109, 95),
+    (10, 110, 55);
