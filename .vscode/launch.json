@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CursistGUI",
+      "request": "launch",
+      "mainClass": "cursist.CursistGUI",
+      "projectName": "codecademy_14b80fd2"
+    },
+    {
+      "type": "java",
+      "name": "CodeCademy",
+      "request": "launch",
+      "mainClass": "main.CodeCademy",
+      "projectName": "codecademy_14b80fd2"
+    },
+    {
+      "type": "java",
       "name": "OverViewGUI",
       "request": "launch",
       "mainClass": "main.OverViewGUI",
