@@ -4,7 +4,6 @@ import main.*;
 import cursist.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 import contentItem.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
