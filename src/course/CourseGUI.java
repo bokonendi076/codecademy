@@ -94,15 +94,9 @@ public class CourseGUI extends Application {
         HBox difficultyLevelHBox = new HBox(difficultyLevelLabel, difficultyLevelComboBox);
         difficultyLevelHBox.setSpacing(10);
 
-        TextField createCourseId = new TextField();
-        createCourseId.setPromptText("CourseId");
 
-        // Show all available modules
-        moduleController = new ModuleController();
-        ArrayList<Integer> moduleIds = moduleController.getAllModuleIDs();
-        ObservableList<Integer> moduleList = FXCollections.observableArrayList(moduleIds);
-        ComboBox createModuleId = new ComboBox(moduleList);
-        createModuleId.setPromptText("Choose ModuleId");
+      
+       
 
         Button addButton = new Button("Add Course");
         addButton.setStyle("-fx-background-color: #d2b48c;");
@@ -122,16 +116,14 @@ public class CourseGUI extends Application {
             String subject = createSubjectField.getText();
             String introductionText = createIntroductionText.getText();
             String difficultyLevel = difficultyLevelComboBox.getValue();
-            int courseId = Integer.valueOf(createCourseId.getText());
-            int moduleId = Integer.valueOf(createModuleId.getValue().toString());
+            
 
             Course newCourse = new Course();
             newCourse.setName(naam);
             newCourse.setSubject(subject);
             newCourse.setIntroductionText(introductionText);
             newCourse.setDifficultyLevel(difficultyLevel);
-            newCourse.setCourseId(courseId);
-            newCourse.setModuleId(moduleId);
+           
 
             courseController.saveCourse(newCourse);
 
@@ -147,13 +139,10 @@ public class CourseGUI extends Application {
             createSubjectField.clear();
             createIntroductionText.clear();
             difficultyLevelComboBox.getValue();
-            createCourseId.clear();
-            createModuleId.setValue(null);
         });
 
         VBox createFields = new VBox(createNaamField, createSubjectField, createIntroductionText,
-                difficultyLevelHBox,
-                createCourseId, createModuleId, addButton);
+                difficultyLevelHBox, addButton);
         createFields.setSpacing(7);
 
         // CRUD Buttons are created
