@@ -5,6 +5,7 @@ import cursist.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import contentItem.contentItemController;
 import contentItem.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -27,7 +28,7 @@ public class WatchedContentGUI extends Application {
     private Scene homeScene;
     private Button backHome;
     private Button backToCodeCademy;
-    private contentItem.contentItemController contentItemController;
+    private contentItemController contentItemController;
     private cursist.CursistController cursistController;
 
     public Scene watchedContentScene(Stage stage) {

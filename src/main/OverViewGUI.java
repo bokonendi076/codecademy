@@ -286,8 +286,8 @@ public class OverViewGUI extends Application {
 
             generateCertificates.setOnAction(event -> {
 
-                Cursist selectedCursist = ;
-                Course selectedCourse = ; // implementeer deze methode volgens je GUI
+                Cursist selectedCursist = new Cursist();
+                Course selectedCourse = new Course();
 
                 if (selectedCursist != null && selectedCourse != null) {
                     int selectedCursistID = selectedCursist.getcursistID();

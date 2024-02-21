@@ -167,6 +167,9 @@ public class GUI extends Application {
                         stage.show();
                 });
 
+
+                
+
                 // Course Manager Scene
                 courseManagementButton.setOnAction(e -> {
                         CourseGUI courseGUI = new CourseGUI(courseController);
