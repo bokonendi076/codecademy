@@ -230,8 +230,6 @@ public class CourseGUI extends Application {
                             + "Subject: " + course.getSubject() + "\n"
                             + "Introduction Text: " + course.getIntroductionText() + "\n"
                             + "Difficulty Level: " + course.getDifficultyLevel() + "\n"
-                            + "Course ID: " + course.getCourseId() + "\n"
-                            + "Module ID: " + course.getModuleId() + "\n"
                             + "Completed Cursist Count: " + completedCursistCount);
                     alert.showAndWait();
                 }
@@ -319,8 +317,6 @@ public class CourseGUI extends Application {
             TextField updateSubjectField = new TextField();
             TextField updateIntroductionText = new TextField();
             TextField updateDifficultyLevel = new TextField();
-            TextField updateCourseId = new TextField();
-            TextField updateModuleId = new TextField();
 
             chooseButton.setOnAction(f -> {
                 BorderPane editWindow = new BorderPane();
@@ -340,12 +336,10 @@ public class CourseGUI extends Application {
                 updateIntroductionText.setText(selectedCourse.getIntroductionText());
                 updateDifficultyLevel
                         .setText(String.valueOf(selectedCourse.getDifficultyLevel()));
-                updateCourseId.setText(String.valueOf(selectedCourse.getCourseId()));
-                updateModuleId.setText(String.valueOf(selectedCourse.getModuleId()));
 
                 VBox updateFields = new VBox(updateNaamField, updateSubjectField,
                         updateIntroductionText,
-                        updateDifficultyLevel, updateCourseId, updateModuleId);
+                        updateDifficultyLevel);
                 updateFields.setSpacing(7);
 
                 editWindow.setTop(editWindowTitle);
@@ -367,8 +361,6 @@ public class CourseGUI extends Application {
                     selectedCourse.setSubject(updateSubjectField.getText());
                     selectedCourse.setIntroductionText(updateIntroductionText.getText());
                     selectedCourse.setDifficultyLevel((updateDifficultyLevel.getText()));
-                    selectedCourse.setCourseId(Integer.parseInt(updateCourseId.getText()));
-                    selectedCourse.setModuleId(Integer.parseInt(updateModuleId.getText()));
 
                     courseController.updateCourseFields(selectedCourse);
 

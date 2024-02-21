@@ -48,14 +48,12 @@ public class courseController {
     public void saveCourse(Course course) {
         try {
             connection = databaseManager.getConnection();
-            String query = "INSERT INTO Course (Name, Subject, IntroductionText, DifficultyLevel, CourseID, ModuleID) VALUES (?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Course (Name, Subject, IntroductionText, DifficultyLevel) VALUES (?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, course.getName());
                 statement.setString(2, course.getSubject());
                 statement.setString(3, course.getIntroductionText());
                 statement.setString(4, course.getDifficultyLevel());
-                statement.setInt(5, course.getCourseId());
-                statement.setInt(6, course.getModuleId());
 
                 statement.executeUpdate();
             }
@@ -89,8 +87,6 @@ public class courseController {
                     course.setSubject(rs.getString("Subject"));
                     course.setIntroductionText(rs.getString("IntroductionText"));
                     course.setDifficultyLevel(rs.getString("DifficultyLevel"));
-                    course.setCourseId(rs.getInt("CourseID"));
-                    course.setModuleId(rs.getInt("ModuleID"));
 
                     return course;
                 }
@@ -102,13 +98,11 @@ public class courseController {
     }
 
     public void updateCourseFields(Course course) {
-        String query = "UPDATE Course SET Subject = ?, IntroductionText = ?, DifficultyLevel = ?, CourseID = ?, ModuleID = ? WHERE Name = ?";
+        String query = "UPDATE Course SET Subject = ?, IntroductionText = ?, DifficultyLevel = ? WHERE Name = ?";
         try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
             updateStatement.setString(1, course.getSubject());
             updateStatement.setString(2, course.getIntroductionText());
             updateStatement.setString(3, course.getDifficultyLevel());
-            updateStatement.setInt(4, course.getCourseId());
-            updateStatement.setInt(5, course.getModuleId());
             updateStatement.setString(6, course.getName());
 
             updateStatement.executeUpdate();
