@@ -280,14 +280,13 @@ public class CursistGUI extends Application {
                 String address = selectedCursistForInfo.getAddress();
                 String city = selectedCursistForInfo.getCity();
                 String country = selectedCursistForInfo.getCountry();
-                String id = String.valueOf(selectedCursistForInfo.getcursistID());
+               
 
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Cursist info");
                 alert.setHeaderText(null);
                 alert.setContentText("Name: " + name + "\nEmail: " + email + "\nBirthdate: " + birthdate + "\nGender: "
-                        + gender + "\nAddress: " + address + "\nCity: " + city + "\nCountry: " + country + "\nID: "
-                        + id);
+                        + gender + "\nAddress: " + address + "\nCity: " + city + "\nCountry: " + country);
 
                 alert.showAndWait();
 
