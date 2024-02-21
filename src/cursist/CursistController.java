@@ -95,7 +95,6 @@ public class CursistController {
                     cursist.setAddress(rs.getString("Address"));
                     cursist.setCity(rs.getString("City"));
                     cursist.setCountry(rs.getString("Country"));
-                    cursist.setcursistID(rs.getInt("CursistID"));
 
                     return cursist;
                 }
