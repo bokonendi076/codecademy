@@ -316,7 +316,10 @@ public class CourseGUI extends Application {
             updateNaamField.setDisable(true);
             TextField updateSubjectField = new TextField();
             TextField updateIntroductionText = new TextField();
-            TextField updateDifficultyLevel = new TextField();
+
+            ComboBox<String> updateDifficultyLevel = new ComboBox<>();
+            updateDifficultyLevel.getItems().addAll("Select difficulty", "Beginner", "Intermediate", "Expert");
+            updateDifficultyLevel.getSelectionModel().selectFirst();
 
             chooseButton.setOnAction(f -> {
                 BorderPane editWindow = new BorderPane();
@@ -334,8 +337,7 @@ public class CourseGUI extends Application {
                 updateNaamField.setText(selectedCourse.getName());
                 updateSubjectField.setText(selectedCourse.getSubject());
                 updateIntroductionText.setText(selectedCourse.getIntroductionText());
-                updateDifficultyLevel
-                        .setText(String.valueOf(selectedCourse.getDifficultyLevel()));
+                updateDifficultyLevel.setValue(String.valueOf(selectedCourse.getDifficultyLevel()));
 
                 VBox updateFields = new VBox(updateNaamField, updateSubjectField,
                         updateIntroductionText,
@@ -360,7 +362,7 @@ public class CourseGUI extends Application {
                     selectedCourse.setName(updateNaamField.getText());
                     selectedCourse.setSubject(updateSubjectField.getText());
                     selectedCourse.setIntroductionText(updateIntroductionText.getText());
-                    selectedCourse.setDifficultyLevel((updateDifficultyLevel.getText()));
+                    selectedCourse.setDifficultyLevel((updateDifficultyLevel.getValue()));
 
                     courseController.updateCourseFields(selectedCourse);
 

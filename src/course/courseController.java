@@ -103,7 +103,7 @@ public class courseController {
             updateStatement.setString(1, course.getSubject());
             updateStatement.setString(2, course.getIntroductionText());
             updateStatement.setString(3, course.getDifficultyLevel());
-            updateStatement.setString(6, course.getName());
+            updateStatement.setString(4, course.getName());
 
             updateStatement.executeUpdate();
             connection.commit();
