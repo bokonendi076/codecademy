@@ -182,7 +182,7 @@ public class OverViewGUI extends Application {
                     if (selectedCourse != null) {
                         // Get and display average progress per module for the selected course
                         String progressPerModule = getAverageProgressPerModule(selectedCourse);
-                        // Display the result (you can customize this part)
+                        // Display the result
                         Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Average Progress per Module");
                         alert.setHeaderText(null);
