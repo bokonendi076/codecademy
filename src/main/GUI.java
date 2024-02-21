@@ -41,10 +41,9 @@ public class GUI extends Application {
                 cursistManagementButton = new Button("Cursist manager");
                 courseManagementButton = new Button("Course manager");
                 Button enrollmentManagementButton = new Button("Enrollment manager");
-                Button certificateManagementButton = new Button("Certificate manager");
                 Button overViewButton = new Button("Overview options");
 
-                certificateManagementButton.setDisable(true);
+              
 
                 cursistManagementButton.setOnMouseEntered(event -> cursistManagementButton.setCursor(Cursor.HAND));
                 cursistManagementButton.setOnMouseExited(event -> cursistManagementButton.setCursor(Cursor.DEFAULT));
@@ -54,10 +53,6 @@ public class GUI extends Application {
                                 .setOnMouseEntered(event -> enrollmentManagementButton.setCursor(Cursor.HAND));
                 enrollmentManagementButton
                                 .setOnMouseExited(event -> enrollmentManagementButton.setCursor(Cursor.DEFAULT));
-                certificateManagementButton
-                                .setOnMouseEntered(event -> certificateManagementButton.setCursor(Cursor.HAND));
-                certificateManagementButton
-                                .setOnMouseExited(event -> certificateManagementButton.setCursor(Cursor.DEFAULT));
 
                 overViewButton.setOnMouseEntered(event -> overViewButton.setCursor(Cursor.HAND));
                 overViewButton.setOnMouseExited(event -> overViewButton.setCursor(Cursor.DEFAULT));
@@ -71,17 +66,14 @@ public class GUI extends Application {
                 enrollmentManagementButton.setPrefSize(150, 50);
                 enrollmentManagementButton.setStyle(
                                 "-fx-font-size: 10; -fx-background-radius: 5;");
-                certificateManagementButton.setPrefSize(150, 50);
-                certificateManagementButton.setStyle(
-                                "-fx-font-size: 10; -fx-background-radius: 5;");
 
                 overViewButton.setPrefSize(150, 50);
                 overViewButton.setStyle(
                                 "-fx-font-size: 10; -fx-background-radius: 5;");
 
                 // All buttons in box
-                VBox leftButtonBox = new VBox(cursistManagementButton, courseManagementButton, overViewButton);
-                VBox rightButtonBox = new VBox(enrollmentManagementButton, certificateManagementButton);
+                VBox leftButtonBox = new VBox(cursistManagementButton, courseManagementButton);
+                VBox rightButtonBox = new VBox(enrollmentManagementButton, overViewButton);
                 HBox buttonBox = new HBox(leftButtonBox, rightButtonBox);
 
                 leftButtonBox.setSpacing(15);
@@ -152,7 +144,6 @@ public class GUI extends Application {
                 cursistManagementButton.setStyle(buttonStyle);
                 courseManagementButton.setStyle(buttonStyle);
                 enrollmentManagementButton.setStyle(buttonStyle);
-                certificateManagementButton.setStyle(buttonStyle);
                 overViewButton.setStyle(buttonStyle);
 
                 codeCademyHomeScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
