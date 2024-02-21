@@ -53,7 +53,7 @@ public class courseController {
                 statement.setString(1, course.getName());
                 statement.setString(2, course.getSubject());
                 statement.setString(3, course.getIntroductionText());
-                statement.setInt(4, course.getDifficultyLevel());
+                statement.setString(4, course.getDifficultyLevel());
                 statement.setInt(5, course.getCourseId());
                 statement.setInt(6, course.getModuleId());
 
@@ -88,7 +88,7 @@ public class courseController {
                     course.setName(rs.getString("Name"));
                     course.setSubject(rs.getString("Subject"));
                     course.setIntroductionText(rs.getString("IntroductionText"));
-                    course.setDifficultyLevel(rs.getInt("DifficultyLevel"));
+                    course.setDifficultyLevel(rs.getString("DifficultyLevel"));
                     course.setCourseId(rs.getInt("CourseID"));
                     course.setModuleId(rs.getInt("ModuleID"));
 
@@ -106,7 +106,7 @@ public class courseController {
         try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
             updateStatement.setString(1, course.getSubject());
             updateStatement.setString(2, course.getIntroductionText());
-            updateStatement.setInt(3, course.getDifficultyLevel());
+            updateStatement.setString(3, course.getDifficultyLevel());
             updateStatement.setInt(4, course.getCourseId());
             updateStatement.setInt(5, course.getModuleId());
             updateStatement.setString(6, course.getName());

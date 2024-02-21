@@ -4,7 +4,7 @@ public class Course {
     private String name;
     private String subject;
     private String introductionText;
-    private int difficultyLevel;
+    private String difficultyLevel;
     private int courseId;
     // TODO courses moeten meerdere modules bevatten vgm, courseID toevoegen aan db
     // van Modules.
@@ -35,12 +35,12 @@ public class Course {
         this.introductionText = introductionText;
     }
 
-    public int getDifficultyLevel() {
+    public String getDifficultyLevel() {
         return difficultyLevel;
     }
 
-    public void setDifficultyLevel(int difficultyLevel) {
-        this.difficultyLevel = difficultyLevel;
+    public void setDifficultyLevel(String difficultyLevel2) {
+        this.difficultyLevel = difficultyLevel2;
     }
 
     public int getCourseId() {

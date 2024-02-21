@@ -84,12 +84,14 @@ public class CourseGUI extends Application {
         TextField createIntroductionText = new TextField();
         createIntroductionText.setPromptText("Introduction Text");
 
-        // create spinner fot difficulty level
-        Spinner<Integer> createDifficultyLevelSpinner = new Spinner<>(1, 10, 1);
-        createDifficultyLevelSpinner.setPromptText("Difficulty Level");
+        // create choicebox for difficulty level
+        ChoiceBox<String> difficultyLevelChoiceBox = new ChoiceBox<>();
+        difficultyLevelChoiceBox.getItems().addAll("Select difficulty", "Beginner", "Intermediate", "Expert");
+        difficultyLevelChoiceBox.getSelectionModel().selectFirst();
+
         // set a label next to the spinner that says "Difficulty Level"
         Label difficultyLevelLabel = new Label("Difficulty Level:");
-        HBox difficultyLevelHBox = new HBox(difficultyLevelLabel, createDifficultyLevelSpinner);
+        HBox difficultyLevelHBox = new HBox(difficultyLevelLabel, difficultyLevelChoiceBox);
         difficultyLevelHBox.setSpacing(10);
 
         TextField createCourseId = new TextField();
@@ -119,7 +121,7 @@ public class CourseGUI extends Application {
             String naam = createNaamField.getText();
             String subject = createSubjectField.getText();
             String introductionText = createIntroductionText.getText();
-            int difficultyLevel = createDifficultyLevelSpinner.getValue();
+            String difficultyLevel = difficultyLevelChoiceBox.getValue();
             int courseId = Integer.valueOf(createCourseId.getText());
             int moduleId = Integer.valueOf(createModuleId.getValue().toString());
 
@@ -144,7 +146,7 @@ public class CourseGUI extends Application {
             createNaamField.clear();
             createSubjectField.clear();
             createIntroductionText.clear();
-            createDifficultyLevelSpinner.getValueFactory().setValue(1);
+            difficultyLevelChoiceBox.getValue();
             createCourseId.clear();
             createModuleId.setValue(null);
         });
@@ -375,8 +377,7 @@ public class CourseGUI extends Application {
                     selectedCourse.setName(updateNaamField.getText());
                     selectedCourse.setSubject(updateSubjectField.getText());
                     selectedCourse.setIntroductionText(updateIntroductionText.getText());
-                    selectedCourse.setDifficultyLevel(
-                            Integer.parseInt(updateDifficultyLevel.getText()));
+                    selectedCourse.setDifficultyLevel((updateDifficultyLevel.getText()));
                     selectedCourse.setCourseId(Integer.parseInt(updateCourseId.getText()));
                     selectedCourse.setModuleId(Integer.parseInt(updateModuleId.getText()));
 
