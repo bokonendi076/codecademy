@@ -1,11 +1,7 @@
 package main;
 
-import main.OverViewGUI;
 import course.*;
 import cursist.*;
-import contentItem.*;
-import watchedContent.*;
-import webcast.Webcast;
 import enrollment.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -17,13 +13,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import module.ModuleController;
 
 public class GUI extends Application {
-        private WatchedContentController watchedContentController;
-        private contentItemController contentItemController;
         private courseController courseController;
-        private ModuleController moduleController;
         private Scene codeCademyHomeScene;
         private Button cursistManagementButton;
         private Button courseManagementButton;
