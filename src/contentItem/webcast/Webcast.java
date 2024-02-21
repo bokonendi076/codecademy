@@ -7,36 +7,36 @@ import contentItem.ContentItem;
 
 public class Webcast {
     private ContentItem contentItem;
-    private String titleWebcast;
-    private int lengthWebcast;
-    private LocalDate datePublication;
+    private String title;
+    private int duration;
+    private LocalDate publicationDate;
     private String URL;
     private String nameSpeaker;
     private String organisationSpeaker;
     private int contentItemID;
 
     public String getTitleWebcast() {
-        return titleWebcast;
+        return title;
     }
 
-    public void setTitleWebcast(String titleWebcast) {
-        this.titleWebcast = titleWebcast;
+    public void setTitleWebcast(String title) {
+        this.title = title;
     }
 
     public int getLengthWebcast() {
-        return lengthWebcast;
+        return duration;
     }
 
     public void setLengthWebcast(int lengthWebcast) {
-        this.lengthWebcast = lengthWebcast;
+        this.duration = lengthWebcast;
     }
 
     public LocalDate getDatePublication() {
-        return datePublication;
+        return publicationDate;
     }
 
     public void setDatePublication(LocalDate date) {
-        this.datePublication = date;
+        this.publicationDate = date;
     }
 
     public String getURL() {
@@ -72,7 +72,7 @@ public class Webcast {
     }
 
     public String toString() {
-        return "Title: " + titleWebcast + "\n" + "Length: " + lengthWebcast + "\n" + "Date: " + datePublication + "\n"
+        return "Title: " + title + "\n" + "Length: " + duration + "\n" + "Date: " + publicationDate + "\n"
                 + "URL: " + URL + "\n"
                 + "Speaker: " + nameSpeaker + "\n" + "Organisation: " + organisationSpeaker + "\n" + "ContentItemID: "
                 + contentItemID;

@@ -84,23 +84,19 @@ public class CourseGUI extends Application {
         TextField createIntroductionText = new TextField();
         createIntroductionText.setPromptText("Introduction Text");
 
-        // create spinner fot difficulty level
-        Spinner<Integer> createDifficultyLevelSpinner = new Spinner<>(1, 10, 1);
-        createDifficultyLevelSpinner.setPromptText("Difficulty Level");
+        // create choicebox for difficulty level
+        ComboBox<String> difficultyLevelComboBox = new ComboBox<>();
+        difficultyLevelComboBox.getItems().addAll("Select difficulty", "Beginner", "Intermediate", "Expert");
+        difficultyLevelComboBox.getSelectionModel().selectFirst();
+
         // set a label next to the spinner that says "Difficulty Level"
         Label difficultyLevelLabel = new Label("Difficulty Level:");
-        HBox difficultyLevelHBox = new HBox(difficultyLevelLabel, createDifficultyLevelSpinner);
+        HBox difficultyLevelHBox = new HBox(difficultyLevelLabel, difficultyLevelComboBox);
         difficultyLevelHBox.setSpacing(10);
 
-        TextField createCourseId = new TextField();
-        createCourseId.setPromptText("CourseId");
 
-        // Show all available modules
-        moduleController = new ModuleController();
-        ArrayList<Integer> moduleIds = moduleController.getAllModuleIDs();
-        ObservableList<Integer> moduleList = FXCollections.observableArrayList(moduleIds);
-        ComboBox createModuleId = new ComboBox(moduleList);
-        createModuleId.setPromptText("Choose ModuleId");
+      
+       
 
         Button addButton = new Button("Add Course");
         addButton.setStyle("-fx-background-color: #d2b48c;");
@@ -119,17 +115,15 @@ public class CourseGUI extends Application {
             String naam = createNaamField.getText();
             String subject = createSubjectField.getText();
             String introductionText = createIntroductionText.getText();
-            int difficultyLevel = createDifficultyLevelSpinner.getValue();
-            int courseId = Integer.valueOf(createCourseId.getText());
-            int moduleId = Integer.valueOf(createModuleId.getValue().toString());
+            String difficultyLevel = difficultyLevelComboBox.getValue();
+            
 
             Course newCourse = new Course();
             newCourse.setName(naam);
             newCourse.setSubject(subject);
             newCourse.setIntroductionText(introductionText);
             newCourse.setDifficultyLevel(difficultyLevel);
-            newCourse.setCourseId(courseId);
-            newCourse.setModuleId(moduleId);
+           
 
             courseController.saveCourse(newCourse);
 
@@ -144,14 +138,11 @@ public class CourseGUI extends Application {
             createNaamField.clear();
             createSubjectField.clear();
             createIntroductionText.clear();
-            createDifficultyLevelSpinner.getValueFactory().setValue(1);
-            createCourseId.clear();
-            createModuleId.setValue(null);
+            difficultyLevelComboBox.getValue();
         });
 
         VBox createFields = new VBox(createNaamField, createSubjectField, createIntroductionText,
-                difficultyLevelHBox,
-                createCourseId, createModuleId, addButton);
+                difficultyLevelHBox, addButton);
         createFields.setSpacing(7);
 
         // CRUD Buttons are created
@@ -239,8 +230,6 @@ public class CourseGUI extends Application {
                             + "Subject: " + course.getSubject() + "\n"
                             + "Introduction Text: " + course.getIntroductionText() + "\n"
                             + "Difficulty Level: " + course.getDifficultyLevel() + "\n"
-                            + "Course ID: " + course.getCourseId() + "\n"
-                            + "Module ID: " + course.getModuleId() + "\n"
                             + "Completed Cursist Count: " + completedCursistCount);
                     alert.showAndWait();
                 }
@@ -328,8 +317,6 @@ public class CourseGUI extends Application {
             TextField updateSubjectField = new TextField();
             TextField updateIntroductionText = new TextField();
             TextField updateDifficultyLevel = new TextField();
-            TextField updateCourseId = new TextField();
-            TextField updateModuleId = new TextField();
 
             chooseButton.setOnAction(f -> {
                 BorderPane editWindow = new BorderPane();
@@ -349,12 +336,10 @@ public class CourseGUI extends Application {
                 updateIntroductionText.setText(selectedCourse.getIntroductionText());
                 updateDifficultyLevel
                         .setText(String.valueOf(selectedCourse.getDifficultyLevel()));
-                updateCourseId.setText(String.valueOf(selectedCourse.getCourseId()));
-                updateModuleId.setText(String.valueOf(selectedCourse.getModuleId()));
 
                 VBox updateFields = new VBox(updateNaamField, updateSubjectField,
                         updateIntroductionText,
-                        updateDifficultyLevel, updateCourseId, updateModuleId);
+                        updateDifficultyLevel);
                 updateFields.setSpacing(7);
 
                 editWindow.setTop(editWindowTitle);
@@ -375,10 +360,7 @@ public class CourseGUI extends Application {
                     selectedCourse.setName(updateNaamField.getText());
                     selectedCourse.setSubject(updateSubjectField.getText());
                     selectedCourse.setIntroductionText(updateIntroductionText.getText());
-                    selectedCourse.setDifficultyLevel(
-                            Integer.parseInt(updateDifficultyLevel.getText()));
-                    selectedCourse.setCourseId(Integer.parseInt(updateCourseId.getText()));
-                    selectedCourse.setModuleId(Integer.parseInt(updateModuleId.getText()));
+                    selectedCourse.setDifficultyLevel((updateDifficultyLevel.getText()));
 
                     courseController.updateCourseFields(selectedCourse);
 

@@ -28,7 +28,7 @@ public class ModuleController {
             ResultSet rs = databaseManager.query("SELECT * FROM Module");
 
             while (rs.next()) {
-                String title = rs.getString("ModuleID");
+                String title = rs.getString("Title");
                 moduleNames.add(title);
             }
         } catch (SQLException e) {
