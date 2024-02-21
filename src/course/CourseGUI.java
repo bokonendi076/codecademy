@@ -85,13 +85,13 @@ public class CourseGUI extends Application {
         createIntroductionText.setPromptText("Introduction Text");
 
         // create choicebox for difficulty level
-        ChoiceBox<String> difficultyLevelChoiceBox = new ChoiceBox<>();
-        difficultyLevelChoiceBox.getItems().addAll("Select difficulty", "Beginner", "Intermediate", "Expert");
-        difficultyLevelChoiceBox.getSelectionModel().selectFirst();
+        ComboBox<String> difficultyLevelComboBox = new ComboBox<>();
+        difficultyLevelComboBox.getItems().addAll("Select difficulty", "Beginner", "Intermediate", "Expert");
+        difficultyLevelComboBox.getSelectionModel().selectFirst();
 
         // set a label next to the spinner that says "Difficulty Level"
         Label difficultyLevelLabel = new Label("Difficulty Level:");
-        HBox difficultyLevelHBox = new HBox(difficultyLevelLabel, difficultyLevelChoiceBox);
+        HBox difficultyLevelHBox = new HBox(difficultyLevelLabel, difficultyLevelComboBox);
         difficultyLevelHBox.setSpacing(10);
 
         TextField createCourseId = new TextField();
@@ -121,7 +121,7 @@ public class CourseGUI extends Application {
             String naam = createNaamField.getText();
             String subject = createSubjectField.getText();
             String introductionText = createIntroductionText.getText();
-            String difficultyLevel = difficultyLevelChoiceBox.getValue();
+            String difficultyLevel = difficultyLevelComboBox.getValue();
             int courseId = Integer.valueOf(createCourseId.getText());
             int moduleId = Integer.valueOf(createModuleId.getValue().toString());
 
@@ -146,7 +146,7 @@ public class CourseGUI extends Application {
             createNaamField.clear();
             createSubjectField.clear();
             createIntroductionText.clear();
-            difficultyLevelChoiceBox.getValue();
+            difficultyLevelComboBox.getValue();
             createCourseId.clear();
             createModuleId.setValue(null);
         });
