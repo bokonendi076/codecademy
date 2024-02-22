@@ -44,6 +44,36 @@ public class EnrollmentController {
         }
     }
 
+    public void updateEnrollment(Enrollment enrollment) {
+        try {
+            String query = "UPDATE Enrollment SET EnrollmentDate = ?, CouseName = ?, CursistEmailAddress = ?, WHERE EnrollmentDate = ? AND CourseName = ? AND CursistEmailAddress = ?";
+            try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
+                updateStatement.setObject(1, enrollment.getEnrollmentDate());
+                updateStatement.setString(2, enrollment.getCourseName());
+                updateStatement.setString(3, enrollment.getCursistEmailAddress());
+                
+                System.out.println(enrollment.getEnrollmentDate());
+                System.out.println(enrollment.getCourseName());
+                System.out.println(enrollment.getCursistEmailAddress());
+
+                int rowsAffected = updateStatement.executeUpdate();
+                connection.commit();
+
+                if (rowsAffected == 0) {
+                    SQLException e = new SQLException();
+                    e.printStackTrace();
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
     public ArrayList<String> getAllEnrollments() {
         ArrayList<String> wachtedContent = new ArrayList<>();
 
