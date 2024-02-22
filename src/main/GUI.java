@@ -1,12 +1,7 @@
 package main;
 
-import main.OverViewGUI;
 import course.*;
 import cursist.*;
-import contentItem.*;
-import watchedContent.*;
-import webcast.Webcast;
-import webcast.WebcastGUI;
 import enrollment.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -18,14 +13,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import module.ModuleController;
-import module.ModuleGUI;
 
 public class GUI extends Application {
-        private WatchedContentController watchedContentController;
-        private contentItemController contentItemController;
         private courseController courseController;
-        private ModuleController moduleController;
         private Scene codeCademyHomeScene;
         private Button cursistManagementButton;
         private Button courseManagementButton;
@@ -50,40 +40,19 @@ public class GUI extends Application {
                 // All buttons
                 cursistManagementButton = new Button("Cursist manager");
                 courseManagementButton = new Button("Course manager");
-                Button webcastManagementButton = new Button("Webcast manager");
-                Button contentItemManagementButton = new Button("Content item manager");
-                Button watchedContentManagementButton = new Button("Watched content");
-                Button moduleManagementButton = new Button("Module manager");
                 Button enrollmentManagementButton = new Button("Enrollment manager");
-                Button certificateManagementButton = new Button("Certificate manager");
                 Button overViewButton = new Button("Overview options");
 
-                certificateManagementButton.setDisable(true);
+              
 
                 cursistManagementButton.setOnMouseEntered(event -> cursistManagementButton.setCursor(Cursor.HAND));
                 cursistManagementButton.setOnMouseExited(event -> cursistManagementButton.setCursor(Cursor.DEFAULT));
                 courseManagementButton.setOnMouseEntered(event -> courseManagementButton.setCursor(Cursor.HAND));
                 courseManagementButton.setOnMouseExited(event -> courseManagementButton.setCursor(Cursor.DEFAULT));
-                webcastManagementButton.setOnMouseEntered(event -> webcastManagementButton.setCursor(Cursor.HAND));
-                webcastManagementButton.setOnMouseExited(event -> webcastManagementButton.setCursor(Cursor.DEFAULT));
-                contentItemManagementButton
-                                .setOnMouseEntered(event -> contentItemManagementButton.setCursor(Cursor.HAND));
-                contentItemManagementButton
-                                .setOnMouseExited(event -> contentItemManagementButton.setCursor(Cursor.DEFAULT));
-                watchedContentManagementButton
-                                .setOnMouseEntered(event -> watchedContentManagementButton.setCursor(Cursor.HAND));
-                watchedContentManagementButton
-                                .setOnMouseExited(event -> watchedContentManagementButton.setCursor(Cursor.DEFAULT));
-                moduleManagementButton.setOnMouseEntered(event -> moduleManagementButton.setCursor(Cursor.HAND));
-                moduleManagementButton.setOnMouseExited(event -> moduleManagementButton.setCursor(Cursor.DEFAULT));
                 enrollmentManagementButton
                                 .setOnMouseEntered(event -> enrollmentManagementButton.setCursor(Cursor.HAND));
                 enrollmentManagementButton
                                 .setOnMouseExited(event -> enrollmentManagementButton.setCursor(Cursor.DEFAULT));
-                certificateManagementButton
-                                .setOnMouseEntered(event -> certificateManagementButton.setCursor(Cursor.HAND));
-                certificateManagementButton
-                                .setOnMouseExited(event -> certificateManagementButton.setCursor(Cursor.DEFAULT));
 
                 overViewButton.setOnMouseEntered(event -> overViewButton.setCursor(Cursor.HAND));
                 overViewButton.setOnMouseExited(event -> overViewButton.setCursor(Cursor.DEFAULT));
@@ -94,23 +63,8 @@ public class GUI extends Application {
                 courseManagementButton.setPrefSize(150, 50);
                 courseManagementButton.setStyle(
                                 "-fx-font-size: 10 ; -fx-background-radius: 5;");
-                webcastManagementButton.setPrefSize(150, 50);
-                webcastManagementButton.setStyle(
-                                "-fx-font-size: 10; -fx-background-radius: 5;");
-                contentItemManagementButton.setPrefSize(150, 50);
-                contentItemManagementButton.setStyle(
-                                "-fx-font-size: 10; -fx-background-radius: 5;");
-                watchedContentManagementButton.setPrefSize(150, 50);
-                watchedContentManagementButton.setStyle(
-                                "-fx-font-size: 10; -fx-background-radius: 5;");
-                moduleManagementButton.setPrefSize(150, 50);
-                moduleManagementButton.setStyle(
-                                "-fx-font-size: 10; -fx-background-radius: 5;");
                 enrollmentManagementButton.setPrefSize(150, 50);
                 enrollmentManagementButton.setStyle(
-                                "-fx-font-size: 10; -fx-background-radius: 5;");
-                certificateManagementButton.setPrefSize(150, 50);
-                certificateManagementButton.setStyle(
                                 "-fx-font-size: 10; -fx-background-radius: 5;");
 
                 overViewButton.setPrefSize(150, 50);
@@ -118,10 +72,8 @@ public class GUI extends Application {
                                 "-fx-font-size: 10; -fx-background-radius: 5;");
 
                 // All buttons in box
-                VBox leftButtonBox = new VBox(cursistManagementButton, courseManagementButton, webcastManagementButton,
-                                contentItemManagementButton, overViewButton);
-                VBox rightButtonBox = new VBox(watchedContentManagementButton, moduleManagementButton,
-                                enrollmentManagementButton, certificateManagementButton);
+                VBox leftButtonBox = new VBox(cursistManagementButton, courseManagementButton);
+                VBox rightButtonBox = new VBox(enrollmentManagementButton, overViewButton);
                 HBox buttonBox = new HBox(leftButtonBox, rightButtonBox);
 
                 leftButtonBox.setSpacing(15);
@@ -174,34 +126,6 @@ public class GUI extends Application {
                         stage.show();
                 });
 
-                // // Webcast Manager Scene
-                webcastManagementButton.setOnAction(e -> {
-                        WebcastGUI webcastGUI = new WebcastGUI(new Webcast());
-                        stage.setScene(webcastGUI.webcastScene(stage));
-                        stage.show();
-                });
-
-                // Content Item Manager Scene
-                contentItemManagementButton.setOnAction(e -> {
-                        contentItemGUI contentItemGUI = new contentItemGUI(contentItemController);
-                        stage.setScene(contentItemGUI.contentItemScene(stage));
-                        stage.show();
-                });
-
-                // Watched Content Manager Scene
-                watchedContentManagementButton.setOnAction(e -> {
-                        WatchedContentGUI watchedContentGUI = new WatchedContentGUI(watchedContentController);
-                        stage.setScene(watchedContentGUI.watchedContentScene(stage));
-                        stage.show();
-                });
-
-                // Module Manager Scene
-                moduleManagementButton.setOnAction(e -> {
-                        ModuleGUI moduleGUI = new ModuleGUI(moduleController);
-                        stage.setScene(moduleGUI.ModuleScene(stage));
-                        stage.show();
-                });
-
                 // Enrollment Manager Scene
                 enrollmentManagementButton.setOnAction(e -> {
                         EnrollmentGUI enrollmentGUI = new EnrollmentGUI(enrollmentController);
@@ -219,12 +143,7 @@ public class GUI extends Application {
                 String buttonStyle = "-fx-background-color: #d2b48c;";
                 cursistManagementButton.setStyle(buttonStyle);
                 courseManagementButton.setStyle(buttonStyle);
-                webcastManagementButton.setStyle(buttonStyle);
-                contentItemManagementButton.setStyle(buttonStyle);
-                watchedContentManagementButton.setStyle(buttonStyle);
-                moduleManagementButton.setStyle(buttonStyle);
                 enrollmentManagementButton.setStyle(buttonStyle);
-                certificateManagementButton.setStyle(buttonStyle);
                 overViewButton.setStyle(buttonStyle);
 
                 codeCademyHomeScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");

@@ -8,8 +8,8 @@
       "type": "java",
       "name": "CodeCademy",
       "request": "launch",
-      "mainClass": "main.CodeCademy",
-      "projectName": "codecademy_fde65d31"
+      "mainClass": "main.CodeCademy"
+      // "projectName": "CodeCademy.java"
     },
     {
       "type": "java",

@@ -44,11 +44,11 @@ public class NumericRangeToolsTest {
 
     @Test
     public void validatePercentageInvalidPercentageHighReturnsFalse() {
-    // Arrange
-    int invalidPercentage = 105; // Invalid percentage value
+        // Arrange
+        int invalidPercentage = 105; // Invalid percentage value
 
-    // Act / Assert
-    assertFalse(NumericRangeTools.isValidPercentage(invalidPercentage));
+        // Act / Assert
+        assertFalse(NumericRangeTools.isValidPercentage(invalidPercentage));
     }
 
     @Test

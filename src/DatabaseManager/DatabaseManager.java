@@ -15,6 +15,7 @@ public class DatabaseManager {
                     "jdbc:sqlserver://localhost;databaseName=CodeCademy;username=admin;password=admin123;integratedSecurity=false;encrypt=true;trustServerCertificate=true;");
         } catch (SQLException e) {
             e.printStackTrace();
+
         }
 
     }
