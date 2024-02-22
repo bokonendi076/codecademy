@@ -18,8 +18,9 @@ public class OverViewController {
         List<String> courseNames = new ArrayList<>();
 
         try {
+            db = new DatabaseManager();
+            connection = db.getConnection();
             String sqlQuery = "SELECT DISTINCT Name FROM Course";
-            Connection connection = db.getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery);
 
@@ -38,36 +39,30 @@ public class OverViewController {
         StringBuilder result = new StringBuilder();
 
         try {
-            String courseIdQuery = "SELECT CourseID FROM Course WHERE Name = ?";
-            Connection connection = db.getConnection();
+            String sqlQuery = "SELECT Module.Title, AVG(PercentageWatched) AS AveragePercentageWatched "
+                    + "FROM Module " + '\n'
+                    + "JOIN WatchedContent ON Module.ContentItemID = WatchedContent.ContentItemID "
+                    + "WHERE CourseName = ? " + "GROUP BY Module.Title;";
 
-            try (PreparedStatement courseIdStatement = connection.prepareStatement(courseIdQuery)) {
-                courseIdStatement.setString(1, courseName);
-                ResultSet courseIdResultSet = courseIdStatement.executeQuery();
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                statement.setString(1, courseName);
 
-                if (courseIdResultSet.next()) {
-                    int courseId = courseIdResultSet.getInt("CourseID");
+                ResultSet rs = statement.executeQuery();
 
-                    String progressQuery = "SELECT Title, AVG(PercentageWatched) AS AverageProgress " +
-                            "FROM Module " +
-                            "JOIN WatchedContent ON Module.ContentItemID = WatchedContent.ContentItemID " +
-                            "WHERE CourseID = ? " +
-                            "GROUP BY Title";
+                while (rs.next()) {
+                    String moduleTitle = rs.getString("Title");
+                    double averagePercentageWatched = rs.getDouble("AveragePercentageWatched");
 
-                    try (PreparedStatement progressStatement = connection.prepareStatement(progressQuery)) {
-                        progressStatement.setInt(1, courseId);
-                        ResultSet progressResultSet = progressStatement.executeQuery();
+                    result.append(moduleTitle).append(": ").append(averagePercentageWatched).append("%\n");
 
-                        while (progressResultSet.next()) {
-                            String moduleTitle = progressResultSet.getString("Title");
-                            double averageProgress = progressResultSet.getDouble("AverageProgress");
-
-                            result.append(moduleTitle).append(": ").append(averageProgress).append("%\n");
-                        }
-                    }
                 }
             }
-        } catch (SQLException e) {
+
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -35,7 +35,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.GUI;
-import webcast.Webcast;
 
 public class OverViewGUI extends Application {
     private DatabaseManager db;
@@ -48,7 +47,6 @@ public class OverViewGUI extends Application {
     private Button backHome;
     private Button backToCodeCademy;
     private BorderPane homePane;
-    private Webcast webcast;
     private String firstTitleWebcast;
     private String secondTitleWebcast;
     private String thirdTitleWebcast;
@@ -180,10 +178,11 @@ public class OverViewGUI extends Application {
 
                 showProgressButton.setOnAction(event -> {
                     String selectedCourse = courseComboBox.getValue();
+
                     if (selectedCourse != null) {
                         // Get and display average progress per module for the selected course
                         String progressPerModule = overViewController.getAverageProgressPerModule(selectedCourse);
-                        System.out.println(progressPerModule);
+
                         // Display the result
                         Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Average Progress per Module");
