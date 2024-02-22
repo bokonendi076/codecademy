@@ -479,7 +479,7 @@ public class OverViewGUI extends Application {
 
     public String getProgressPerModule(String accountEmail, String courseName) {
         StringBuilder result = new StringBuilder();
-
+    
         try {
             String query = "SELECT m.Title AS ModuleTitle, AVG(wc.PercentageWatched) AS AverageProgress " +
                     "FROM WatchedContent wc " +
@@ -489,17 +489,17 @@ public class OverViewGUI extends Application {
                     "JOIN Cursist cu ON wc.CursistID = cu.CursistID " +
                     "WHERE cu.EmailAddress = ? AND c.Name = ? " +
                     "GROUP BY m.Title";
-
+    
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, accountEmail);
                 statement.setString(2, courseName);
-
+    
                 ResultSet rs = statement.executeQuery();
-
+    
                 while (rs.next()) {
                     String moduleTitle = rs.getString("ModuleTitle");
                     double averageProgress = rs.getDouble("AverageProgress");
-
+    
                     result.append(moduleTitle).append(": ").append(String.format("%.2f%%", averageProgress))
                             .append("\n");
                 }
@@ -507,9 +507,10 @@ public class OverViewGUI extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+    
         return result.toString();
     }
+    
 
     // Get top three watched webcasts
 
