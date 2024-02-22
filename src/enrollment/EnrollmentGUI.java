@@ -132,6 +132,7 @@ public class EnrollmentGUI extends Application {
 
         VBox createFields = new VBox(datePicker, courseNameBox, cursistEmailBox, addButton);
         createFields.setSpacing(7);
+        createFields.setAlignment(Pos.CENTER);
 
         // CRUD Buttons are created
         Button deleteButton = new Button("Delete");
@@ -241,7 +242,7 @@ public class EnrollmentGUI extends Application {
             }
         });
 
-        Label mainSceneTitle = new Label("REgister new Enrollment");
+        Label mainSceneTitle = new Label("Register new Enrollment");
         mainSceneTitle.setStyle("-fx-font-size: 30;");
         Insets mainSceneTitlePadding = new Insets(0, 0, 25, 0);
         mainSceneTitle.setPadding(mainSceneTitlePadding);
