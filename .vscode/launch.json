@@ -8,15 +8,15 @@
       "type": "java",
       "name": "CodeCademy",
       "request": "launch",
-      "mainClass": "main.CodeCademy",
-      "projectName": "codecademy_fde65d31"
+      "mainClass": "main.CodeCademy"
+      // "projectName": "CodeCademy.java"
     },
     {
       "type": "java",
       "name": "CursistGUI",
       "request": "launch",
-      "mainClass": "cursist.CursistGUI",
-      "projectName": "codecademy_14b80fd2"
+      "mainClass": "cursist.CursistGUI"
+      // "projectName": "CodeCademy.java"
     },
     {
       "type": "java",

@@ -25,6 +25,12 @@
     "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar",
     "c:\\Program Files\\Eclipse Adoptium\\junit\\junit-platform-console-standalone-1.9.3.jar",
     "c:\\Program Files\\Eclipse Adoptium\\Junit\\junit-platform-console-standalone-1.9.3.jar",
-    "c:\\Program Files\\Eclipse Adoptium\\junit-platform-console-standalone-1.9.3 (1).jar"
+    "c:\\Program Files\\Eclipse Adoptium\\junit-platform-console-standalone-1.9.3 (1).jar",
+    "c:\\Program Files\\Eclipse Adoptium\\sqljdbc_12.6\\enu\\jars\\mssql-jdbc-12.6.0.jre8.jar",
+    "c:\\Program Files\\Eclipse Adoptium\\sqljdbc_12.6\\enu\\jars\\mssql-jdbc-12.6.0.jre8-javadoc.jar",
+    "c:\\Program Files\\Eclipse Adoptium\\sqljdbc_12.6\\enu\\jars\\mssql-jdbc-12.6.0.jre8-sources.jar",
+    "c:\\Program Files\\Eclipse Adoptium\\sqljdbc_12.6\\enu\\jars\\mssql-jdbc-12.6.0.jre11.jar",
+    "c:\\Program Files\\Eclipse Adoptium\\sqljdbc_12.6\\enu\\jars\\mssql-jdbc-12.6.0.jre11-javadoc.jar",
+    "c:\\Program Files\\Eclipse Adoptium\\sqljdbc_12.6\\enu\\jars\\mssql-jdbc-12.6.0.jre11-sources.jar"
   ]
 }
