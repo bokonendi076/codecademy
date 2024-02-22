@@ -50,6 +50,8 @@ public class EnrollmentGUI extends Application {
         // Create a welcome message for the homepage
         Button createButton = new Button("Add enrollment");
         Button readButton = new Button("View all enrollments");
+        Button updateButton = new Button("Edit enrollment");
+
         Label welcomeLabel = new Label("Welcome to enrollment management");
 
         Insets welcomeLabelPadding = new Insets(25);
@@ -68,12 +70,14 @@ public class EnrollmentGUI extends Application {
         BorderPane homePane = new BorderPane();
         BorderPane.setAlignment(welcomeLabel, Pos.CENTER);
         homePane.setTop(welcomeLabel);
-        VBox homeLayout = new VBox(10, createButton, readButton, backToCodeCademy);
+        VBox homeLayout = new VBox(10, createButton, readButton, updateButton, backToCodeCademy);
 
         createButton.setPrefSize(150, 50);
         createButton.setStyle("-fx-font-size: 18; -fx-background-color: #d2b48c;");
         readButton.setPrefSize(150, 50);
         readButton.setStyle("-fx-font-size: 18; -fx-background-color: #d2b48c;");
+        updateButton.setPrefSize(150, 50);
+        updateButton.setStyle("-fx-font-size: 18; -fx-background-color: #d2b48c;");
 
         homeLayout.setAlignment(Pos.CENTER);
         homePane.setCenter(homeLayout);
