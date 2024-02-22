@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableIntegerArray;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -54,6 +55,7 @@ public class OverViewGUI extends Application {
     private Button viewCertificates;
     private Certificate certificate;
     private CertificateController certificateController = new CertificateController();
+    private OverViewController overViewController = new OverViewController();
 
     // Constructor
     public OverViewGUI() {
@@ -154,12 +156,11 @@ public class OverViewGUI extends Application {
             stage.show();
 
             progressPercentage.setOnAction(a -> {
-                Stage courseOverviewStage = new Stage(); // Create a new stage
 
                 Label titleCourseOverView1 = new Label("Please choose a course: ");
 
                 // Retrieve course names
-                List<String> courseNames = getCourseNames();
+                List<String> courseNames = overViewController.getCourseNames();
                 ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
 
                 Button showProgressButton = new Button("Show Average Progress per Module");
@@ -181,7 +182,8 @@ public class OverViewGUI extends Application {
                     String selectedCourse = courseComboBox.getValue();
                     if (selectedCourse != null) {
                         // Get and display average progress per module for the selected course
-                        String progressPerModule = getAverageProgressPerModule(selectedCourse);
+                        String progressPerModule = overViewController.getAverageProgressPerModule(selectedCourse);
+                        System.out.println(progressPerModule);
                         // Display the result
                         Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Average Progress per Module");
@@ -198,9 +200,8 @@ public class OverViewGUI extends Application {
                     }
                 });
 
-                courseOverviewStage.setScene(courseOverviewScene);
-                courseOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
-                courseOverviewStage.show(); // Show the new stage
+                stage.setScene(courseOverviewScene);
+                stage.show(); // Show the new stage
             });
 
             averageProgressModule.setOnAction(b -> {
@@ -213,7 +214,7 @@ public class OverViewGUI extends Application {
                 ComboBox<String> accountComboBox = new ComboBox<>(FXCollections.observableArrayList(accountEmails));
 
                 // Retrieve course names
-                List<String> courseNames = getCourseNames();
+                List<String> courseNames = overViewController.getCourseNames();
                 ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
 
                 Button showProgressButton = new Button("Show Progress per Module (%)");
@@ -239,7 +240,8 @@ public class OverViewGUI extends Application {
                     if (selectedAccount != null && selectedCourse != null) {
                         // Get and display progress per module as percentage for the selected account
                         // and course
-                        String progressPerModule = getProgressPerModule(selectedAccount, selectedCourse);
+                        String progressPerModule = overViewController.getProgressPerModule(selectedAccount,
+                                selectedCourse);
                         // Display the result (you can customize this part)
                         Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Progress per Module (%)");
@@ -370,11 +372,11 @@ public class OverViewGUI extends Application {
             titleWebcastOverview.setStyle("-fx-font-size: 28;");
             titleWebcastOverview.setPadding(new Insets(25, 0, 25, 0));
 
-            String topWebcasts = getTopThreeWatchedWebcastsTitles();
+            String topWebcasts = overViewController.getTopThreeWatchedWebcastsTitles();
             topWebcasts = topWebcasts.substring(1, topWebcasts.length() - 1);
             String[] webcastTitles = topWebcasts.split(", ", 3);
 
-            String topWebcastPercentages = getTopThreeWatchedWebcastsPercentage();
+            String topWebcastPercentages = overViewController.getTopThreeWatchedWebcastsPercentage();
             topWebcastPercentages = topWebcastPercentages.substring(1, topWebcastPercentages.length() - 1);
             String[] webcastPercentage = topWebcastPercentages.split(", ", 3);
 
@@ -415,157 +417,6 @@ public class OverViewGUI extends Application {
         homeScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
         return homeScene;
 
-    }
-
-    private List<String> getCourseNames() {
-        List<String> courseNames = new ArrayList<>();
-
-        try {
-            String sqlQuery = "SELECT DISTINCT Name FROM Course";
-            Connection connection = db.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sqlQuery);
-
-            while (resultSet.next()) {
-                String courseName = resultSet.getString("Name");
-                courseNames.add(courseName);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return courseNames;
-    }
-
-    private String getAverageProgressPerModule(String courseName) {
-        StringBuilder result = new StringBuilder();
-
-        try {
-            String courseIdQuery = "SELECT CourseID FROM Course WHERE Name = ?";
-            Connection connection = db.getConnection();
-
-            try (PreparedStatement courseIdStatement = connection.prepareStatement(courseIdQuery)) {
-                courseIdStatement.setString(1, courseName);
-                ResultSet courseIdResultSet = courseIdStatement.executeQuery();
-
-                if (courseIdResultSet.next()) {
-                    int courseId = courseIdResultSet.getInt("CourseID");
-
-                    String progressQuery = "SELECT Title, AVG(PercentageWatched) AS AverageProgress " +
-                            "FROM Module " +
-                            "JOIN WatchedContent ON Module.ContentItemID = WatchedContent.ContentItemID " +
-                            "WHERE CourseID = ? " +
-                            "GROUP BY Title";
-
-                    try (PreparedStatement progressStatement = connection.prepareStatement(progressQuery)) {
-                        progressStatement.setInt(1, courseId);
-                        ResultSet progressResultSet = progressStatement.executeQuery();
-
-                        while (progressResultSet.next()) {
-                            String moduleTitle = progressResultSet.getString("Title");
-                            double averageProgress = progressResultSet.getDouble("AverageProgress");
-
-                            result.append(moduleTitle).append(": ").append(averageProgress).append("%\n");
-                        }
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return result.toString();
-    }
-
-    public String getProgressPerModule(String accountEmail, String courseName) {
-        StringBuilder result = new StringBuilder();
-    
-        try {
-            String query = "SELECT m.Title AS ModuleTitle, AVG(wc.PercentageWatched) AS AverageProgress " +
-                    "FROM WatchedContent wc " +
-                    "JOIN ContentItem ci ON wc.ContentItemID = ci.ContentItemID " +
-                    "JOIN Module m ON ci.ModuleID = m.ModuleID " +
-                    "JOIN Course c ON m.CourseID = c.CourseID " +
-                    "JOIN Cursist cu ON wc.CursistID = cu.CursistID " +
-                    "WHERE cu.EmailAddress = ? AND c.Name = ? " +
-                    "GROUP BY m.Title";
-    
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, accountEmail);
-                statement.setString(2, courseName);
-    
-                ResultSet rs = statement.executeQuery();
-    
-                while (rs.next()) {
-                    String moduleTitle = rs.getString("ModuleTitle");
-                    double averageProgress = rs.getDouble("AverageProgress");
-    
-                    result.append(moduleTitle).append(": ").append(String.format("%.2f%%", averageProgress))
-                            .append("\n");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    
-        return result.toString();
-    }
-    
-
-    // Get top three watched webcasts
-
-    public String getTopThreeWatchedWebcastsTitles() {
-        // Make arraylist that holds top three watched webcasts in strings from the
-        // title
-        ArrayList<String> topThreeWatchedWebcasts = new ArrayList<>();
-
-        String sqlQuery = "SELECT TOP 3 TitleWebcast, CursistID, PercentageWatched FROM Webcast "
-                + "JOIN WatchedContent ON WatchedContent.ContentItemID = Webcast.ContentItemID " +
-                "ORDER BY PercentageWatched DESC";
-        try {
-            Connection connection = db.getConnection();
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sqlQuery);
-
-            while (rs.next()) {
-                String title = rs.getString("TitleWebcast");
-                int cursistId = rs.getInt("CursistID");
-                int percentageWatched = rs.getInt("PercentageWatched");
-
-                topThreeWatchedWebcasts.add(title);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return topThreeWatchedWebcasts.toString();
-    }
-
-    public String getTopThreeWatchedWebcastsPercentage() {
-        // Make arraylist that holds top three watched webcasts in strings from the
-        // title
-        ArrayList<Integer> topThreeWatchedWebcasts = new ArrayList<>();
-
-        String sqlQuery = "SELECT TOP 3 TitleWebcast, CursistID, PercentageWatched FROM Webcast "
-                + "JOIN WatchedContent ON WatchedContent.ContentItemID = Webcast.ContentItemID " +
-                "ORDER BY PercentageWatched DESC";
-        try {
-            Connection connection = db.getConnection();
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sqlQuery);
-
-            while (rs.next()) {
-                String title = rs.getString("TitleWebcast");
-                int cursistId = rs.getInt("CursistID");
-                int percentageWatched = rs.getInt("PercentageWatched");
-
-                topThreeWatchedWebcasts.add(percentageWatched);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return topThreeWatchedWebcasts.toString();
     }
 
     public static void main(String[] args) {
