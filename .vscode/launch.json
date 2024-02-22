@@ -13,13 +13,6 @@
     },
     {
       "type": "java",
-      "name": "CursistGUI",
-      "request": "launch",
-      "mainClass": "cursist.CursistGUI",
-      "projectName": "codecademy_14b80fd2"
-    },
-    {
-      "type": "java",
       "name": "CodeCademy",
       "request": "launch",
       "mainClass": "main.CodeCademy",
@@ -27,20 +20,6 @@
     },
     {
       "type": "java",
-      "name": "OverViewGUI",
-      "request": "launch",
-      "mainClass": "main.OverViewGUI",
-      "projectName": "codecademy_a4514a6b"
-    },
-    {
-      "type": "java",
-      "name": "OverViewGUI",
-      "request": "launch",
-      "mainClass": "main.OverViewGUI",
-      "projectName": "codecademy_ceb05d6e"
-    },
-    {
-      "type": "java",
       "name": "CodeCademy",
       "request": "launch",
       "mainClass": "main.CodeCademy",
@@ -48,23 +27,9 @@
     },
     {
       "type": "java",
-      "name": "CursistGUI",
-      "request": "launch",
-      "mainClass": "cursist.CursistGUI",
-      "projectName": "codecademy_ceb05d6e"
-    },
-    {
-      "type": "java",
       "name": "CodeCademy",
       "request": "launch",
       "mainClass": "main.CodeCademy",
-      "projectName": "codecademy_a4514a6b"
-    },
-    {
-      "type": "java",
-      "name": "CursistGUI",
-      "request": "launch",
-      "mainClass": "cursist.CursistGUI",
       "projectName": "codecademy_a4514a6b"
     },
     {
