@@ -6,10 +6,16 @@
   "configurations": [
     {
       "type": "java",
+      "name": "OverViewGUI",
+      "request": "launch",
+      "mainClass": "main.OverViewGUI",
+      "projectName": "codecademy_fde65d31"
+    },
+    {
+      "type": "java",
       "name": "CodeCademy",
       "request": "launch",
       "mainClass": "main.CodeCademy"
-      // "projectName": "CodeCademy.java"
     },
     {
       "type": "java",
