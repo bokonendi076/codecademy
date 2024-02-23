@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableIntegerArray;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -34,7 +35,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.GUI;
-import webcast.Webcast;
 
 public class OverViewGUI extends Application {
     private DatabaseManager db;
@@ -47,13 +47,13 @@ public class OverViewGUI extends Application {
     private Button backHome;
     private Button backToCodeCademy;
     private BorderPane homePane;
-    private Webcast webcast;
     private String firstTitleWebcast;
     private String secondTitleWebcast;
     private String thirdTitleWebcast;
     private Button viewCertificates;
     private Certificate certificate;
     private CertificateController certificateController = new CertificateController();
+    private OverViewController overViewController = new OverViewController();
 
     // Constructor
     public OverViewGUI() {
@@ -154,12 +154,11 @@ public class OverViewGUI extends Application {
             stage.show();
 
             progressPercentage.setOnAction(a -> {
-                Stage courseOverviewStage = new Stage(); // Create a new stage
 
                 Label titleCourseOverView1 = new Label("Please choose a course: ");
 
                 // Retrieve course names
-                List<String> courseNames = getCourseNames();
+                List<String> courseNames = overViewController.getCourseNames();
                 ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
 
                 Button showProgressButton = new Button("Show Average Progress per Module");
@@ -179,9 +178,11 @@ public class OverViewGUI extends Application {
 
                 showProgressButton.setOnAction(event -> {
                     String selectedCourse = courseComboBox.getValue();
+
                     if (selectedCourse != null) {
                         // Get and display average progress per module for the selected course
-                        String progressPerModule = getAverageProgressPerModule(selectedCourse);
+                        String progressPerModule = overViewController.getAverageProgressPerModule(selectedCourse);
+
                         // Display the result
                         Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Average Progress per Module");
@@ -198,9 +199,8 @@ public class OverViewGUI extends Application {
                     }
                 });
 
-                courseOverviewStage.setScene(courseOverviewScene);
-                courseOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
-                courseOverviewStage.show(); // Show the new stage
+                stage.setScene(courseOverviewScene);
+                stage.show(); // Show the new stage
             });
 
             averageProgressModule.setOnAction(b -> {
@@ -213,7 +213,7 @@ public class OverViewGUI extends Application {
                 ComboBox<String> accountComboBox = new ComboBox<>(FXCollections.observableArrayList(accountEmails));
 
                 // Retrieve course names
-                List<String> courseNames = getCourseNames();
+                List<String> courseNames = overViewController.getCourseNames();
                 ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
 
                 Button showProgressButton = new Button("Show Progress per Module (%)");
@@ -239,7 +239,8 @@ public class OverViewGUI extends Application {
                     if (selectedAccount != null && selectedCourse != null) {
                         // Get and display progress per module as percentage for the selected account
                         // and course
-                        String progressPerModule = getProgressPerModule(selectedAccount, selectedCourse);
+                        String progressPerModule = overViewController.getProgressPerModule(selectedAccount,
+                                selectedCourse);
                         // Display the result (you can customize this part)
                         Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Progress per Module (%)");
@@ -370,11 +371,11 @@ public class OverViewGUI extends Application {
             titleWebcastOverview.setStyle("-fx-font-size: 28;");
             titleWebcastOverview.setPadding(new Insets(25, 0, 25, 0));
 
-            String topWebcasts = getTopThreeWatchedWebcastsTitles();
+            String topWebcasts = overViewController.getTopThreeWatchedWebcastsTitles();
             topWebcasts = topWebcasts.substring(1, topWebcasts.length() - 1);
             String[] webcastTitles = topWebcasts.split(", ", 3);
 
-            String topWebcastPercentages = getTopThreeWatchedWebcastsPercentage();
+            String topWebcastPercentages = overViewController.getTopThreeWatchedWebcastsPercentage();
             topWebcastPercentages = topWebcastPercentages.substring(1, topWebcastPercentages.length() - 1);
             String[] webcastPercentage = topWebcastPercentages.split(", ", 3);
 

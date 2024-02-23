@@ -136,6 +136,7 @@ public class EnrollmentGUI extends Application {
 
         VBox createFields = new VBox(datePicker, courseNameBox, cursistEmailBox, addButton);
         createFields.setSpacing(7);
+        createFields.setAlignment(Pos.CENTER);
 
         // CRUD Buttons are created
         Button deleteButton = new Button("Delete");
@@ -245,7 +246,7 @@ public class EnrollmentGUI extends Application {
             }
         });
 
-        Label mainSceneTitle = new Label("REgister new Enrollment");
+        Label mainSceneTitle = new Label("Register new Enrollment");
         mainSceneTitle.setStyle("-fx-font-size: 30;");
         Insets mainSceneTitlePadding = new Insets(0, 0, 25, 0);
         mainSceneTitle.setPadding(mainSceneTitlePadding);
@@ -259,6 +260,138 @@ public class EnrollmentGUI extends Application {
         backToHomeButton.setOnAction(i -> {
             stage.setScene(homeScene);
             stage.show();
+        });
+
+        updateButton.setOnAction(e -> {
+            BorderPane editPane = new BorderPane();
+            Label title = new Label("Choose enrollment to edit");
+            BorderPane.setAlignment(title, Pos.TOP_CENTER);
+            title.setStyle("-fx-font-size: 30;");
+            Button chooseButton = new Button("Edit");
+            chooseButton.setPadding(buttonsMenuPadding);
+            chooseButton.setStyle("-fx-background-color: #d2b48c;");
+
+            // Use the class-level backHome variable
+            HBox buttonsEdit = new HBox(chooseButton, backHome);
+            buttonsEdit.setSpacing(15);
+
+            Insets buttonsEditPadding = new Insets(0, 15, 0, 15);
+            buttonsEdit.setPadding(buttonsEditPadding);
+            ArrayList<String> cursistNames = cursistController.getAllCursist();
+
+            items.setAll(cursistNames);
+            list.setItems(items);
+
+            editPane.setBottom(buttonsEdit);
+            buttonsEdit.setAlignment(Pos.CENTER);
+            buttonsEdit.setAlignment(Pos.CENTER);
+            BorderPane.setMargin(buttonsEdit, new Insets(0, 0, 25, 0));
+            editPane.setTop(title);
+            editPane.setCenter(list);
+            list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
+            BorderPane.setMargin(list, new Insets(25));
+
+            Scene updateScene = new Scene(editPane, 800, 600);
+            updateScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
+            stage.setScene(updateScene);
+            stage.show();
+            TextField updateNaamField = new TextField();
+            TextField updateEmailField = new TextField();
+            updateEmailField.setDisable(true);
+
+            TextField updateBirthDateField = new TextField();
+            TextField updateAddressField = new TextField();
+            TextField updateCityField = new TextField();
+            TextField updateCountryField = new TextField();
+
+            chooseButton.setOnAction(f -> {
+                BorderPane editWindow = new BorderPane();
+                Label editWindowTitle = new Label("Edit window");
+                editWindowTitle.setStyle("-fx-font-size: 30;");
+                Button confirmButton = new Button("Confirm");
+                confirmButton.setPadding(buttonsMenuPadding);
+                confirmButton.setStyle("-fx-background-color: #d2b48c;");
+
+                HBox editButtons = new HBox(backHome, confirmButton);
+
+                String selectedCursistName = list.getSelectionModel().getSelectedItem();
+                Cursist selectedCursist = cursistController.getCursistByName(selectedCursistName);
+
+                updateNaamField.setText(selectedCursist.getName());
+                updateEmailField.setText(selectedCursist.getEmailAddress());
+                updateBirthDateField.setText(selectedCursist.getBirthDate().toString());
+                updateAddressField.setText(selectedCursist.getAddress());
+                updateCityField.setText(selectedCursist.getCity());
+                updateCountryField.setText(selectedCursist.getCountry());
+
+                VBox updateFields = new VBox(updateNaamField, updateEmailField,
+                        updateBirthDateField,
+                        updateAddressField, updateCityField, updateCountryField);
+                updateFields.setSpacing(7);
+
+                editWindow.setTop(editWindowTitle);
+                BorderPane.setAlignment(editWindowTitle, Pos.CENTER);
+                editWindow.setCenter(updateFields);
+                editWindow.setBottom(editButtons);
+                editButtons.setAlignment(Pos.CENTER);
+                editButtons.setSpacing(15);
+                BorderPane.setMargin(editButtons, new Insets(0, 0, 25, 0));
+                BorderPane.setMargin(updateFields, new Insets(25));
+
+                Scene confirmEdit = new Scene(editWindow, 800, 600);
+                confirmEdit.getRoot().setStyle("-fx-background-color: #f5f5dc;");
+                stage.setScene(confirmEdit);
+                stage.show();
+
+                confirmButton.setOnAction(g -> {
+                    // Get the selected cursist
+                    selectedCursist.setEmailAddress(updateEmailField.getText());
+                    selectedCursist.setName(updateNaamField.getText());
+                    selectedCursist.setCity(updateCityField.getText());
+                    selectedCursist.setCountry(updateCountryField.getText());
+                    selectedCursist.setAddress(updateAddressField.getText());
+
+                    cursistController.updateCursistFields(selectedCursist);
+
+                    Alert alert = new Alert(AlertType.INFORMATION);
+
+                    // Set the title and header text
+                    alert.setTitle("Confirmed");
+                    alert.setHeaderText(null);
+
+                    // Set the content text
+                    alert.setContentText("Edits have been confirmed!");
+
+                    // Show the alert
+                    alert.showAndWait();
+
+                    // Clear all textfield
+                    // updateNaamField.clear();
+                    // updateEmailField.clear();
+                    // updateBirthDateField.clear();
+                    // updateAddressField.clear();
+                    // updateCityField.clear();
+                    // updateCountryField.clear();
+
+                    // // set prompt text back for textfields
+                    // updateNaamField.setPromptText("Name");
+                    // updateEmailField.setPromptText("EmailAddress");
+                    // updateBirthDateField.setPromptText("BirthDate");
+                    // updateAddressField.setPromptText("Address");
+                    // updateCityField.setPromptText("City");
+                    // updateCountryField.setPromptText("Country");
+
+                    // // set the textfield to disable
+                    // updateNaamField.setDisable(true);
+                    // updateEmailField.setDisable(true);
+                    // updateBirthDateField.setDisable(true);
+                    // updateAddressField.setDisable(true);
+                    // updateCityField.setDisable(true);
+                    // updateCountryField.setDisable(true);
+
+                });
+
+            });
         });
 
         Scene mainScene = new Scene(mainPane, 800, 600);
