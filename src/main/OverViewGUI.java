@@ -155,7 +155,7 @@ public class OverViewGUI extends Application {
 
             progressPercentage.setOnAction(a -> {
 
-                Label titleCourseOverView1 = new Label("Please choose a course: ");
+                Label genderOverview1 = new Label("Please choose a course: ");
 
                 // Retrieve course names
                 List<String> courseNames = overViewController.getCourseNames();
@@ -164,13 +164,13 @@ public class OverViewGUI extends Application {
                 Button showProgressButton = new Button("Show Average Progress per Module");
                 showProgressButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
 
-                VBox layout2 = new VBox(10, titleCourseOverView1, courseComboBox, showProgressButton, backToHomeButton);
+                VBox layout2 = new VBox(10, genderOverview1, courseComboBox, showProgressButton, backToHomeButton);
                 layout2.setAlignment(Pos.CENTER);
 
                 BorderPane overViewPane2 = new BorderPane();
-                overViewPane2.setTop(titleCourseOverView1);
-                BorderPane.setAlignment(titleCourseOverView1, Pos.CENTER);
-                titleCourseOverView1.setPadding(new Insets(25, 0, 25, 0));
+                overViewPane2.setTop(genderOverview1);
+                BorderPane.setAlignment(genderOverview1, Pos.CENTER);
+                genderOverview1.setPadding(new Insets(25, 0, 25, 0));
 
                 overViewPane.setCenter(layout2);
 
@@ -266,26 +266,28 @@ public class OverViewGUI extends Application {
                 // Create a new stage for course selection
                 Stage courseSelectionStage = new Stage();
                 courseSelectionStage.setTitle("Select a Course");
-            
+
                 // Retrieve course names
                 List<String> courseNames = overViewController.getCourseNames();
                 ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
-            
+
                 Button selectCourseButton = new Button("Select Course");
                 selectCourseButton.setOnAction(courseEvent -> {
                     String selectedCourse = courseComboBox.getValue();
-            
+
                     if (selectedCourse != null) {
                         // Close the course selection stage
                         courseSelectionStage.close();
-            
-                        // Get and display the count of participants who have completed the selected course
+
+                        // Get and display the count of participants who have completed the selected
+                        // course
                         String completionCount = overViewController.getCompletedCourseAccounts(selectedCourse);
                         // Display the result (you can customize this part)
                         Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Completion Count");
                         alert.setHeaderText(null);
-                        alert.setContentText("The number of participants who completed the course is: " + completionCount);
+                        alert.setContentText(
+                                "The number of participants who completed the course is: " + completionCount);
                         alert.showAndWait();
                     } else {
                         // Handle case where the course is not selected
@@ -296,15 +298,14 @@ public class OverViewGUI extends Application {
                         alert.showAndWait();
                     }
                 });
-            
+
                 VBox courseSelectionLayout = new VBox(10, courseComboBox, selectCourseButton);
                 courseSelectionLayout.setAlignment(Pos.CENTER);
                 Scene courseSelectionScene = new Scene(courseSelectionLayout, 300, 150);
-            
+
                 courseSelectionStage.setScene(courseSelectionScene);
                 courseSelectionStage.show();
             });
-            
 
         });
 
@@ -329,77 +330,56 @@ public class OverViewGUI extends Application {
             BorderPane.setAlignment(titleCertificateOverview, Pos.CENTER);
             titleCertificateOverview.setPadding(new Insets(25, 0, 25, 0));
 
-            // generateCertificates.setOnAction(event -> {
+            viewCertificates.setOnAction(event -> {
+                Label genderOverview1 = new Label("Please choose a gender: ");
 
-            // Cursist selectedCursist = getCursistByName();
-            // Course selectedCourse = ; // implementeer deze methode volgens je GUI
+                // Assuming you have a method to retrieve genders, replace getCourses() with the
+                // correct method
+                ChoiceBox<String> genderChoiceBox = new ChoiceBox<>();
+                genderChoiceBox.getItems().addAll("Select gender", "Male", "Female", "Other");
+                genderChoiceBox.getSelectionModel().selectFirst();
 
-            // if (selectedCursist != null && selectedCourse != null) {
-            // int selectedCursistID = selectedCursist.getcursistID();
-            // int selectedCourseID = selectedCourse.getCourseId();
+                Button showProgressButton = new Button("Show Percentage Courses With Certificate");
+                showProgressButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
 
-            // Map<String, Double> progressMap =
-            // cursistController.getProgressPercentageByModule(selectedCursistID,
-            // selectedCourseID);
+                VBox layout2 = new VBox(10, genderOverview1, genderChoiceBox, showProgressButton, backToHomeButton);
+                layout2.setAlignment(Pos.CENTER);
 
-            // // Toon de resultaten
-            // for (Map.Entry<String, Double> entry : progressMap.entrySet()) {
-            // String moduleName = entry.getKey();
-            // double percentage = entry.getValue();
+                BorderPane overViewPane2 = new BorderPane();
+                overViewPane2.setTop(genderOverview1);
+                BorderPane.setAlignment(genderOverview1, Pos.CENTER);
+                genderOverview1.setPadding(new Insets(25, 0, 25, 0));
 
-            // System.out.println("Module: " + moduleName + ", Progress: " + percentage +
-            // "%");
-            // // Hier kun je de resultaten weergeven in je GUI of een andere actie
-            // ondernemen.
-            // }
-            // } else {
-            // // Handel het geval af waarin geen cursist of cursus is geselecteerd
-            // Alert alert = new Alert(AlertType.WARNING);
-            // alert.setTitle("Warning");
-            // alert.setHeaderText(null);
-            // alert.setContentText("Please select a cursist and a course.");
-            // alert.showAndWait();
-            // }
-            // });
+                overViewPane2.setCenter(layout2);
 
+                Scene genderOverviewScene = new Scene(overViewPane2, 800, 600);
 
-            viewCertificates.setOnAction(z -> {
-                // Maak een ComboBox met geslachtsopties
-                ObservableList<String> genderOptions = FXCollections.observableArrayList("Male", "Female", "Other");
-                ComboBox<String> genderComboBox = new ComboBox<>(genderOptions);
+                showProgressButton.setOnAction(buttonEvent -> {
+                    String selectedGender = genderChoiceBox.getValue();
 
-                // Toon een dialoogvenster met de ComboBox en wacht op gebruikersselectie
-                Dialog<String> dialog = new Dialog<>();
-                dialog.setTitle("Select Gender");
-                dialog.setHeaderText("Please select a gender:");
+                    if (selectedGender != null) {
+                        // Get and display the percentage of courses with certificates for the selected
+                        // gender
+                        String result = overViewController.calculatePercentageCoursesWithCertificate(selectedGender);
 
-                // Voeg de ComboBox toe aan het dialoogvenster
-                dialog.getDialogPane().setContent(genderComboBox);
+                        // Display the result
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Percentage of Courses with Certificates");
+                        alert.setHeaderText(null);
+                        alert.setContentText(result);
+                        alert.showAndWait();
+                    } else {
+                        // Handle case where no gender is selected
+                        Alert alert = new Alert(AlertType.WARNING);
+                        alert.setTitle("Warning");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Please select a gender.");
+                        alert.showAndWait();
+                    }
+                });
 
-                // Voeg OK en Annuleren knoppen toe aan het dialoogvenster
-                ButtonType buttonTypeOk = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-                dialog.getDialogPane().getButtonTypes().addAll(buttonTypeOk, ButtonType.CANCEL);
-
-                // Wacht op gebruikersselectie
-                Optional<String> result = dialog.showAndWait();
-
-                // Controleer of de gebruiker OK heeft gekozen en voer de actie uit
-                if (result.isPresent() && result.get().equals("OK")) {
-                    // Krijg het geselecteerde geslacht uit de ComboBox
-                    String selectedGender = genderComboBox.getValue();
-
-                    // Vervang CertificateControllerObject met de daadwerkelijke instantie van
-                    // CertificateController
-                    double certificatePercentage = certificateController
-                            .getCertificatePercentageByGender(selectedGender);
-
-                    // Toon het resultaat
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Certificate Percentage");
-                    alert.setHeaderText("Percentage of certificates completed for " + selectedGender);
-                    alert.setContentText(String.format("%.2f%%", certificatePercentage));
-                    alert.showAndWait();
-                }
+                stage.setScene(genderOverviewScene);
+                stage.show(); // Show the new stage
             });
 
             certificateOverviewPane.setCenter(layout);
@@ -527,7 +507,7 @@ public class OverViewGUI extends Application {
     public String getProgressPerModule(String accountEmail, String courseName) {
 
         StringBuilder result = new StringBuilder();
-    
+
         try {
             String query = "SELECT M.Title AS ModuleTitle, WC.PercentageWatched AS PercentageWatched " +
                     "FROM Module M " +
@@ -537,34 +517,33 @@ public class OverViewGUI extends Application {
                     "LEFT JOIN Cursist Cu ON WC.CursistEmailAddress = Cu.EmailAddress " +
                     "WHERE C.Name = ? " +
                     "AND Cu.EmailAddress = ? ";
-    
+
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, courseName);
                 statement.setString(2, accountEmail);
-    
+
                 ResultSet rs = statement.executeQuery();
-    
-                boolean hasRows = rs.next();  // Check if there are any rows
-    
+
+                boolean hasRows = rs.next(); // Check if there are any rows
+
                 if (!hasRows) {
                     result.append("This user has no progress in this course");
                 } else {
                     do {
                         String moduleTitle = rs.getString("ModuleTitle");
                         double averageProgress = rs.getDouble("PercentageWatched");
-    
-                        result.append(moduleTitle).append(": ").append(String.format("%.2f%%", averageProgress)).append("\n");
+
+                        result.append(moduleTitle).append(": ").append(String.format("%.2f%%", averageProgress))
+                                .append("\n");
                     } while (rs.next());
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    
+
         return result.toString();
     }
-    
-    
 
     // Get top three watched webcasts
 

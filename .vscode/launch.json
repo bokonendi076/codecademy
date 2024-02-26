@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "OverViewGUI",
+      "request": "launch",
+      "mainClass": "main.OverViewGUI",
+      "projectName": "codecademy_14b80fd2"
+    },
+    {
+      "type": "java",
       "name": "CursistGUI",
       "request": "launch",
       "mainClass": "cursist.CursistGUI",

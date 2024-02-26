@@ -69,51 +69,102 @@ public class OverViewController {
         return result.toString();
     }
 
- // Overwiew 3 method
- public String getProgressPerModule(String accountEmail, String courseName) {
+    //overview 1 method
+    public String calculatePercentageCoursesWithCertificate(String gender) {
+        StringBuilder result = new StringBuilder();
 
-    StringBuilder result = new StringBuilder();
+        try {
+            String query = "SELECT " +
+                    "    CU.CursistEmailAddress, " +
+                    "    E.CourseName, " +
+                    "    100.0 * COUNT(DISTINCT CASE WHEN C.CertificateID IS NOT NULL THEN E.CourseName END) / NULLIF(COUNT(DISTINCT E.CourseName), 0) AS PercentageCoursesWithCertificate " +
+                    "FROM " +
+                    "    Enrollment E " +
+                    "INNER JOIN " +
+                    "    Cursist CU ON E.CursistEmailAddress = CU.EmailAddress " +
+                    "LEFT JOIN " +
+                    "    Certificate C ON E.EnrollmentDate = C.EnrollmentDate " +
+                    "        AND E.CourseName = C.CourseName " +
+                    "        AND E.CursistEmailAddress = C.CursistEmailAddress " +
+                    "WHERE " +
+                    "    CU.Sex = ? " +
+                    "GROUP BY " +
+                    "    CU.CursistEmailAddress, E.CourseName";
 
-    try {
-        String query = "SELECT M.Title AS ModuleTitle, WC.PercentageWatched AS PercentageWatched " +
-                "FROM Module M " +
-                "JOIN Course C ON M.CourseName = C.Name " +
-                "JOIN ContentItem CI ON M.ContentItemID = CI.ContentItemID " +
-                "LEFT JOIN WatchedContent WC ON CI.ContentItemID = WC.ContentItemID " +
-                "LEFT JOIN Cursist Cu ON WC.CursistEmailAddress = Cu.EmailAddress " +
-                "WHERE C.Name = ? " +
-                "AND Cu.EmailAddress = ? ";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, gender);
 
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, courseName);
-            statement.setString(2, accountEmail);
+                ResultSet rs = statement.executeQuery();
 
-            ResultSet rs = statement.executeQuery();
+                boolean hasRows = rs.next();
 
-            boolean hasRows = rs.next();
+                if (!hasRows) {
+                    result.append("No data found for the given gender.");
+                } else {
+                    do {
+                        String emailAddress = rs.getString("CursistEmailAddress");
+                        String courseName = rs.getString("CourseName");
+                        double percentage = rs.getDouble("PercentageCoursesWithCertificate");
 
-            if (!hasRows) {
-                result.append("This user has no progress in this course");
-            } else {
-                do {
-                    String moduleTitle = rs.getString("ModuleTitle");
-                    double averageProgress = rs.getDouble("PercentageWatched");
-
-                    result.append(moduleTitle).append(": ").append(String.format("%.2f%%", averageProgress)).append("\n");
-                } while (rs.next());
+                        result.append("Email Address: ").append(emailAddress)
+                                .append(", Course Name: ").append(courseName)
+                                .append(", Percentage Courses With Certificate: ").append(String.format("%.2f%%", percentage))
+                                .append("\n");
+                    } while (rs.next());
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+
+        return result.toString();
     }
 
-    return result.toString();
-}
+    // Overwiew 3 method
+    public String getProgressPerModule(String accountEmail, String courseName) {
+
+        StringBuilder result = new StringBuilder();
+
+        try {
+            String query = "SELECT M.Title AS ModuleTitle, WC.PercentageWatched AS PercentageWatched " +
+                    "FROM Module M " +
+                    "JOIN Course C ON M.CourseName = C.Name " +
+                    "JOIN ContentItem CI ON M.ContentItemID = CI.ContentItemID " +
+                    "LEFT JOIN WatchedContent WC ON CI.ContentItemID = WC.ContentItemID " +
+                    "LEFT JOIN Cursist Cu ON WC.CursistEmailAddress = Cu.EmailAddress " +
+                    "WHERE C.Name = ? " +
+                    "AND Cu.EmailAddress = ? ";
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, courseName);
+                statement.setString(2, accountEmail);
+
+                ResultSet rs = statement.executeQuery();
+
+                boolean hasRows = rs.next();
+
+                if (!hasRows) {
+                    result.append("This user has no progress in this course");
+                } else {
+                    do {
+                        String moduleTitle = rs.getString("ModuleTitle");
+                        double averageProgress = rs.getDouble("PercentageWatched");
+
+                        result.append(moduleTitle).append(": ").append(String.format("%.2f%%", averageProgress))
+                                .append("\n");
+                    } while (rs.next());
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result.toString();
+    }
+
     public String getCompletedCourseAccounts(String selectedCourse) {
         return null;
     }
-
-
 
     // Get top three watched webcasts
 
