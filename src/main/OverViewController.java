@@ -68,40 +68,47 @@ public class OverViewController {
 
         return result.toString();
     }
+    
+ // Overwiew 3 method
+ public String getProgressPerModule(String accountEmail, String courseName) {
 
-    public String getProgressPerModule(String accountEmail, String courseName) {
-        StringBuilder result = new StringBuilder();
+    StringBuilder result = new StringBuilder();
 
-        try {
-            String query = "SELECT m.Title AS ModuleTitle, AVG(wc.PercentageWatched) AS AverageProgress " +
-                    "FROM WatchedContent wc " +
-                    "JOIN ContentItem ci ON wc.ContentItemID = ci.ContentItemID " +
-                    "JOIN Module m ON ci.ModuleID = m.ModuleID " +
-                    "JOIN Course c ON m.CourseID = c.CourseID " +
-                    "JOIN Cursist cu ON wc.CursistID = cu.CursistID " +
-                    "WHERE cu.EmailAddress = ? AND c.Name = ? " +
-                    "GROUP BY m.Title";
+    try {
+        String query = "SELECT M.Title AS ModuleTitle, WC.PercentageWatched AS PercentageWatched " +
+                "FROM Module M " +
+                "JOIN Course C ON M.CourseName = C.Name " +
+                "JOIN ContentItem CI ON M.ContentItemID = CI.ContentItemID " +
+                "LEFT JOIN WatchedContent WC ON CI.ContentItemID = WC.ContentItemID " +
+                "LEFT JOIN Cursist Cu ON WC.CursistEmailAddress = Cu.EmailAddress " +
+                "WHERE C.Name = ? " +
+                "AND Cu.EmailAddress = ? ";
 
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, accountEmail);
-                statement.setString(2, courseName);
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, courseName);
+            statement.setString(2, accountEmail);
 
-                ResultSet rs = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
 
-                while (rs.next()) {
+            boolean hasRows = rs.next();
+
+            if (!hasRows) {
+                result.append("This user has no progress in this course");
+            } else {
+                do {
                     String moduleTitle = rs.getString("ModuleTitle");
-                    double averageProgress = rs.getDouble("AverageProgress");
+                    double averageProgress = rs.getDouble("PercentageWatched");
 
-                    result.append(moduleTitle).append(": ").append(String.format("%.2f%%", averageProgress))
-                            .append("\n");
-                }
+                    result.append(moduleTitle).append(": ").append(String.format("%.2f%%", averageProgress)).append("\n");
+                } while (rs.next());
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
-        return result.toString();
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+
+    return result.toString();
+}
 
     // Get top three watched webcasts
 
