@@ -262,6 +262,50 @@ public class OverViewGUI extends Application {
                 certificateOverviewStage.show(); // Show the new stage
             });
 
+            completedCourses.setOnAction(event -> {
+                // Create a new stage for course selection
+                Stage courseSelectionStage = new Stage();
+                courseSelectionStage.setTitle("Select a Course");
+            
+                // Retrieve course names
+                List<String> courseNames = overViewController.getCourseNames();
+                ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
+            
+                Button selectCourseButton = new Button("Select Course");
+                selectCourseButton.setOnAction(courseEvent -> {
+                    String selectedCourse = courseComboBox.getValue();
+            
+                    if (selectedCourse != null) {
+                        // Close the course selection stage
+                        courseSelectionStage.close();
+            
+                        // Get and display the count of participants who have completed the selected course
+                        String completionCount = overViewController.getCompletedCourseAccounts(selectedCourse);
+                        // Display the result (you can customize this part)
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Completion Count");
+                        alert.setHeaderText(null);
+                        alert.setContentText("The number of participants who completed the course is: " + completionCount);
+                        alert.showAndWait();
+                    } else {
+                        // Handle case where the course is not selected
+                        Alert alert = new Alert(AlertType.WARNING);
+                        alert.setTitle("Warning");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Please select a course.");
+                        alert.showAndWait();
+                    }
+                });
+            
+                VBox courseSelectionLayout = new VBox(10, courseComboBox, selectCourseButton);
+                courseSelectionLayout.setAlignment(Pos.CENTER);
+                Scene courseSelectionScene = new Scene(courseSelectionLayout, 300, 150);
+            
+                courseSelectionStage.setScene(courseSelectionScene);
+                courseSelectionStage.show();
+            });
+            
+
         });
 
         certificateOverviewButton.setOnAction(e -> {
@@ -317,6 +361,7 @@ public class OverViewGUI extends Application {
             // alert.showAndWait();
             // }
             // });
+
 
             viewCertificates.setOnAction(z -> {
                 // Maak een ComboBox met geslachtsopties

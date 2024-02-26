@@ -68,7 +68,7 @@ public class OverViewController {
 
         return result.toString();
     }
-    
+
  // Overwiew 3 method
  public String getProgressPerModule(String accountEmail, String courseName) {
 
@@ -109,6 +109,11 @@ public class OverViewController {
 
     return result.toString();
 }
+    public String getCompletedCourseAccounts(String selectedCourse) {
+        return null;
+    }
+
+
 
     // Get top three watched webcasts
 
