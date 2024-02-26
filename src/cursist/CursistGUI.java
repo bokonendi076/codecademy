@@ -17,6 +17,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.GUI;
 
@@ -114,6 +115,9 @@ public class CursistGUI extends Application {
         TextField createCountryField = new TextField();
         createCountryField.setPromptText("Country");
 
+        TextField createZipField = new TextField();
+        createZipField.setPromptText("Zipcode");
+
         Button addButton = new Button("Add Cursist ");
         addButton.setStyle("-fx-background-color: #d2b48c;");
 
@@ -149,20 +153,22 @@ public class CursistGUI extends Application {
                 String address = createAddressField.getText();
                 String city = createCityField.getText();
                 String country = createCountryField.getText();
+                String zipCode = createZipField.getText();
 
-                Cursist nieuweCursist = new Cursist();
+                Cursist newCursist = new Cursist();
 
                 // Set values
-                nieuweCursist.setName(naam);
-                nieuweCursist.setEmailAddress(email);
-                nieuweCursist.setBirthDate(birthDate);
-                nieuweCursist.setSex(gender);
-                nieuweCursist.setAddress(address);
-                nieuweCursist.setCity(city);
-                nieuweCursist.setCountry(country);
+                newCursist.setName(naam);
+                newCursist.setEmailAddress(email);
+                newCursist.setBirthDate(birthDate);
+                newCursist.setSex(gender);
+                newCursist.setAddress(address);
+                newCursist.setCity(city);
+                newCursist.setCountry(country);
+                newCursist.setZipCode(zipCode);
 
                 // Save cursist to database
-                cursistController.saveCursist(nieuweCursist);
+                cursistController.saveCursist(newCursist);
 
                 // Add alert pop-up that cursist has been added
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -179,6 +185,7 @@ public class CursistGUI extends Application {
                 createAddressField.clear();
                 createCityField.clear();
                 createCountryField.clear();
+                createZipField.clear();
 
             } catch (Exception e) {
                 Alert alert = new Alert(AlertType.ERROR);
@@ -193,7 +200,7 @@ public class CursistGUI extends Application {
 
         VBox createFields = new VBox(createNaamField, createEmailField, createBirthDateField, genderChoiceBox,
                 createAddressField,
-                createCityField, createCountryField);
+                createCityField, createCountryField, createZipField);
         createFields.setSpacing(7);
 
         // CRUD Buttons are created
@@ -280,13 +287,14 @@ public class CursistGUI extends Application {
                 String address = selectedCursistForInfo.getAddress();
                 String city = selectedCursistForInfo.getCity();
                 String country = selectedCursistForInfo.getCountry();
+                String zipCode = selectedCursistForInfo.getZipCode();
                
 
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Cursist info");
                 alert.setHeaderText(null);
                 alert.setContentText("Name: " + name + "\nEmail: " + email + "\nBirthdate: " + birthdate + "\nGender: "
-                        + gender + "\nAddress: " + address + "\nCity: " + city + "\nCountry: " + country);
+                        + gender + "\nAddress: " + address + "\nCity: " + city + "\nCountry: " + country + "\nZipCode: " + zipCode);
 
                 alert.showAndWait();
 
@@ -377,6 +385,7 @@ public class CursistGUI extends Application {
             TextField updateAddressField = new TextField();
             TextField updateCityField = new TextField();
             TextField updateCountryField = new TextField();
+            TextField updateZipField = new TextField();
 
             chooseButton.setOnAction(f -> {
                 BorderPane editWindow = new BorderPane();
@@ -398,10 +407,12 @@ public class CursistGUI extends Application {
                 updateAddressField.setText(selectedCursist.getAddress());
                 updateCityField.setText(selectedCursist.getCity());
                 updateCountryField.setText(selectedCursist.getCountry());
+                updateZipField.setText(selectedCursist.getZipCode());
+                
 
                 VBox updateFields = new VBox(updateNaamField, updateEmailField,
                         updateBirthDateField,
-                        updateAddressField, updateCityField, updateCountryField);
+                        updateAddressField, updateCityField, updateCountryField, updateZipField);
                 updateFields.setSpacing(7);
 
                 editWindow.setTop(editWindowTitle);
@@ -425,6 +436,7 @@ public class CursistGUI extends Application {
                     selectedCursist.setCity(updateCityField.getText());
                     selectedCursist.setCountry(updateCountryField.getText());
                     selectedCursist.setAddress(updateAddressField.getText());
+                    selectedCursist.setZipCode(updateZipField.getText());
 
                     cursistController.updateCursistFields(selectedCursist);
 
