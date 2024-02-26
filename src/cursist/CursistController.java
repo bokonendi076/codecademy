@@ -50,7 +50,7 @@ public class CursistController {
 
     public void saveCursist(Cursist cursist) {
         try {
-            String query = "INSERT INTO Cursist (EmailAddress, Name, BirthDate, Sex, Address, City, Country) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Cursist (EmailAddress, Name, BirthDate, Sex, Address, City, Country, ZipCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, cursist.getEmailAddress());
                 statement.setString(2, cursist.getName());
@@ -59,6 +59,7 @@ public class CursistController {
                 statement.setString(5, cursist.getAddress());
                 statement.setString(6, cursist.getCity());
                 statement.setString(7, cursist.getCountry());
+                statement.setString(8, cursist.getZipCode());
 
                 statement.executeUpdate();
             }
@@ -95,6 +96,7 @@ public class CursistController {
                     cursist.setAddress(rs.getString("Address"));
                     cursist.setCity(rs.getString("City"));
                     cursist.setCountry(rs.getString("Country"));
+                    cursist.setZipCode(rs.getString("ZipCode"));
 
                     return cursist;
                 }
@@ -107,7 +109,7 @@ public class CursistController {
 
     public void updateCursistFields(Cursist cursist) {
         try {
-            String query = "UPDATE Cursist SET Name = ?, BirthDate = ?, Sex = ?, Address = ?, City = ?, Country = ? WHERE EmailAddress = ?";
+            String query = "UPDATE Cursist SET Name = ?, BirthDate = ?, Sex = ?, Address = ?, City = ?, Country = ?, ZipCode = ? WHERE EmailAddress = ?";
             try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
                 updateStatement.setString(1, cursist.getName());
                 updateStatement.setObject(2, cursist.getBirthDate());
@@ -116,6 +118,7 @@ public class CursistController {
                 updateStatement.setString(5, cursist.getCity());
                 updateStatement.setString(6, cursist.getCountry());
                 updateStatement.setString(7, cursist.getEmailAddress());
+                updateStatement.setString(8, cursist.getZipCode());
 
                 System.out.println(cursist.getEmailAddress());
 
@@ -154,38 +157,6 @@ public class CursistController {
         return cursistEmailAddress;
     }
 
-    public int getCursistID(String emailAddress) {
-        try {
-            String query = "SELECT CursistID FROM Cursist WHERE EmailAddress = ?";
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, emailAddress);
-                ResultSet rs = statement.executeQuery();
-                if (rs.next()) {
-                    return rs.getInt(1); // Fetch by index instead of column name
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
-    public ArrayList<Integer> getAllCursistIDs() {
-        ArrayList<Integer> cursistIDs = new ArrayList<>();
-
-        try {
-            ResultSet rs = query("SELECT * FROM Cursist");
-
-            while (rs.next()) {
-                Integer cursistID = rs.getInt("CursistID");
-                cursistIDs.add(cursistID);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return cursistIDs;
-    }
 
     public Map<String, Double> getProgressPercentageByModule(int cursistID, int cursusID) {
         Map<String, Double> progressMap = new HashMap<>();
@@ -213,7 +184,7 @@ public class CursistController {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Handel SQLException af op een passende manier voor je applicatie
+            e.printStackTrace(); 
         }
 
         return progressMap;
