@@ -75,7 +75,6 @@ public class OverViewController {
 
         try {
             String query = "SELECT " +
-                    "    CU.CursistEmailAddress, " +
                     "    E.CourseName, " +
                     "    100.0 * COUNT(DISTINCT CASE WHEN C.CertificateID IS NOT NULL THEN E.CourseName END) / NULLIF(COUNT(DISTINCT E.CourseName), 0) AS PercentageCoursesWithCertificate " +
                     "FROM " +
@@ -89,7 +88,7 @@ public class OverViewController {
                     "WHERE " +
                     "    CU.Sex = ? " +
                     "GROUP BY " +
-                    "    CU.CursistEmailAddress, E.CourseName";
+                    "    E.CourseName";
 
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, gender);
