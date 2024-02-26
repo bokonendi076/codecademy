@@ -10,6 +10,7 @@ public class Cursist {
     private String address;
     private String city;
     private String country;
+    private String zipCode;
    
 
     public String getEmailAddress() {
@@ -67,5 +68,15 @@ public class Cursist {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    
 
 }

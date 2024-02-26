@@ -277,9 +277,9 @@ public class EnrollmentGUI extends Application {
 
             Insets buttonsEditPadding = new Insets(0, 15, 0, 15);
             buttonsEdit.setPadding(buttonsEditPadding);
-            ArrayList<String> cursistNames = cursistController.getAllCursist();
+            ArrayList<String> cursistEmailList = enrollmentController.getAllEnrollments();
 
-            items.setAll(cursistNames);
+            items.setAll(cursistEmailList);
             list.setItems(items);
 
             editPane.setBottom(buttonsEdit);
