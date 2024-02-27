@@ -108,7 +108,7 @@ public class OverViewController {
                         double percentage = rs.getDouble("PercentageCoursesWithCertificate");
 
                         result.append("Course Name: ").append(courseName)
-                                .append(", Percentage Courses With Certificate: ")
+                                .append(" = ")
                                 .append(String.format("%.2f%%", percentage))
                                 .append("\n");
                     } while (rs.next());
