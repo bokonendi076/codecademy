@@ -165,7 +165,31 @@ public class OverViewController {
     }
 
     public String getCompletedCourseAccounts(String selectedCourse) {
-        return null;
+        StringBuilder result = new StringBuilder();
+
+        String sql = "SELECT COUNT(DISTINCT e.CursistEmailAddress) AS AantalCursisten " +
+                "FROM Enrollment e " +
+                "JOIN Certificate c ON e.CourseName = c.CourseName AND e.CursistEmailAddress = c.CursistEmailAddress " +
+                "WHERE e.CourseName = ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, selectedCourse);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                int count = rs.getInt("AantalCursisten");
+
+                result.append("Number of participants who completed the course: ").append(count);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result.toString();
+
     }
 
     // Overview 5 method
@@ -187,7 +211,8 @@ public class OverViewController {
                     "JOIN " +
                     "    dbo.WatchedContent WC ON W.ContentItemID = WC.ContentItemID " +
                     "GROUP BY " +
-                    "    W.Title, W.Duration, W.PublicationDate, W.URL, W.NameSpeaker, W.OrganisationSpeaker, W.Description " +
+                    "    W.Title, W.Duration, W.PublicationDate, W.URL, W.NameSpeaker, W.OrganisationSpeaker, W.Description "
+                    +
                     "ORDER BY " +
                     "    Views DESC";
 
@@ -221,9 +246,41 @@ public class OverViewController {
         return result.toString();
     }
 
+    public String getCompletedCertificates(String cursistEmailAddress) {
 
-    public ArrayList<String> getCompletedCertificates() {
-        return null;
+        ArrayList<String> result = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            String query = "SELECT c.CourseName, c.Grade, c.ApproverName, c.EnrollmentDate " +
+                    "FROM Certificate c " +
+                    "JOIN Enrollment e ON c.CourseName = e.CourseName AND c.CursistEmailAddress = e.CursistEmailAddress "
+                    +
+                    "WHERE c.CursistEmailAddress = ?";
+
+            db = new DatabaseManager();
+            connection = db.getConnection();
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, cursistEmailAddress);
+
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    String courseName = rs.getString("CourseName");
+                    String grade = rs.getString("Grade");
+                    String approverName = rs.getString("ApproverName");
+
+                    sb.append(courseName + " || Grade: " + grade + " || Approver: " + approverName + "\n");
+                    String enrollmentDate = rs.getString("EnrollmentDate");
+                    result.add(courseName + ", Grade: " + grade + ", Approver: " + approverName + ", Date: "
+                            + enrollmentDate);
+                }
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("error");
+        }
+        return sb.toString();
 
     }
 }
