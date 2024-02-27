@@ -377,12 +377,24 @@ public class OverViewGUI extends Application {
                     if (selectedAccount != null) {
                         String completedCertificates = overViewController
                                 .getCompletedCertificates(selectedAccount.toString());
-                        Alert alert = new Alert(AlertType.INFORMATION);
-                        alert.setTitle("Certificates achieved");
-                        alert.setHeaderText("Certificates achieved");
-                        alert.setContentText(completedCertificates);
-                        alert.showAndWait();
+                        System.out.println(completedCertificates + "------");
+                        if (!completedCertificates.isEmpty()) {
+                            Alert alert = new Alert(AlertType.INFORMATION);
+                            alert.setTitle("Certificates achieved");
+                            alert.setHeaderText("Certificates achieved");
+                            alert.setContentText(completedCertificates);
+                            alert.showAndWait();
+                            System.out.println(completedCertificates);
+                        } else {
+                            Alert alert = new Alert(AlertType.WARNING);
+                            alert.setTitle("Warning");
+                            alert.setHeaderText(null);
+                            alert.setContentText("This cursist has yet to achieve any certificates.");
+                            alert.showAndWait();
+                        }
+
                     } else {
+                        // Handle case where no account is selected
                         Alert alert = new Alert(AlertType.WARNING);
                         alert.setTitle("Warning");
                         alert.setHeaderText(null);
@@ -390,7 +402,6 @@ public class OverViewGUI extends Application {
                         alert.showAndWait();
 
                     }
-
                 });
 
                 Scene certificateOverviewScene = new Scene(layoutBox, 800, 600);

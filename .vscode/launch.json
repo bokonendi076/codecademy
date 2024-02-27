@@ -9,6 +9,13 @@
       "name": "OverViewGUI",
       "request": "launch",
       "mainClass": "main.OverViewGUI",
+      "projectName": "CodeCademy_dcab69ce"
+    },
+    {
+      "type": "java",
+      "name": "OverViewGUI",
+      "request": "launch",
+      "mainClass": "main.OverViewGUI",
       "projectName": "codecademy_14b80fd2"
     },
     {
