@@ -165,7 +165,31 @@ public class OverViewController {
     }
 
     public String getCompletedCourseAccounts(String selectedCourse) {
-        return null;
+        StringBuilder result = new StringBuilder();
+
+        String sql = "SELECT COUNT(DISTINCT e.CursistEmailAddress) AS AantalCursisten " +
+                "FROM Enrollment e " +
+                "JOIN Certificate c ON e.CourseName = c.CourseName AND e.CursistEmailAddress = c.CursistEmailAddress " +
+                "WHERE e.CourseName = ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, selectedCourse);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                int count = rs.getInt("AantalCursisten");
+
+                result.append("Number of participants who completed the course: ").append(count);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result.toString();
+
     }
 
     // Overview 5 method

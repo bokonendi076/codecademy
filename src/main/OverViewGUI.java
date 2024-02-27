@@ -259,8 +259,7 @@ public class OverViewGUI extends Application {
                         Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Completion Count");
                         alert.setHeaderText(null);
-                        alert.setContentText(
-                                "The number of participants who completed the course is: " + completionCount);
+                        alert.setContentText(completionCount);
                         alert.showAndWait();
                     } else {
                         // Handle case where the course is not selected
