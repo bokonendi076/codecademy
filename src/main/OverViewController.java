@@ -204,20 +204,10 @@ public class OverViewController {
                     do {
                         String webcastTitle = rs.getString("WebcastTitle");
                         int webcastDuration = rs.getInt("WebcastDuration");
-                        String webcastPublicationDate = rs.getString("WebcastPublicationDate");
-                        String webcastURL = rs.getString("WebcastURL");
-                        String speakerName = rs.getString("SpeakerName");
-                        String speakerOrganisation = rs.getString("SpeakerOrganisation");
-                        String webcastDescription = rs.getString("WebcastDescription");
                         int views = rs.getInt("Views");
 
                         result.append("Webcast Title: ").append(webcastTitle)
                                 .append("\nDuration: ").append(webcastDuration)
-                                .append("\nPublication Date: ").append(webcastPublicationDate)
-                                .append("\nURL: ").append(webcastURL)
-                                .append("\nSpeaker Name: ").append(speakerName)
-                                .append("\nSpeaker Organisation: ").append(speakerOrganisation)
-                                .append("\nDescription: ").append(webcastDescription)
                                 .append("\nViews: ").append(views)
                                 .append("\n\n");
                     } while (rs.next());
