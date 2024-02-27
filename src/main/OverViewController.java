@@ -168,33 +168,67 @@ public class OverViewController {
         return null;
     }
 
-    // Get top three watched webcasts
+    // Overview 5 method
+    public String getTop3WatchedWebcasts() {
+        StringBuilder result = new StringBuilder();
 
-    public String getTopThreeWatchedWebcastsTitles() {
-        // Make arraylist that holds top three watched webcasts in strings from the
-        // title
-        ArrayList<String> topThreeWatchedWebcasts = new ArrayList<>();
-
-        String sqlQuery = "SELECT TOP 3 TitleWebcast, CursistID, PercentageWatched FROM Webcast "
-                + "JOIN WatchedContent ON WatchedContent.ContentItemID = Webcast.ContentItemID " +
-                "ORDER BY PercentageWatched DESC";
         try {
-            Connection connection = db.getConnection();
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sqlQuery);
+            String query = "SELECT TOP 3 " +
+                    "    W.Title AS WebcastTitle, " +
+                    "    W.Duration AS WebcastDuration, " +
+                    "    W.PublicationDate AS WebcastPublicationDate, " +
+                    "    W.URL AS WebcastURL, " +
+                    "    W.NameSpeaker AS SpeakerName, " +
+                    "    W.OrganisationSpeaker AS SpeakerOrganisation, " +
+                    "    W.Description AS WebcastDescription, " +
+                    "    COUNT(WC.ContentItemID) AS Views " +
+                    "FROM " +
+                    "    dbo.Webcast W " +
+                    "JOIN " +
+                    "    dbo.WatchedContent WC ON W.ContentItemID = WC.ContentItemID " +
+                    "GROUP BY " +
+                    "    W.Title, W.Duration, W.PublicationDate, W.URL, W.NameSpeaker, W.OrganisationSpeaker, W.Description " +
+                    "ORDER BY " +
+                    "    Views DESC";
 
-            while (rs.next()) {
-                String title = rs.getString("TitleWebcast");
-                int cursistId = rs.getInt("CursistID");
-                int percentageWatched = rs.getInt("PercentageWatched");
+            db = new DatabaseManager();
+            connection = db.getConnection();
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                ResultSet rs = statement.executeQuery();
 
-                topThreeWatchedWebcasts.add(title);
+                boolean hasRows = rs.next();
+
+                if (!hasRows) {
+                    result.append("No data found for the top 3 watched webcasts.");
+                } else {
+                    do {
+                        String webcastTitle = rs.getString("WebcastTitle");
+                        int webcastDuration = rs.getInt("WebcastDuration");
+                        String webcastPublicationDate = rs.getString("WebcastPublicationDate");
+                        String webcastURL = rs.getString("WebcastURL");
+                        String speakerName = rs.getString("SpeakerName");
+                        String speakerOrganisation = rs.getString("SpeakerOrganisation");
+                        String webcastDescription = rs.getString("WebcastDescription");
+                        int views = rs.getInt("Views");
+
+                        result.append("Webcast Title: ").append(webcastTitle)
+                                .append("\nDuration: ").append(webcastDuration)
+                                .append("\nPublication Date: ").append(webcastPublicationDate)
+                                .append("\nURL: ").append(webcastURL)
+                                .append("\nSpeaker Name: ").append(speakerName)
+                                .append("\nSpeaker Organisation: ").append(speakerOrganisation)
+                                .append("\nDescription: ").append(webcastDescription)
+                                .append("\nViews: ").append(views)
+                                .append("\n\n");
+                    } while (rs.next());
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("Error retrieving top 3 watched webcasts.");
         }
 
-        return topThreeWatchedWebcasts.toString();
+        return result.toString();
     }
 
     public String getTopThreeWatchedWebcastsPercentage() {
