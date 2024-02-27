@@ -19,7 +19,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
 public class OverViewGUI extends Application {
     private DatabaseManager db;
     private Connection connection;
@@ -358,11 +357,40 @@ public class OverViewGUI extends Application {
 
             generateCertificates.setOnAction(event -> {
 
-                overViewController.getCompletedCertificates();
+                Label accountOverview = new Label("Please choose an account: ");
+                ArrayList<String> accountEmails = cursistController.getAllCursistEmailAddress();
 
-                BorderPane generateCertificatePane = new BorderPane();
+                ChoiceBox<String> accountChoiceBox = new ChoiceBox<>();
+                accountChoiceBox.getItems().addAll(accountEmails.toArray(new String[0]));
 
-                Scene certificateOverviewScene = new Scene(generateCertificatePane, 800, 600);
+                Button generateButton = new Button("Generate");
+                generateButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+
+                VBox layoutBox = new VBox(10, accountOverview, accountChoiceBox, generateButton, backToHomeButton);
+
+                layoutBox.setPadding(new Insets(25, 0, 25, 0));
+
+                layoutBox.setAlignment(Pos.CENTER);
+
+                generateButton.setOnAction(buttonEvent -> {
+                    String selectedAccount = accountChoiceBox.getValue();
+                    String completedCertificates = overViewController
+                            .getCompletedCertificates(selectedAccount.toString());
+
+                    if (selectedAccount != null) {
+                        // Display the result
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Certificates achieved");
+                        alert.setHeaderText("Certificates achieved");
+                        alert.setContentText(completedCertificates);
+                        alert.showAndWait();
+                    }
+
+                });
+
+                Scene certificateOverviewScene = new Scene(layoutBox, 800, 600);
+                stage.setScene(certificateOverviewScene);
+                stage.show();
 
             });
 
@@ -374,24 +402,26 @@ public class OverViewGUI extends Application {
             stage.show();
         });
 
-        webcastOverview.setOnAction(e -> {
+        webcastOverview.setOnAction(e ->
+
+        {
 
             Label titleWebcastOverview = new Label("Webcast Overview:");
             Button viewWebcasts = new Button("Top 3 Watched Webcasts");
-        
+
             viewWebcasts.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
             titleWebcastOverview.setStyle("-fx-font-size: 28;");
-        
+
             viewWebcasts.setPrefSize(150, 50);
-        
+
             VBox layout = new VBox(10, viewWebcasts, backToHomeButton);
             layout.setAlignment(Pos.CENTER);
-        
+
             BorderPane webcastOverviewPane = new BorderPane();
             webcastOverviewPane.setTop(titleWebcastOverview);
             BorderPane.setAlignment(titleWebcastOverview, Pos.CENTER);
             titleWebcastOverview.setPadding(new Insets(25, 0, 25, 0));
-        
+
             viewWebcasts.setOnAction(event -> {
                 // Assuming you have a method to retrieve and display the top 3 watched webcasts
                 String result = overViewController.getTop3WatchedWebcasts();
@@ -402,9 +432,9 @@ public class OverViewGUI extends Application {
                 alert.setContentText(result);
                 alert.showAndWait();
             });
-        
+
             webcastOverviewPane.setCenter(layout);
-        
+
             Scene webcastOverviewScene = new Scene(webcastOverviewPane, 800, 600);
             stage.setScene(webcastOverviewScene);
             webcastOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
@@ -415,10 +445,6 @@ public class OverViewGUI extends Application {
         return homeScene;
 
     }
-
-   
-
-    
 
     public static void main(String[] args) {
         launch(args);
