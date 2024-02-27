@@ -402,50 +402,39 @@ public class OverViewGUI extends Application {
 
         webcastOverview.setOnAction(e -> {
 
-            Label titleWebcastOverview = new Label("Top 3 Most Watched Webcasts:");
+            Label titleWebcastOverview = new Label("Webcast Overview:");
+            Button viewWebcasts = new Button("Top 3 Watched Webcasts");
+        
+            viewWebcasts.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
             titleWebcastOverview.setStyle("-fx-font-size: 28;");
-            titleWebcastOverview.setPadding(new Insets(25, 0, 25, 0));
-
-            String topWebcasts = overViewController.getTop3WatchedWebcasts();
-            topWebcasts = topWebcasts.substring(1, topWebcasts.length() - 1);
-            String[] webcastTitles = topWebcasts.split(", ", 3);
-
-            String topWebcastPercentages = overViewController.getTopThreeWatchedWebcastsPercentage();
-            topWebcastPercentages = topWebcastPercentages.substring(1, topWebcastPercentages.length() - 1);
-            String[] webcastPercentage = topWebcastPercentages.split(", ", 3);
-
-            Label webcastFirstTitleLabel = new Label(
-                    "1. " + webcastTitles[0].toString() + " (" + webcastPercentage[0].toString() + "% watched)");
-            webcastFirstTitleLabel.setStyle("-fx-font-size: 18;");
-
-            Label webcastSecondTitleLabel = new Label(
-                    "2. " + webcastTitles[1].toString() + " (" + webcastPercentage[1].toString() + "% watched)");
-            webcastSecondTitleLabel.setStyle("-fx-font-size: 18;");
-
-            Label webcastThirdTitleLabel = new Label(
-                    "3. " + webcastTitles[2].toString() + " (" + webcastPercentage[2] + "% watched)");
-            webcastThirdTitleLabel.setStyle("-fx-font-size: 18;");
-
-            VBox webcastItem = new VBox(webcastFirstTitleLabel, webcastSecondTitleLabel, webcastThirdTitleLabel);
-            webcastItem.setSpacing(15);
-            webcastItem.setAlignment(Pos.CENTER);
-
-            backToHomeButton.setPrefSize(150, 50);
-
-            VBox layout = new VBox(10, titleWebcastOverview, webcastItem, backToHomeButton);
+        
+            viewWebcasts.setPrefSize(150, 50);
+        
+            VBox layout = new VBox(10, viewWebcasts, backToHomeButton);
             layout.setAlignment(Pos.CENTER);
-
+        
             BorderPane webcastOverviewPane = new BorderPane();
             webcastOverviewPane.setTop(titleWebcastOverview);
             BorderPane.setAlignment(titleWebcastOverview, Pos.CENTER);
-
+            titleWebcastOverview.setPadding(new Insets(25, 0, 25, 0));
+        
+            viewWebcasts.setOnAction(event -> {
+                // Assuming you have a method to retrieve and display the top 3 watched webcasts
+                String result = overViewController.getTop3WatchedWebcasts();
+                // Display the result
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Top 3 Watched Webcasts");
+                alert.setHeaderText(null);
+                alert.setContentText(result);
+                alert.showAndWait();
+            });
+        
             webcastOverviewPane.setCenter(layout);
-
+        
             Scene webcastOverviewScene = new Scene(webcastOverviewPane, 800, 600);
             stage.setScene(webcastOverviewScene);
             webcastOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.show();
-
         });
 
         homeScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
