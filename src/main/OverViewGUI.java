@@ -382,6 +382,16 @@ public class OverViewGUI extends Application {
                 stage.show(); // Show the new stage
             });
 
+            generateCertificates.setOnAction(event -> {
+
+                overViewController.getCompletedCertificates();
+
+                BorderPane generateCertificatePane = new BorderPane();
+
+                Scene certificateOverviewScene = new Scene(generateCertificatePane, 800, 600);
+
+            });
+
             certificateOverviewPane.setCenter(layout);
 
             Scene certificateOverviewScene = new Scene(certificateOverviewPane, 800, 600);

@@ -69,14 +69,15 @@ public class OverViewController {
         return result.toString();
     }
 
-    //overview 1 method
+    // overview 1 method
     public String calculatePercentageCoursesWithCertificate(String gender) {
         StringBuilder result = new StringBuilder();
-    
+
         try {
             String query = "SELECT " +
                     "    E.CourseName, " +
-                    "    100.0 * SUM(C.CertificateID IS NOT NULL) / COUNT(*) AS PercentageCoursesWithCertificate " +
+                    "    100.0 * SUM(CASE WHEN C.CertificateID IS NOT NULL THEN 1 ELSE 0 END) / COUNT(*) AS PercentageCoursesWithCertificate "
+                    +
                     "FROM " +
                     "    Enrollment E " +
                     "INNER JOIN " +
@@ -89,34 +90,37 @@ public class OverViewController {
                     "    CU.Sex = ? " +
                     "GROUP BY " +
                     "    E.CourseName";
-    
+
+            db = new DatabaseManager();
+            connection = db.getConnection();
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, gender);
-    
+
                 ResultSet rs = statement.executeQuery();
-    
+
                 boolean hasRows = rs.next();
-    
+
                 if (!hasRows) {
                     result.append("No data found for the given gender.");
                 } else {
                     do {
                         String courseName = rs.getString("CourseName");
                         double percentage = rs.getDouble("PercentageCoursesWithCertificate");
-    
+
                         result.append("Course Name: ").append(courseName)
-                                .append(", Percentage Courses With Certificate: ").append(String.format("%.2f%%", percentage))
+                                .append(", Percentage Courses With Certificate: ")
+                                .append(String.format("%.2f%%", percentage))
                                 .append("\n");
                     } while (rs.next());
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("error");
         }
-    
+
         return result.toString();
     }
-
 
     // Overwiew 3 method
     public String getProgressPerModule(String accountEmail, String courseName) {
@@ -218,5 +222,10 @@ public class OverViewController {
         }
 
         return topThreeWatchedWebcasts.toString();
+    }
+
+    public ArrayList<String> getCompletedCertificates() {
+        return null;
+
     }
 }
