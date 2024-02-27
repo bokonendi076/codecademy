@@ -221,32 +221,6 @@ public class OverViewController {
         return result.toString();
     }
 
-    public String getTopThreeWatchedWebcastsPercentage() {
-        // Make arraylist that holds top three watched webcasts in strings from the
-        // title
-        ArrayList<Integer> topThreeWatchedWebcasts = new ArrayList<>();
-
-        String sqlQuery = "SELECT TOP 3 TitleWebcast, CursistID, PercentageWatched FROM Webcast "
-                + "JOIN WatchedContent ON WatchedContent.ContentItemID = Webcast.ContentItemID " +
-                "ORDER BY PercentageWatched DESC";
-        try {
-            Connection connection = db.getConnection();
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sqlQuery);
-
-            while (rs.next()) {
-                String title = rs.getString("TitleWebcast");
-                int cursistId = rs.getInt("CursistID");
-                int percentageWatched = rs.getInt("PercentageWatched");
-
-                topThreeWatchedWebcasts.add(percentageWatched);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return topThreeWatchedWebcasts.toString();
-    }
 
     public ArrayList<String> getCompletedCertificates() {
         return null;

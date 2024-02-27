@@ -1,58 +1,32 @@
 package main;
 
 import DatabaseManager.*;
-import cursist.Cursist;
 import cursist.CursistController;
 import certificate.Certificate;
 import certificate.CertificateController;
-import contentItem.*;
-import course.Course;
-
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableIntegerArray;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.GUI;
+
 
 public class OverViewGUI extends Application {
     private DatabaseManager db;
-    private CursistController cursistController;
     private Connection connection;
-    private ListView<String> list;
-    private ObservableList<String> items;
-    private Scene mainScene;
     private Scene homeScene;
     private Button backHome;
     private Button backToCodeCademy;
     private BorderPane homePane;
-    private String firstTitleWebcast;
-    private String secondTitleWebcast;
-    private String thirdTitleWebcast;
-    private Button viewCertificates;
-    private Certificate certificate;
-    private CertificateController certificateController = new CertificateController();
     private OverViewController overViewController = new OverViewController();
 
     // Constructor
