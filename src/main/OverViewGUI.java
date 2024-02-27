@@ -406,7 +406,7 @@ public class OverViewGUI extends Application {
             titleWebcastOverview.setStyle("-fx-font-size: 28;");
             titleWebcastOverview.setPadding(new Insets(25, 0, 25, 0));
 
-            String topWebcasts = overViewController.getTopThreeWatchedWebcastsTitles();
+            String topWebcasts = overViewController.getTop3WatchedWebcasts();
             topWebcasts = topWebcasts.substring(1, topWebcasts.length() - 1);
             String[] webcastTitles = topWebcasts.split(", ", 3);
 
@@ -453,163 +453,9 @@ public class OverViewGUI extends Application {
 
     }
 
-    private List<String> getCourseNames() {
-        List<String> courseNames = new ArrayList<>();
+   
 
-        try {
-            String sqlQuery = "SELECT DISTINCT Name FROM Course";
-            Connection connection = db.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sqlQuery);
-
-            while (resultSet.next()) {
-                String courseName = resultSet.getString("Name");
-                courseNames.add(courseName);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return courseNames;
-    }
-
-    private String getAverageProgressPerModule(String courseName) {
-        StringBuilder result = new StringBuilder();
-
-        try {
-            String courseIdQuery = "SELECT CourseID FROM Course WHERE Name = ?";
-            Connection connection = db.getConnection();
-
-            try (PreparedStatement courseIdStatement = connection.prepareStatement(courseIdQuery)) {
-                courseIdStatement.setString(1, courseName);
-                ResultSet courseIdResultSet = courseIdStatement.executeQuery();
-
-                if (courseIdResultSet.next()) {
-                    int courseId = courseIdResultSet.getInt("CourseID");
-
-                    String progressQuery = "SELECT Title, AVG(PercentageWatched) AS AverageProgress " +
-                            "FROM Module " +
-                            "JOIN WatchedContent ON Module.ContentItemID = WatchedContent.ContentItemID " +
-                            "WHERE CourseID = ? " +
-                            "GROUP BY Title";
-
-                    try (PreparedStatement progressStatement = connection.prepareStatement(progressQuery)) {
-                        progressStatement.setInt(1, courseId);
-                        ResultSet progressResultSet = progressStatement.executeQuery();
-
-                        while (progressResultSet.next()) {
-                            String moduleTitle = progressResultSet.getString("Title");
-                            double averageProgress = progressResultSet.getDouble("AverageProgress");
-
-                            result.append(moduleTitle).append(": ").append(averageProgress).append("%\n");
-                        }
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return result.toString();
-    }
-
-    // Overwiew 3 method
-    public String getProgressPerModule(String accountEmail, String courseName) {
-
-        StringBuilder result = new StringBuilder();
-
-        try {
-            String query = "SELECT M.Title AS ModuleTitle, WC.PercentageWatched AS PercentageWatched " +
-                    "FROM Module M " +
-                    "JOIN Course C ON M.CourseName = C.Name " +
-                    "JOIN ContentItem CI ON M.ContentItemID = CI.ContentItemID " +
-                    "LEFT JOIN WatchedContent WC ON CI.ContentItemID = WC.ContentItemID " +
-                    "LEFT JOIN Cursist Cu ON WC.CursistEmailAddress = Cu.EmailAddress " +
-                    "WHERE C.Name = ? " +
-                    "AND Cu.EmailAddress = ? ";
-
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, courseName);
-                statement.setString(2, accountEmail);
-
-                ResultSet rs = statement.executeQuery();
-
-                boolean hasRows = rs.next(); // Check if there are any rows
-
-                if (!hasRows) {
-                    result.append("This user has no progress in this course");
-                } else {
-                    do {
-                        String moduleTitle = rs.getString("ModuleTitle");
-                        double averageProgress = rs.getDouble("PercentageWatched");
-
-                        result.append(moduleTitle).append(": ").append(String.format("%.2f%%", averageProgress))
-                                .append("\n");
-                    } while (rs.next());
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return result.toString();
-    }
-
-    // Get top three watched webcasts
-
-    public String getTopThreeWatchedWebcastsTitles() {
-        // Make arraylist that holds top three watched webcasts in strings from the
-        // title
-        ArrayList<String> topThreeWatchedWebcasts = new ArrayList<>();
-
-        String sqlQuery = "SELECT TOP 3 TitleWebcast, CursistID, PercentageWatched FROM Webcast "
-                + "JOIN WatchedContent ON WatchedContent.ContentItemID = Webcast.ContentItemID " +
-                "ORDER BY PercentageWatched DESC";
-        try {
-            Connection connection = db.getConnection();
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sqlQuery);
-
-            while (rs.next()) {
-                String title = rs.getString("TitleWebcast");
-                int cursistId = rs.getInt("CursistID");
-                int percentageWatched = rs.getInt("PercentageWatched");
-
-                topThreeWatchedWebcasts.add(title);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return topThreeWatchedWebcasts.toString();
-    }
-
-    public String getTopThreeWatchedWebcastsPercentage() {
-        // Make arraylist that holds top three watched webcasts in strings from the
-        // title
-        ArrayList<Integer> topThreeWatchedWebcasts = new ArrayList<>();
-
-        String sqlQuery = "SELECT TOP 3 TitleWebcast, CursistID, PercentageWatched FROM Webcast "
-                + "JOIN WatchedContent ON WatchedContent.ContentItemID = Webcast.ContentItemID " +
-                "ORDER BY PercentageWatched DESC";
-        try {
-            Connection connection = db.getConnection();
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sqlQuery);
-
-            while (rs.next()) {
-                String title = rs.getString("TitleWebcast");
-                int cursistId = rs.getInt("CursistID");
-                int percentageWatched = rs.getInt("PercentageWatched");
-
-                topThreeWatchedWebcasts.add(percentageWatched);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return topThreeWatchedWebcasts.toString();
-    }
+    
 
     public static void main(String[] args) {
         launch(args);
