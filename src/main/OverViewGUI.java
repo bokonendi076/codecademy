@@ -373,16 +373,22 @@ public class OverViewGUI extends Application {
 
                 generateButton.setOnAction(buttonEvent -> {
                     String selectedAccount = accountChoiceBox.getValue();
-                    String completedCertificates = overViewController
-                            .getCompletedCertificates(selectedAccount.toString());
 
                     if (selectedAccount != null) {
-                        // Display the result
+                        String completedCertificates = overViewController
+                                .getCompletedCertificates(selectedAccount.toString());
                         Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Certificates achieved");
                         alert.setHeaderText("Certificates achieved");
                         alert.setContentText(completedCertificates);
                         alert.showAndWait();
+                    } else {
+                        Alert alert = new Alert(AlertType.WARNING);
+                        alert.setTitle("Warning");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Please select an account.");
+                        alert.showAndWait();
+
                     }
 
                 });

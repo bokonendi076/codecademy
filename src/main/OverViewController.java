@@ -250,42 +250,41 @@ public class OverViewController {
 
         ArrayList<String> result = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
-    
+
         try {
             String query = "SELECT c.CourseName, c.EnrollmentDate " +
                     "FROM Certificate c " +
                     "JOIN Enrollment e ON c.CourseName = e.CourseName AND c.CursistEmailAddress = e.CursistEmailAddress "
                     +
                     "WHERE c.CursistEmailAddress = ?";
-    
+
             db = new DatabaseManager();
             connection = db.getConnection();
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, cursistEmailAddress);
-    
+
                 ResultSet rs = statement.executeQuery();
-    
+
                 boolean hasRows = rs.next();
-    
+
                 if (!hasRows) {
                     result.add("No certificates found for the specified email address.");
                 } else {
                     do {
                         String courseName = rs.getString("CourseName");
                         String enrollmentDate = rs.getString("EnrollmentDate");
-    
-                        sb.append(courseName).append("\n").append("Enrollment date: " + enrollmentDate);
+
+                        sb.append(courseName).append("\n").append("Enrollment date: " + enrollmentDate + "\n");
                         result.add(courseName + ", Date: " + enrollmentDate);
                     } while (rs.next());
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Error");
             result.add("An error occurred while retrieving certificates.");
         }
-    
+
         return sb.toString();
     }
-    
+
 }
