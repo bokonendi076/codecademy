@@ -230,9 +230,9 @@ public class OverViewGUI extends Application {
                     }
                 });
 
-                certificateOverviewStage.setScene(certificateOverviewScene);
-                certificateOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
-                certificateOverviewStage.show(); // Show the new stage
+
+                stage.setScene(certificateOverviewScene);
+                stage.show(); // Show the new stage
             });
 
             completedCourses.setOnAction(event -> {
