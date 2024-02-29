@@ -1,7 +1,6 @@
 package course;
 
 import main.*;
-import module.*;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -24,7 +23,6 @@ public class CourseGUI extends Application {
     private Scene homeScene;
     private Button backHome;
     private Button backToCodeCademy;
-    private module.ModuleController moduleController;
 
     public Scene courseScene(Stage stage) {
         GUI gui = new GUI();
