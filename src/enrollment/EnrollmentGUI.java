@@ -7,9 +7,6 @@ import course.*;
 import cursist.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-import contentItem.ContentItem;
-import contentItem.contentItemController;
 import course.courseController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;

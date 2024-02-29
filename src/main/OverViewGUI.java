@@ -2,8 +2,6 @@ package main;
 
 import DatabaseManager.*;
 import cursist.CursistController;
-import certificate.Certificate;
-import certificate.CertificateController;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
