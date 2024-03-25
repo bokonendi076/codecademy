@@ -171,8 +171,12 @@ public class EnrollmentGUI extends Application {
             infoButton.setPadding(buttonsMenuPadding);
             infoButton.setStyle("-fx-background-color: #d2b48c;");
 
-            Label label = new Label("EmailAddress ↓");
-            label.setStyle("-fx-font-size: 20;");
+            Label emailLabel = new Label("EmailAddress ↓");
+            Label courseNameLabel = new Label("Coursename ↓");
+            HBox listHbox = new HBox(emailLabel, courseNameLabel);
+
+            emailLabel.setStyle("-fx-font-size: 20; -fx-padding: 0 125 0 0;");
+            courseNameLabel.setStyle("-fx-font-size: 20");
 
             items.clear(); // Clear previous items
 
@@ -184,7 +188,7 @@ public class EnrollmentGUI extends Application {
             list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
             list.setPadding(buttonsMenuPadding);
 
-            VBox centerBox = new VBox(label, list);
+            VBox centerBox = new VBox(listHbox, list);
             BorderPane cursistPage = new BorderPane();
 
             cursistPage.setCenter(centerBox);
