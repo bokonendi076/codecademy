@@ -177,15 +177,17 @@ public class OverViewGUI extends Application {
             averageProgressModule.setOnAction(b -> {
                 Stage certificateOverviewStage = new Stage(); // Create a new stage
 
-                Label titleCertificateOverview = new Label("Select an account and course:");
+                Label titleCertificateOverview = new Label("Select an emailaddress and course:");
 
                 // Retrieve account emails using the CursistController method
                 ArrayList<String> accountEmails = cursistController.getAllCursistEmailAddress();
                 ComboBox<String> accountComboBox = new ComboBox<>(FXCollections.observableArrayList(accountEmails));
+                accountComboBox.setPromptText("Select emailaddress");
 
                 // Retrieve course names
                 List<String> courseNames = overViewController.getCourseNames();
                 ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
+                courseComboBox.setPromptText("Select course");
 
                 Button showProgressButton = new Button("Show Progress per Module (%)");
                 showProgressButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");

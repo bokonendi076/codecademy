@@ -88,14 +88,14 @@ public class EnrollmentGUI extends Application {
         ArrayList<String> courseNames = courseController.getAllCourses();
         ObservableList<String> options = FXCollections.observableArrayList(courseNames);
         ComboBox courseNameBox = new ComboBox<>(options);
-        courseNameBox.setPromptText("Choose course name");
+        courseNameBox.setPromptText("Select course name");
 
         // Combobox for available cursists
         cursistController = new CursistController();
         ArrayList<String> cursistEmails = cursistController.getAllCursistEmailAddress();
         ObservableList<String> cursistOptions = FXCollections.observableArrayList(cursistEmails);
         ComboBox cursistEmailBox = new ComboBox<>(cursistOptions);
-        cursistEmailBox.setPromptText("Choose your email");
+        cursistEmailBox.setPromptText("Select emailaddress");
 
         Button addButton = new Button("Register enrollment Item");
         addButton.setStyle("-fx-background-color: #d2b48c;");
@@ -123,8 +123,11 @@ public class EnrollmentGUI extends Application {
 
             // Clear the input fields after adding a contentitem
             datePicker.setValue(null);
-            courseNameBox.setValue(null);
-            cursistEmailBox.setValue(null);
+            courseNameBox.getSelectionModel().clearSelection();
+            cursistEmailBox.getSelectionModel().clearSelection();
+
+            courseNameBox.setPromptText("Select course name");
+            cursistEmailBox.setPromptText("Select emailaddress");
 
         });
 
