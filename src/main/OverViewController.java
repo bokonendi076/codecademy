@@ -14,12 +14,14 @@ public class OverViewController {
     private DatabaseManager db;
     private Connection connection;
 
+    // Method to retrieve names of all courses
     public List<String> getCourseNames() {
         List<String> courseNames = new ArrayList<>();
 
         try {
             db = new DatabaseManager();
             connection = db.getConnection();
+            // SQL query to select distinct course names from Course table
             String sqlQuery = "SELECT DISTINCT Name FROM Course";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery);
@@ -35,6 +37,7 @@ public class OverViewController {
         return courseNames;
     }
 
+    // Method to calculate average progress per module for a given course
     public String getAverageProgressPerModule(String courseName) {
         StringBuilder result = new StringBuilder();
 
@@ -69,7 +72,7 @@ public class OverViewController {
         return result.toString();
     }
 
-    // overview 1 method
+    // Method to calculate percentage of courses with certificate for a given gender
     public String calculatePercentageCoursesWithCertificate(String gender) {
         StringBuilder result = new StringBuilder();
 
@@ -122,7 +125,7 @@ public class OverViewController {
         return result.toString();
     }
 
-    // Overwiew 3 method
+    // Method to retrieve progress per module for a given account email and course name
     public String getProgressPerModule(String accountEmail, String courseName) {
 
         StringBuilder result = new StringBuilder();
@@ -164,6 +167,7 @@ public class OverViewController {
         return result.toString();
     }
 
+     // Method to retrieve number of completed course accounts for a given course
     public String getCompletedCourseAccounts(String selectedCourse) {
         StringBuilder result = new StringBuilder();
 
@@ -192,7 +196,7 @@ public class OverViewController {
 
     }
 
-    // Overview 5 method
+    // Method to retrieve information about top 3 watched webcasts
     public String getTop3WatchedWebcasts() {
         StringBuilder result = new StringBuilder();
 
@@ -246,6 +250,7 @@ public class OverViewController {
         return result.toString();
     }
 
+    // Method to retrieve completed certificates for a given cursist email address
     public String getCompletedCertificates(String cursistEmailAddress) {
 
         ArrayList<String> result = new ArrayList<>();
