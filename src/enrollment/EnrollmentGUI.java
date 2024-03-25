@@ -167,6 +167,8 @@ public class EnrollmentGUI extends Application {
         readButton.setOnAction(g -> {
             // arraylist with all watchedContent
             ArrayList<String> enrollments = enrollmentController.getAllEnrollments();
+            ArrayList<String> enrollmentCourseNames = enrollmentController.getAllEnrollmentCourseNames();
+            
             Button infoButton = new Button("More Info");
             infoButton.setPadding(buttonsMenuPadding);
             infoButton.setStyle("-fx-background-color: #d2b48c;");
@@ -175,7 +177,7 @@ public class EnrollmentGUI extends Application {
             Label courseNameLabel = new Label("Coursename ↓");
             HBox listHbox = new HBox(emailLabel, courseNameLabel);
 
-            emailLabel.setStyle("-fx-font-size: 20; -fx-padding: 0 125 0 0;");
+            emailLabel.setStyle("-fx-font-size: 20; -fx-padding: 0 12 0 0;");
             courseNameLabel.setStyle("-fx-font-size: 20");
 
             items.clear(); // Clear previous items

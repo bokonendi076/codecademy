@@ -86,7 +86,7 @@ public class EnrollmentController {
             while (rs.next()) {
                 String emailAddress = rs.getString("CursistEmailAddress");
                 String courseName = rs.getString("CourseName");
-                String enrollmentDetails = emailAddress + " - " + courseName;
+                String enrollmentDetails = emailAddress;
                 enrollments.add(enrollmentDetails);
             }
         } catch (SQLException e) {
@@ -94,6 +94,23 @@ public class EnrollmentController {
         }
     
         return enrollments;
+    }
+
+    public ArrayList<String> getAllEnrollmentCourseNames() {
+        ArrayList<String> courseNames = new ArrayList<>();
+    
+        try {
+            ResultSet rs = query("SELECT * FROM Enrollment");
+    
+            while (rs.next()) {
+                String courseName = rs.getString("CourseName");
+                courseNames.add(courseName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return courseNames;
     }
     
 
