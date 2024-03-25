@@ -138,15 +138,13 @@ public class CursistGUI extends Application {
                 }
 
                 // if (!validator.validateMailAddress(email)) {
-                //     Alert alert = new Alert(AlertType.ERROR);
-                //     alert.setTitle("Error");
-                //     alert.setHeaderText(null);
-                //     alert.setContentText("Email format is incorrect");
-                //     alert.showAndWait();
-                //     return;
+                // Alert alert = new Alert(AlertType.ERROR);
+                // alert.setTitle("Error");
+                // alert.setHeaderText(null);
+                // alert.setContentText("Email format is incorrect");
+                // alert.showAndWait();
+                // return;
                 // }
-
-    
 
                 // get values from form
                 String gender = genderChoiceBox.getValue();
@@ -288,13 +286,13 @@ public class CursistGUI extends Application {
                 String city = selectedCursistForInfo.getCity();
                 String country = selectedCursistForInfo.getCountry();
                 String zipCode = selectedCursistForInfo.getZipCode();
-               
 
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Cursist info");
                 alert.setHeaderText(null);
                 alert.setContentText("Name: " + name + "\nEmail: " + email + "\nBirthdate: " + birthdate + "\nGender: "
-                        + gender + "\nAddress: " + address + "\nCity: " + city + "\nCountry: " + country + "\nZipCode: " + zipCode);
+                        + gender + "\nAddress: " + address + "\nCity: " + city + "\nCountry: " + country + "\nZipCode: "
+                        + zipCode);
 
                 alert.showAndWait();
 
@@ -400,6 +398,14 @@ public class CursistGUI extends Application {
                 String selectedCursistName = list.getSelectionModel().getSelectedItem();
                 Cursist selectedCursist = cursistController.getCursistByName(selectedCursistName);
 
+                Label nameLabel = new Label("Name:");
+                Label emailLabel = new Label("Email:");
+                Label birthDateLabel = new Label("Birth Date:");
+                Label addressLabel = new Label("Address:");
+                Label cityLabel = new Label("City:");
+                Label countryLabel = new Label("Country:");
+                Label zipCodeLabel = new Label("Zip Code:");
+
                 updateNaamField.setText(selectedCursist.getName());
                 updateEmailField.setText(selectedCursist.getEmailAddress());
                 updateBirthDateField.setText(selectedCursist.getBirthDate().toString());
@@ -408,12 +414,31 @@ public class CursistGUI extends Application {
                 updateCityField.setText(selectedCursist.getCity());
                 updateCountryField.setText(selectedCursist.getCountry());
                 updateZipField.setText(selectedCursist.getZipCode());
-                
 
-                VBox updateFields = new VBox(updateNaamField, updateEmailField,
-                        updateBirthDateField,
-                        updateAddressField, updateCityField, updateCountryField, updateZipField);
-                updateFields.setSpacing(7);
+                HBox nameBox = new HBox(nameLabel, updateNaamField);
+                HBox emailBox = new HBox(emailLabel, updateEmailField);
+                HBox birthDateBox = new HBox(birthDateLabel, updateBirthDateField);
+                HBox addressBox = new HBox(addressLabel, updateAddressField);
+                HBox cityBox = new HBox(cityLabel, updateCityField);
+                HBox countryBox = new HBox(countryLabel, updateCountryField);
+                HBox zipCodeBox = new HBox(zipCodeLabel, updateZipField);
+
+                // Set spacing between elements in each HBox
+                nameBox.setSpacing(10); // Adjust this value as needed
+                emailBox.setSpacing(10);
+                birthDateBox.setSpacing(10);
+                addressBox.setSpacing(10);
+                cityBox.setSpacing(10);
+                countryBox.setSpacing(10);
+                zipCodeBox.setSpacing(10);
+
+                // Create VBox to hold all HBox elements
+                VBox updateFields = new VBox(nameBox, emailBox, birthDateBox, addressBox, cityBox, countryBox,
+                        zipCodeBox);
+
+                // Set spacing between VBox children
+                updateFields.setSpacing(15);
+                updateFields.setSpacing(15);
 
                 editWindow.setTop(editWindowTitle);
                 BorderPane.setAlignment(editWindowTitle, Pos.CENTER);
@@ -451,7 +476,6 @@ public class CursistGUI extends Application {
 
                     // Show the alert
                     alert.showAndWait();
-
 
                 });
 
