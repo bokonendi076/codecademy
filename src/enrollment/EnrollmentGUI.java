@@ -174,7 +174,12 @@ public class EnrollmentGUI extends Application {
             Label label = new Label("EmailAddress ↓");
             label.setStyle("-fx-font-size: 20;");
 
-            items.setAll(enrollments);
+            items.clear(); // Clear previous items
+
+            for (String enrollmentDetails : enrollments) {
+                items.add(enrollmentDetails); // Add enrollment details directly
+            }
+
             list.setItems(items);
             list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
             list.setPadding(buttonsMenuPadding);
@@ -186,6 +191,7 @@ public class EnrollmentGUI extends Application {
             BorderPane.setMargin(centerBox, new Insets(25));
 
             Label cursistPageTitle = new Label("Overview all enrollments");
+
             cursistPageTitle.setStyle("-fx-font-size: 30;");
             BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
             cursistPage.setTop(cursistPageTitle);
@@ -209,8 +215,7 @@ public class EnrollmentGUI extends Application {
                 String selectedEnrollment = list.getSelectionModel().getSelectedItem();
                 Enrollment enrollment = enrollmentController.getEnrollmentByName(selectedEnrollment);
 
-                if (!selectedEnrollment.isEmpty()) {
-
+                if (enrollment != null) {
                     String enrollmentDate = String.valueOf(enrollment.getEnrollmentDate());
                     String courseName = enrollment.getCourseName();
                     String cursistEmail = enrollment.getCursistEmailAddress();
@@ -223,11 +228,11 @@ public class EnrollmentGUI extends Application {
                     alert.setHeaderText(null);
                     alert.setContentText(info);
                     alert.showAndWait();
-
                 }
             });
 
         });
+
 
         // Handle delete button action
         deleteButton.setOnAction(h -> {

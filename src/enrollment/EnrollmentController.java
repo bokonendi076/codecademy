@@ -78,21 +78,24 @@ public class EnrollmentController {
 
     // Method to retrieve all enrollments from the database
     public ArrayList<String> getAllEnrollments() {
-        ArrayList<String> watchedContent = new ArrayList<>();
-
+        ArrayList<String> enrollments = new ArrayList<>();
+    
         try {
             ResultSet rs = query("SELECT * FROM Enrollment");
-
+    
             while (rs.next()) {
-                String contentItemId = rs.getString("CursistEmailAddress");
-                watchedContent.add(contentItemId);
+                String emailAddress = rs.getString("CursistEmailAddress");
+                String courseName = rs.getString("CourseName");
+                String enrollmentDetails = emailAddress + " - " + courseName;
+                enrollments.add(enrollmentDetails);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return watchedContent;
+    
+        return enrollments;
     }
+    
 
     // Method to delete an enrollment from the database based on course name and cursist email address
     public void deleteEnrollment(String courseName, String cursistEmailAddress) {
