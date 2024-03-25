@@ -232,16 +232,22 @@ public class EnrollmentGUI extends Application {
         // Handle delete button action
         deleteButton.setOnAction(h -> {
             String selectedEnrollment = list.getSelectionModel().getSelectedItem();
-            Enrollment selectedEnrollmentObject = new Enrollment();
-            selectedEnrollmentObject.setCourseName(selectedEnrollmentObject.getCourseName());
-            selectedEnrollmentObject.setCursistEmailAddress(selectedEnrollmentObject.getCursistEmailAddress());
-
-            if (!selectedEnrollment.isEmpty()) {
-                enrollmentController.deleteEnrollment(selectedEnrollmentObject.getCourseName(),
-                        selectedEnrollmentObject.getCursistEmailAddress());
-                items.remove(selectedEnrollment);
+            
+            if (selectedEnrollment != null) {
+                // Haal het geselecteerde inschrijvingsobject op uit de lijst
+                Enrollment selectedEnrollmentObject = enrollmentController.getEnrollmentByName(selectedEnrollment);
+        
+                if (selectedEnrollmentObject != null) {
+                    // Roep de deleteEnrollment-methode aan met de vereiste parameters
+                    enrollmentController.deleteEnrollment(selectedEnrollmentObject.getCourseName(),
+                            selectedEnrollmentObject.getCursistEmailAddress(), selectedEnrollmentObject.getEnrollmentDate());
+        
+                    // Verwijder het geselecteerde item uit de lijst
+                    items.remove(selectedEnrollment);
+                }
             }
         });
+        
 
         Label mainSceneTitle = new Label("Register new Enrollment");
         mainSceneTitle.setStyle("-fx-font-size: 30;");

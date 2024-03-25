@@ -95,12 +95,13 @@ public class EnrollmentController {
     }
 
     // Method to delete an enrollment from the database based on course name and cursist email address
-    public void deleteEnrollment(String courseName, String cursistEmailAddress) {
+    public void deleteEnrollment(String courseName, String cursistEmailAddress, LocalDate enrollmenDate) {
         try {
-            String query = "DELETE FROM Enrollment WHERE CourseName = ? AND CursistEmailAddress = ?";
+            String query = "DELETE FROM Enrollment WHERE CourseName = ? AND CursistEmailAddress = ? AND EnrollmentDate = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, courseName);
                 statement.setString(2, cursistEmailAddress);
+                statement.setString(3, String.valueOf(enrollmenDate));
 
                 statement.executeUpdate();
             }
