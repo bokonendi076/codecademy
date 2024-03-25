@@ -6,7 +6,6 @@ public class Course {
     private String introductionText;
     private String difficultyLevel;
     private int courseId;
-    
     private int moduleId;
     private boolean certificate;
 
