@@ -1,7 +1,6 @@
 package enrollment;
 
 import DatabaseManager.*;
-import cursist.Cursist;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +18,7 @@ public class EnrollmentController {
         this.databaseManager = new DatabaseManager();
     }
 
+     // Method to execute an SQL query and return a ResultSet
     public ResultSet query(String sqlQuery) {
         try {
             connection = databaseManager.getConnection();
@@ -30,7 +30,8 @@ public class EnrollmentController {
         return null;
     }
 
-    public void addEnrollment(Enrollment enrollment) {
+     // Method to add a new enrollment to the database
+     public void addEnrollment(Enrollment enrollment) {
         connection = databaseManager.getConnection();
         String query = "INSERT INTO Enrollment (EnrollmentDate, CourseName, CursistEmailAddress) VALUES (?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -44,6 +45,7 @@ public class EnrollmentController {
         }
     }
 
+    // Method to update an existing enrollment in the database
     public void updateEnrollment(Enrollment enrollment) {
         try {
             String query = "UPDATE Enrollment SET EnrollmentDate = ?, CouseName = ?, CursistEmailAddress = ?, WHERE EnrollmentDate = ? AND CourseName = ? AND CursistEmailAddress = ?";
@@ -74,23 +76,25 @@ public class EnrollmentController {
         }
     }
 
+    // Method to retrieve all enrollments from the database
     public ArrayList<String> getAllEnrollments() {
-        ArrayList<String> wachtedContent = new ArrayList<>();
+        ArrayList<String> watchedContent = new ArrayList<>();
 
         try {
             ResultSet rs = query("SELECT * FROM Enrollment");
 
             while (rs.next()) {
                 String contentItemId = rs.getString("CursistEmailAddress");
-                wachtedContent.add(contentItemId);
+                watchedContent.add(contentItemId);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return wachtedContent;
+        return watchedContent;
     }
 
+    // Method to delete an enrollment from the database based on course name and cursist email address
     public void deleteEnrollment(String courseName, String cursistEmailAddress) {
         try {
             String query = "DELETE FROM Enrollment WHERE CourseName = ? AND CursistEmailAddress = ?";
@@ -105,6 +109,7 @@ public class EnrollmentController {
         }
     }
 
+    // Method to retrieve an enrollment from the database based on course name and cursist email address
     public Enrollment getEnrollmentByNameAndEmail(String name, String email) {
         try {
             String query = "SELECT * FROM Enrollment WHERE CourseName = ? AND CursistEmailAddress = ?";
@@ -128,6 +133,7 @@ public class EnrollmentController {
         return null;
     }
 
+    // Method to retrieve an enrollment from the database based on cursist email address
     public Enrollment getEnrollmentByName(String name) {
         try {
             String query = "SELECT * FROM Enrollment WHERE CursistEmailAddress = ?";
