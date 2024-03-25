@@ -452,29 +452,6 @@ public class CursistGUI extends Application {
                     // Show the alert
                     alert.showAndWait();
 
-                    // Clear all textfield
-                    // updateNaamField.clear();
-                    // updateEmailField.clear();
-                    // updateBirthDateField.clear();
-                    // updateAddressField.clear();
-                    // updateCityField.clear();
-                    // updateCountryField.clear();
-
-                    // // set prompt text back for textfields
-                    // updateNaamField.setPromptText("Name");
-                    // updateEmailField.setPromptText("EmailAddress");
-                    // updateBirthDateField.setPromptText("BirthDate");
-                    // updateAddressField.setPromptText("Address");
-                    // updateCityField.setPromptText("City");
-                    // updateCountryField.setPromptText("Country");
-
-                    // // set the textfield to disable
-                    // updateNaamField.setDisable(true);
-                    // updateEmailField.setDisable(true);
-                    // updateBirthDateField.setDisable(true);
-                    // updateAddressField.setDisable(true);
-                    // updateCityField.setDisable(true);
-                    // updateCountryField.setDisable(true);
 
                 });
 
