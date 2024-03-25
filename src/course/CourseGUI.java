@@ -92,10 +92,6 @@ public class CourseGUI extends Application {
         HBox difficultyLevelHBox = new HBox(difficultyLevelLabel, difficultyLevelComboBox);
         difficultyLevelHBox.setSpacing(10);
 
-
-      
-       
-
         Button addButton = new Button("Add Course");
         addButton.setStyle("-fx-background-color: #d2b48c;");
 
@@ -114,14 +110,12 @@ public class CourseGUI extends Application {
             String subject = createSubjectField.getText();
             String introductionText = createIntroductionText.getText();
             String difficultyLevel = difficultyLevelComboBox.getValue();
-            
 
             Course newCourse = new Course();
             newCourse.setName(naam);
             newCourse.setSubject(subject);
             newCourse.setIntroductionText(introductionText);
             newCourse.setDifficultyLevel(difficultyLevel);
-           
 
             courseController.saveCourse(newCourse);
 
@@ -217,10 +211,10 @@ public class CourseGUI extends Application {
             infoButton.setOnAction(h -> {
                 String selectedCourse = list.getSelectionModel().getSelectedItem();
                 Course course = courseController.getCourseByName(selectedCourse);
-            
+
                 if (selectedCourse != null) {
                     int completedCursistCount = courseController.getCompletedCursistCount(selectedCourse);
-            
+
                     Alert alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Course Details");
                     alert.setHeaderText(null);
@@ -310,8 +304,8 @@ public class CourseGUI extends Application {
             updateScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(updateScene);
             stage.show();
-            TextField updateNaamField = new TextField();
-            updateNaamField.setDisable(true);
+            TextField updateNameField = new TextField();
+            updateNameField.setDisable(true);
             TextField updateSubjectField = new TextField();
             TextField updateIntroductionText = new TextField();
 
@@ -332,15 +326,35 @@ public class CourseGUI extends Application {
                 String selectedCourseName = list.getSelectionModel().getSelectedItem();
                 Course selectedCourse = courseController.getCourseByName(selectedCourseName);
 
-                updateNaamField.setText(selectedCourse.getName());
+                // Create labels
+                Label nameLabel = new Label("Name:");
+                Label subjectLabel = new Label("Subject:");
+                Label introductionLabel = new Label("Introduction:");
+                Label difficLabel = new Label("Difficulty Level:");
+
+                // Set text for each field based on selectedCourse
+                updateNameField.setText(selectedCourse.getName());
                 updateSubjectField.setText(selectedCourse.getSubject());
                 updateIntroductionText.setText(selectedCourse.getIntroductionText());
                 updateDifficultyLevel.setValue(String.valueOf(selectedCourse.getDifficultyLevel()));
 
-                VBox updateFields = new VBox(updateNaamField, updateSubjectField,
-                        updateIntroductionText,
-                        updateDifficultyLevel);
-                updateFields.setSpacing(7);
+                // Create HBox for each label and corresponding field
+                HBox nameBox = new HBox(nameLabel, updateNameField);
+                HBox subjectBox = new HBox(subjectLabel, updateSubjectField);
+                HBox introductionBox = new HBox(introductionLabel, updateIntroductionText);
+                HBox difficultyLevelBox = new HBox(difficLabel, updateDifficultyLevel);
+
+                // Set spacing between elements in each HBox
+                nameBox.setSpacing(10);
+                subjectBox.setSpacing(10);
+                introductionBox.setSpacing(10);
+                difficultyLevelBox.setSpacing(10);
+
+                // Create VBox to hold all HBox elements
+                VBox updateFields = new VBox(nameBox, subjectBox, introductionBox, difficultyLevelBox);
+
+                // Set spacing between VBox children
+                updateFields.setSpacing(15);
 
                 editWindow.setTop(editWindowTitle);
                 BorderPane.setAlignment(editWindowTitle, Pos.CENTER);
@@ -357,7 +371,7 @@ public class CourseGUI extends Application {
                 stage.show();
 
                 confirmButton.setOnAction(g -> {
-                    selectedCourse.setName(updateNaamField.getText());
+                    selectedCourse.setName(updateNameField.getText());
                     selectedCourse.setSubject(updateSubjectField.getText());
                     selectedCourse.setIntroductionText(updateIntroductionText.getText());
                     selectedCourse.setDifficultyLevel((updateDifficultyLevel.getValue()));
