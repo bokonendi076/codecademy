@@ -230,30 +230,39 @@ public class OverViewGUI extends Application {
                     }
                 });
 
-
                 stage.setScene(certificateOverviewScene);
                 stage.show(); // Show the new stage
             });
 
             completedCourses.setOnAction(event -> {
-                // Create a new stage for course selection
-                Stage courseSelectionStage = new Stage();
-                courseSelectionStage.setTitle("Select a Course");
+                Stage completedOverviewStage = new Stage();
+                Label titleCompletedOverview = new Label("Completed courses");
 
                 // Retrieve course names
                 List<String> courseNames = overViewController.getCourseNames();
                 ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
+                courseComboBox.setPromptText("Please select a course");
 
-                Button selectCourseButton = new Button("Select Course");
+                Button selectCourseButton = new Button("Show completed courses");
+                selectCourseButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+
+                VBox layout4 = new VBox(10, titleCompletedOverview, courseComboBox, selectCourseButton,
+                        backToHomeButton);
+                layout4.setAlignment(Pos.CENTER);
+
+                BorderPane completedOverviewPane = new BorderPane();
+                completedOverviewPane.setTop(titleCompletedOverview);
+                BorderPane.setAlignment(titleCompletedOverview, Pos.CENTER);
+                titleCompletedOverview.setPadding(new Insets(25, 0, 25, 0));
+
+                completedOverviewPane.setCenter(layout4);
+
+                Scene completedOverviewScene = new Scene(completedOverviewPane, 800, 600);
+
                 selectCourseButton.setOnAction(courseEvent -> {
                     String selectedCourse = courseComboBox.getValue();
 
                     if (selectedCourse != null) {
-                        // Close the course selection stage
-                        courseSelectionStage.close();
-
-                        // Get and display the count of participants who have completed the selected
-                        // course
                         String completionCount = overViewController.getCompletedCourseAccounts(selectedCourse);
                         // Display the result (you can customize this part)
                         Alert alert = new Alert(AlertType.INFORMATION);
@@ -269,16 +278,12 @@ public class OverViewGUI extends Application {
                         alert.setContentText("Please select a course.");
                         alert.showAndWait();
                     }
+
                 });
-
-                VBox courseSelectionLayout = new VBox(10, courseComboBox, selectCourseButton);
-                courseSelectionLayout.setAlignment(Pos.CENTER);
-                Scene courseSelectionScene = new Scene(courseSelectionLayout, 300, 150);
-
-                courseSelectionStage.setScene(courseSelectionScene);
-                courseSelectionStage.show();
+                stage.setScene(completedOverviewScene);
+                stage.show();
             });
-
+            
         });
 
         certificateOverviewButton.setOnAction(e -> {
