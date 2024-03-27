@@ -1,6 +1,7 @@
 package validation;
 
 public class Validation {
+
     
     // check if email is correct according to below standards
     public boolean validateMailAddress(String mailAddress) {
