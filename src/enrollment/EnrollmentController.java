@@ -18,7 +18,7 @@ public class EnrollmentController {
         this.databaseManager = new DatabaseManager();
     }
 
-     // Method to execute an SQL query and return a ResultSet
+    // Method to execute an SQL query and return a ResultSet
     public ResultSet query(String sqlQuery) {
         try {
             connection = databaseManager.getConnection();
@@ -30,8 +30,8 @@ public class EnrollmentController {
         return null;
     }
 
-     // Method to add a new enrollment to the database
-     public void addEnrollment(Enrollment enrollment) {
+    // Method to add a new enrollment to the database
+    public void addEnrollment(Enrollment enrollment) {
         connection = databaseManager.getConnection();
         String query = "INSERT INTO Enrollment (EnrollmentDate, CourseName, CursistEmailAddress) VALUES (?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -53,7 +53,7 @@ public class EnrollmentController {
                 updateStatement.setObject(1, enrollment.getEnrollmentDate());
                 updateStatement.setString(2, enrollment.getCourseName());
                 updateStatement.setString(3, enrollment.getCursistEmailAddress());
-                
+
                 System.out.println(enrollment.getEnrollmentDate());
                 System.out.println(enrollment.getCourseName());
                 System.out.println(enrollment.getCursistEmailAddress());
@@ -79,10 +79,10 @@ public class EnrollmentController {
     // Method to retrieve all enrollments from the database
     public ArrayList<String> getAllEnrollments() {
         ArrayList<String> enrollments = new ArrayList<>();
-    
+
         try {
             ResultSet rs = query("SELECT * FROM Enrollment");
-    
+
             while (rs.next()) {
                 String emailAddress = rs.getString("CursistEmailAddress");
                 String courseName = rs.getString("CourseName");
@@ -92,16 +92,16 @@ public class EnrollmentController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    
+
         return enrollments;
     }
 
     public ArrayList<String> getAllEnrollmentCourseNames() {
         ArrayList<String> courseNames = new ArrayList<>();
-    
+
         try {
             ResultSet rs = query("SELECT * FROM Enrollment");
-    
+
             while (rs.next()) {
                 String courseName = rs.getString("CourseName");
                 courseNames.add(courseName);
@@ -109,12 +109,12 @@ public class EnrollmentController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    
+
         return courseNames;
     }
-    
 
-    // Method to delete an enrollment from the database based on course name and cursist email address
+    // Method to delete an enrollment from the database based on course name and
+    // cursist email address
     public void deleteEnrollment(String courseName, String cursistEmailAddress, LocalDate enrollmenDate) {
         try {
             String query = "DELETE FROM Enrollment WHERE CourseName = ? AND CursistEmailAddress = ? AND EnrollmentDate = ?";
@@ -130,7 +130,8 @@ public class EnrollmentController {
         }
     }
 
-    // Method to retrieve an enrollment from the database based on course name and cursist email address
+    // Method to retrieve an enrollment from the database based on course name and
+    // cursist email address
     public Enrollment getEnrollmentByNameAndEmail(String name, String email) {
         try {
             String query = "SELECT * FROM Enrollment WHERE CourseName = ? AND CursistEmailAddress = ?";
@@ -154,7 +155,8 @@ public class EnrollmentController {
         return null;
     }
 
-    // Method to retrieve an enrollment from the database based on cursist email address
+    // Method to retrieve an enrollment from the database based on cursist email
+    // address
     public Enrollment getEnrollmentByName(String name) {
         try {
             String query = "SELECT * FROM Enrollment WHERE CursistEmailAddress = ?";
@@ -175,6 +177,23 @@ public class EnrollmentController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public ArrayList<String> getAllEnrollmentDates() {
+        ArrayList<String> enrollmentDates = new ArrayList<>();
+
+        try {
+            ResultSet rs = query("SELECT * FROM Enrollment");
+
+            while (rs.next()) {
+                String date = rs.getString("EnrollmentDate");
+                enrollmentDates.add(date);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return enrollmentDates;
     }
 
 }

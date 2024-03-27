@@ -33,5 +33,5 @@
     "c:\\Program Files\\Eclipse Adoptium\\sqljdbc_12.6\\enu\\jars\\mssql-jdbc-12.6.0.jre11-javadoc.jar",
     "c:\\Program Files\\Eclipse Adoptium\\sqljdbc_12.6\\enu\\jars\\mssql-jdbc-12.6.0.jre11-sources.jar"
   ],
-  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m -Xlog:disable"
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable"
 }

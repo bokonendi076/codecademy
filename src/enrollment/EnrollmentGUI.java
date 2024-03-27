@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import course.courseController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -24,7 +25,11 @@ import javafx.stage.Stage;
 public class EnrollmentGUI extends Application {
     private EnrollmentController enrollmentController;
     private ListView<String> list;
+    private ListView<String> courseNamesList;
+    private ListView<String> enrollmentDateList;
     private ObservableList<String> items;
+    private ObservableList<String> courseNamesItems;
+    private ObservableList<String> enrollmentDateItems;
     private Scene mainScene;
     private Scene homeScene;
     private Button backHome;
@@ -163,12 +168,19 @@ public class EnrollmentGUI extends Application {
         list = new ListView<>();
         items = FXCollections.observableArrayList();
 
+        courseNamesList = new ListView<>();
+        courseNamesItems = FXCollections.observableArrayList();
+
+        enrollmentDateList = new ListView<>();
+        enrollmentDateItems = FXCollections.observableArrayList();
+
         // CRUD (read) functionality...
         readButton.setOnAction(g -> {
             // arraylist with all watchedContent
             ArrayList<String> enrollments = enrollmentController.getAllEnrollments();
             ArrayList<String> enrollmentCourseNames = enrollmentController.getAllEnrollmentCourseNames();
-            
+            ArrayList<String> enrollmentDates = enrollmentController.getAllEnrollmentDates();
+
             Button infoButton = new Button("More Info");
             infoButton.setPadding(buttonsMenuPadding);
             infoButton.setStyle("-fx-background-color: #d2b48c;");
@@ -181,16 +193,39 @@ public class EnrollmentGUI extends Application {
             courseNameLabel.setStyle("-fx-font-size: 20");
 
             items.clear(); // Clear previous items
+            courseNamesItems.clear();
+            enrollmentDateItems.clear();
 
             for (String enrollmentDetails : enrollments) {
                 items.add(enrollmentDetails); // Add enrollment details directly
             }
 
+            for (String enrollmentDetailsCourseNames : enrollmentCourseNames) {
+                courseNamesItems.add(enrollmentDetailsCourseNames); // Add enrollment details directly
+            }
+
+            for (String enrollmentDetailsDates : enrollmentDates) {
+                enrollmentDateItems.add(enrollmentDetailsDates); // Add enrollment details directly
+            }
+
             list.setItems(items);
-            list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
+            list.setStyle("-fx-font-size: 16; -fx-alignment: center;");
             list.setPadding(buttonsMenuPadding);
 
-            VBox centerBox = new VBox(listHbox, list);
+            courseNamesList.setItems(courseNamesItems);
+            courseNamesList.setStyle("-fx-font-size: 16; -fx-alignment: center;");
+            courseNamesList.setPadding(buttonsMenuPadding);
+
+            enrollmentDateList.setItems(enrollmentDateItems);
+            enrollmentDateList.setStyle("-fx-font-size: 16; -fx-alignment: center;");
+            enrollmentDateList.setPadding(buttonsMenuPadding);
+
+            HBox listHbox2 = new HBox(list, courseNamesList, enrollmentDateList);
+            listHbox2.setSpacing(0);
+            listHbox2.setPadding(buttonsMenuPadding);
+            listHbox2.setAlignment(Pos.CENTER);
+
+            VBox centerBox = new VBox(listHbox2);
             BorderPane cursistPage = new BorderPane();
 
             cursistPage.setCenter(centerBox);
@@ -239,26 +274,32 @@ public class EnrollmentGUI extends Application {
 
         });
 
-
         // Handle delete button action
         deleteButton.setOnAction(h -> {
             String selectedEnrollment = list.getSelectionModel().getSelectedItem();
-            
+
             if (selectedEnrollment != null) {
                 // Haal het geselecteerde inschrijvingsobject op uit de lijst
                 Enrollment selectedEnrollmentObject = enrollmentController.getEnrollmentByName(selectedEnrollment);
-        
+
                 if (selectedEnrollmentObject != null) {
                     // Roep de deleteEnrollment-methode aan met de vereiste parameters
                     enrollmentController.deleteEnrollment(selectedEnrollmentObject.getCourseName(),
-                            selectedEnrollmentObject.getCursistEmailAddress(), selectedEnrollmentObject.getEnrollmentDate());
-        
+                            selectedEnrollmentObject.getCursistEmailAddress(),
+                            selectedEnrollmentObject.getEnrollmentDate());
+
                     // Verwijder het geselecteerde item uit de lijst
                     items.remove(selectedEnrollment);
+                    courseNamesItems.remove(selectedEnrollment);
+
+                    // Verwijder het geselecteerde item uit de list
+                    list.getItems().remove(selectedEnrollment);
+                    courseNamesList.getItems().remove(selectedEnrollment);
+
+                    refreshContent();
                 }
             }
         });
-        
 
         Label mainSceneTitle = new Label("Register new Enrollment");
         mainSceneTitle.setStyle("-fx-font-size: 30;");
@@ -303,6 +344,26 @@ public class EnrollmentGUI extends Application {
     @Override
     public void start(Stage arg0) throws Exception {
 
+    }
+
+    private void refreshContent() {
+        // Perform UI updates on the JavaFX Application Thread
+        Platform.runLater(() -> {
+            // Clear the list
+            list.getItems().clear();
+            courseNamesList.getItems().clear();
+            enrollmentDateItems.clear();
+
+            // Add the updated list
+            list.getItems().addAll(enrollmentController.getAllEnrollments());
+            courseNamesList.getItems().addAll(enrollmentController.getAllEnrollmentCourseNames());
+            enrollmentDateList.getItems().addAll(enrollmentController.getAllEnrollmentDates());
+
+            // Refresh the UI
+            list.refresh();
+            courseNamesList.refresh();
+            enrollmentDateList.refresh();
+        });
     }
 
 }
