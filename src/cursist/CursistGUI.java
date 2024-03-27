@@ -139,11 +139,11 @@ public class CursistGUI extends Application {
                 }
 
                 if (!validator.validateMailAddress(email)) {
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Email format is incorrect");
-                    alert.showAndWait();
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Email format is incorrect");
+                alert.showAndWait();
                 return;
                 }
 
