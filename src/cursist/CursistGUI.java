@@ -127,6 +127,7 @@ public class CursistGUI extends Application {
                 String naam = createNaamField.getText();
                 String email = createEmailField.getText();
                 LocalDate birthDate = createBirthDateField.getValue();
+                String postal = createZipField.getText();
 
                 // check if email is entered
                 if (email.isEmpty()) {
@@ -139,12 +140,22 @@ public class CursistGUI extends Application {
                 }
 
                 if (!validator.validateMailAddress(email)) {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Email format is incorrect");
-                alert.showAndWait();
-                return;
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Email format is incorrect");
+                    alert.showAndWait();
+                    return;
+                }
+
+                
+                if (!validator.formatPostalCode(postal)) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Postal format is incorrect");
+                    alert.showAndWait();
+                    return;
                 }
 
                 // get values from form
@@ -190,7 +201,7 @@ public class CursistGUI extends Application {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText(null);
-                alert.setContentText("Failed to add cursist. Please check birthdate input");
+                alert.setContentText("Failed to add cursist.");
                 alert.showAndWait();
                 e.printStackTrace();
             }

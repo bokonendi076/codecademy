@@ -56,36 +56,41 @@ public class Validation {
     }
 
     // checks wheter the postal code is legit and to below standards
-    public static String formatPostalCode(String postalCode) {
-        if (postalCode == null) {
-            throw new NullPointerException("postalCode cannot be null");
+    public static boolean formatPostalCode(String postalCode) throws NumberFormatException {
+        try {
+            if (postalCode == null) {
+                throw new NullPointerException("postalCode cannot be null");
+            }
+    
+            postalCode = postalCode.trim();
+    
+            if (postalCode.length() != 6) {
+                return false;
+            }
+    
+            int firstFourDigits = Integer.parseInt(postalCode.substring(0, 4));
+    
+            if (firstFourDigits <= 999 || firstFourDigits > 9999) {
+                return false;
+            }
+    
+            String lastTwoCharacters = postalCode.substring(4).trim().toUpperCase();
+    
+            if (lastTwoCharacters.length() != 2) {
+                return false;
+            }
+    
+            char firstLetter = lastTwoCharacters.charAt(0);
+            char secondLetter = lastTwoCharacters.charAt(1);
+    
+            if (firstLetter < 'A' || firstLetter > 'Z' || secondLetter < 'A' || secondLetter > 'Z') {
+                return false;
+            }
+    
+            return true;
+        } catch (NullPointerException | IllegalArgumentException e) {
+            return false;
         }
-
-        postalCode = postalCode.trim();
-
-        if (postalCode.length() != 6) {
-            throw new IllegalArgumentException("postalCode must be 6 characters long");
-        }
-
-        int firstFourDigits = Integer.parseInt(postalCode.substring(0, 4));
-
-        if (firstFourDigits <= 999 || firstFourDigits > 9999) {
-            throw new IllegalArgumentException("first four digits of postalCode must be between 1000 and 9999");
-        }
-
-        String lastTwoCharacters = postalCode.substring(4).trim().toUpperCase();
-
-        if (lastTwoCharacters.length() != 2) {
-            throw new IllegalArgumentException("last two characters of postalCode must be 2 characters long");
-        }
-
-        char firstLetter = lastTwoCharacters.charAt(0);
-        char secondLetter = lastTwoCharacters.charAt(1);
-
-        if (firstLetter < 'A' || firstLetter > 'Z' || secondLetter < 'A' || secondLetter > 'Z') {
-            throw new IllegalArgumentException("last two characters of postalCode must be capital letters");
-        }
-
-        return firstFourDigits + " " + lastTwoCharacters;
     }
+    
 }
