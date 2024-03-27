@@ -32,11 +32,12 @@ public class CursistGUI extends Application {
     private Button backHome;
     private Button backToCodeCademy;
     private BorderPane homePane;
-    // private Validation validator;
+    private Validation validator;
 
     // Constructor
     public CursistGUI(CursistController cursistController) {
         this.cursistController = cursistController;
+        this.validator = new Validation();
     }
 
     GUI gui = new GUI();
@@ -137,14 +138,14 @@ public class CursistGUI extends Application {
                     return;
                 }
 
-                // if (!validator.validateMailAddress(email)) {
-                // Alert alert = new Alert(AlertType.ERROR);
-                // alert.setTitle("Error");
-                // alert.setHeaderText(null);
-                // alert.setContentText("Email format is incorrect");
-                // alert.showAndWait();
-                // return;
-                // }
+                if (!validator.validateMailAddress(email)) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Email format is incorrect");
+                    alert.showAndWait();
+                return;
+                }
 
                 // get values from form
                 String gender = genderChoiceBox.getValue();
