@@ -424,7 +424,17 @@ public class CursistGUI extends Application {
                     confirmButton.setPadding(buttonsMenuPadding);
                     confirmButton.setStyle("-fx-background-color: #d2b48c;");
 
-                    HBox editButtons = new HBox(backHome, confirmButton);
+                    // make new button to go back to editable cursist list
+                    Button backToList = new Button("< Back to list");
+                    backToList.setPadding(buttonsMenuPadding);
+                    backToList.setStyle("-fx-background-color: #d2b48c;");
+
+                    backToList.setOnAction(g -> {
+                        stage.setScene(updateScene);
+                        stage.show();
+                    });
+
+                    HBox editButtons = new HBox(backToList, confirmButton);
 
                     String selectedCursistName = list.getSelectionModel().getSelectedItem();
                     Cursist selectedCursist = cursistController.getCursistByName(selectedCursistName);
