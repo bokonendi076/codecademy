@@ -199,8 +199,16 @@ public class OverViewGUI extends Application {
                 showProgressButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
                 showProgressButton.setPrefSize(150, 50);
 
+                Button backToOptions = new Button("< Overviews");
+                backToOptions.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+                backToOptions.setPrefSize(150, 50);
+                backToOptions.setOnAction(event -> {
+                    stage.setScene(courseOverviewScene);
+                    stage.show();
+                });
+
                 VBox layout3 = new VBox(10, titleCertificateOverview, accountComboBox, courseComboBox,
-                        showProgressButton, backToHomeButton);
+                        showProgressButton, backToOptions);
                 layout3.setAlignment(Pos.CENTER);
 
                 BorderPane certificateOverviewPane = new BorderPane();
