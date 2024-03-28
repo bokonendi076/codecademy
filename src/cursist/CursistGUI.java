@@ -148,7 +148,6 @@ public class CursistGUI extends Application {
                     return;
                 }
 
-                
                 if (!validator.formatPostalCode(postal)) {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
@@ -398,100 +397,112 @@ public class CursistGUI extends Application {
             TextField updateZipField = new TextField();
 
             chooseButton.setOnAction(f -> {
-                BorderPane editWindow = new BorderPane();
-                Label editWindowTitle = new Label("Edit window");
-                editWindowTitle.setStyle("-fx-font-size: 30;");
-                Button confirmButton = new Button("Confirm");
-                confirmButton.setPadding(buttonsMenuPadding);
-                confirmButton.setStyle("-fx-background-color: #d2b48c;");
-
-                HBox editButtons = new HBox(backHome, confirmButton);
-
-                String selectedCursistName = list.getSelectionModel().getSelectedItem();
-                Cursist selectedCursist = cursistController.getCursistByName(selectedCursistName);
-
-                Label nameLabel = new Label("Name:");
-                Label emailLabel = new Label("Email:");
-                Label birthDateLabel = new Label("Birth Date:");
-                Label addressLabel = new Label("Address:");
-                Label cityLabel = new Label("City:");
-                Label countryLabel = new Label("Country:");
-                Label zipCodeLabel = new Label("Zip Code:");
-
-                updateNaamField.setText(selectedCursist.getName());
-                updateEmailField.setText(selectedCursist.getEmailAddress());
-                updateBirthDateField.setText(selectedCursist.getBirthDate().toString());
-                genderChoiceBox.getSelectionModel().selectFirst();
-                updateAddressField.setText(selectedCursist.getAddress());
-                updateCityField.setText(selectedCursist.getCity());
-                updateCountryField.setText(selectedCursist.getCountry());
-                updateZipField.setText(selectedCursist.getZipCode());
-
-                HBox nameBox = new HBox(nameLabel, updateNaamField);
-                HBox emailBox = new HBox(emailLabel, updateEmailField);
-                HBox birthDateBox = new HBox(birthDateLabel, updateBirthDateField);
-                HBox addressBox = new HBox(addressLabel, updateAddressField);
-                HBox cityBox = new HBox(cityLabel, updateCityField);
-                HBox countryBox = new HBox(countryLabel, updateCountryField);
-                HBox zipCodeBox = new HBox(zipCodeLabel, updateZipField);
-
-                // Set spacing between elements in each HBox
-                nameBox.setSpacing(10); // Adjust this value as needed
-                emailBox.setSpacing(10);
-                birthDateBox.setSpacing(10);
-                addressBox.setSpacing(10);
-                cityBox.setSpacing(10);
-                countryBox.setSpacing(10);
-                zipCodeBox.setSpacing(10);
-
-                // Create VBox to hold all HBox elements
-                VBox updateFields = new VBox(nameBox, emailBox, birthDateBox, addressBox, cityBox, countryBox,
-                        zipCodeBox);
-
-                // Set spacing between VBox children
-                updateFields.setSpacing(15);
-                updateFields.setSpacing(15);
-
-                editWindow.setTop(editWindowTitle);
-                BorderPane.setAlignment(editWindowTitle, Pos.CENTER);
-                editWindow.setCenter(updateFields);
-                editWindow.setBottom(editButtons);
-                editButtons.setAlignment(Pos.CENTER);
-                editButtons.setSpacing(15);
-                BorderPane.setMargin(editButtons, new Insets(0, 0, 25, 0));
-                BorderPane.setMargin(updateFields, new Insets(25));
-
-                Scene confirmEdit = new Scene(editWindow, 800, 600);
-                confirmEdit.getRoot().setStyle("-fx-background-color: #f5f5dc;");
-                stage.setScene(confirmEdit);
-                stage.show();
-
-                confirmButton.setOnAction(g -> {
-                    // Get the selected cursist
-                    selectedCursist.setEmailAddress(updateEmailField.getText());
-                    selectedCursist.setName(updateNaamField.getText());
-                    selectedCursist.setCity(updateCityField.getText());
-                    selectedCursist.setCountry(updateCountryField.getText());
-                    selectedCursist.setAddress(updateAddressField.getText());
-                    selectedCursist.setZipCode(updateZipField.getText());
-
-                    cursistController.updateCursistFields(selectedCursist);
-
-                    Alert alert = new Alert(AlertType.INFORMATION);
-
-                    // Set the title and header text
-                    alert.setTitle("Confirmed");
-                    alert.setHeaderText(null);
-
-                    // Set the content text
-                    alert.setContentText("Edits have been confirmed!");
-
-                    // Show the alert
+                // make sure there is a cursist selected
+                if (list.getSelectionModel().getSelectedItem() == null) {
+                    // if there is no cursist selected, show alert
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setTitle("No cursist selected");
+                    alert.setHeaderText("No cursist selected");
+                    alert.setContentText("Please select a cursist to edit");
                     alert.showAndWait();
+                } else {
 
-                });
+                    BorderPane editWindow = new BorderPane();
+                    Label editWindowTitle = new Label("Edit window");
+                    editWindowTitle.setStyle("-fx-font-size: 30;");
+                    Button confirmButton = new Button("Confirm");
+                    confirmButton.setPadding(buttonsMenuPadding);
+                    confirmButton.setStyle("-fx-background-color: #d2b48c;");
 
+                    HBox editButtons = new HBox(backHome, confirmButton);
+
+                    String selectedCursistName = list.getSelectionModel().getSelectedItem();
+                    Cursist selectedCursist = cursistController.getCursistByName(selectedCursistName);
+
+                    Label nameLabel = new Label("Name:");
+                    Label emailLabel = new Label("Email:");
+                    Label birthDateLabel = new Label("Birth Date:");
+                    Label addressLabel = new Label("Address:");
+                    Label cityLabel = new Label("City:");
+                    Label countryLabel = new Label("Country:");
+                    Label zipCodeLabel = new Label("Zip Code:");
+
+                    updateNaamField.setText(selectedCursist.getName());
+                    updateEmailField.setText(selectedCursist.getEmailAddress());
+                    updateBirthDateField.setText(selectedCursist.getBirthDate().toString());
+                    genderChoiceBox.getSelectionModel().selectFirst();
+                    updateAddressField.setText(selectedCursist.getAddress());
+                    updateCityField.setText(selectedCursist.getCity());
+                    updateCountryField.setText(selectedCursist.getCountry());
+                    updateZipField.setText(selectedCursist.getZipCode());
+
+                    HBox nameBox = new HBox(nameLabel, updateNaamField);
+                    HBox emailBox = new HBox(emailLabel, updateEmailField);
+                    HBox birthDateBox = new HBox(birthDateLabel, updateBirthDateField);
+                    HBox addressBox = new HBox(addressLabel, updateAddressField);
+                    HBox cityBox = new HBox(cityLabel, updateCityField);
+                    HBox countryBox = new HBox(countryLabel, updateCountryField);
+                    HBox zipCodeBox = new HBox(zipCodeLabel, updateZipField);
+
+                    // Set spacing between elements in each HBox
+                    nameBox.setSpacing(10); // Adjust this value as needed
+                    emailBox.setSpacing(10);
+                    birthDateBox.setSpacing(10);
+                    addressBox.setSpacing(10);
+                    cityBox.setSpacing(10);
+                    countryBox.setSpacing(10);
+                    zipCodeBox.setSpacing(10);
+
+                    // Create VBox to hold all HBox elements
+                    VBox updateFields = new VBox(nameBox, emailBox, birthDateBox, addressBox, cityBox, countryBox,
+                            zipCodeBox);
+
+                    // Set spacing between VBox children
+                    updateFields.setSpacing(15);
+                    updateFields.setSpacing(15);
+
+                    editWindow.setTop(editWindowTitle);
+                    BorderPane.setAlignment(editWindowTitle, Pos.CENTER);
+                    editWindow.setCenter(updateFields);
+                    editWindow.setBottom(editButtons);
+                    editButtons.setAlignment(Pos.CENTER);
+                    editButtons.setSpacing(15);
+                    BorderPane.setMargin(editButtons, new Insets(0, 0, 25, 0));
+                    BorderPane.setMargin(updateFields, new Insets(25));
+
+                    Scene confirmEdit = new Scene(editWindow, 800, 600);
+                    confirmEdit.getRoot().setStyle("-fx-background-color: #f5f5dc;");
+                    stage.setScene(confirmEdit);
+                    stage.show();
+
+                    confirmButton.setOnAction(g -> {
+
+                        // Get the selected cursist
+                        selectedCursist.setEmailAddress(updateEmailField.getText());
+                        selectedCursist.setName(updateNaamField.getText());
+                        selectedCursist.setCity(updateCityField.getText());
+                        selectedCursist.setCountry(updateCountryField.getText());
+                        selectedCursist.setAddress(updateAddressField.getText());
+                        selectedCursist.setZipCode(updateZipField.getText());
+
+                        cursistController.updateCursistFields(selectedCursist);
+
+                        Alert alert = new Alert(AlertType.INFORMATION);
+
+                        // Set the title and header text
+                        alert.setTitle("Confirmed");
+                        alert.setHeaderText(null);
+
+                        // Set the content text
+                        alert.setContentText("Edits have been confirmed!");
+
+                        // Show the alert
+                        alert.showAndWait();
+
+                    });
+                }
             });
+
         });
         homeScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
         return homeScene;
