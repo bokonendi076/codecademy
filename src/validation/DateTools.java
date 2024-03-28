@@ -43,7 +43,7 @@ public class DateTools {
         if (inputDate.isAfter(currentDate)) {
             return false; 
         }
-
+    
         // Check if the given date is valid according to calendar rules
         if ((month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
                 && (1 <= day && day <= 31)) {
@@ -63,7 +63,7 @@ public class DateTools {
                 }
             }
         }
-
+    
         return false; 
     }
 }
