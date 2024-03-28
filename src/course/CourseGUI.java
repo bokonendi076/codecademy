@@ -281,7 +281,7 @@ public class CourseGUI extends Application {
             chooseButton.setStyle("-fx-background-color: #d2b48c;");
 
             // Use the class-level backHome variable
-            HBox buttonsEdit = new HBox(chooseButton, backHome);
+            HBox buttonsEdit = new HBox(backHome, chooseButton);
             buttonsEdit.setSpacing(15);
 
             Insets buttonsEditPadding = new Insets(0, 15, 0, 15);
