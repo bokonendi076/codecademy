@@ -22,8 +22,8 @@
       "type": "java",
       "name": "OverViewGUI",
       "request": "launch",
-      "mainClass": "main.OverViewGUI",
-      "projectName": "CodeCademy_dcab69ce"
+      "mainClass": "main.CodeCademy",
+      "projectName": "CodeCademy - kopie_e794cfa3"
     },
     {
       "type": "java",
@@ -78,7 +78,7 @@
       "name": "CodeCademy",
       "request": "launch",
       "mainClass": "main.CodeCademy",
-      "projectName": "CodeCademy_dcab69ce"
+      "projectName": "CodeCademy - kopie_e794cfa3"
     },
     {
       "type": "java",
