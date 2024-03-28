@@ -38,6 +38,7 @@ public class MailTools {
      *          }
      * 
      */
+    // check if email is correct according to below standards
     public static boolean validateMailAddress(String mailAddress) {
 
         if (!mailAddress.contains("@") || mailAddress.split("@")[0].length() < 1) {

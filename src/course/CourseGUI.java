@@ -193,7 +193,7 @@ public class CourseGUI extends Application {
             BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
             cursistPage.setTop(cursistPageTitle);
 
-            HBox cursistPageButtons = new HBox(deleteButton, backHome, infoButton);
+            HBox cursistPageButtons = new HBox(backHome, deleteButton, infoButton);
             cursistPageButtons.setSpacing(10);
             Insets cursistPageButtonsPadding = new Insets(0, 15, 0, 15);
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
@@ -281,7 +281,7 @@ public class CourseGUI extends Application {
             chooseButton.setStyle("-fx-background-color: #d2b48c;");
 
             // Use the class-level backHome variable
-            HBox buttonsEdit = new HBox(chooseButton, backHome);
+            HBox buttonsEdit = new HBox(backHome, chooseButton);
             buttonsEdit.setSpacing(15);
 
             Insets buttonsEditPadding = new Insets(0, 15, 0, 15);

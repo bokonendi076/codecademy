@@ -1,6 +1,10 @@
 package cursist;
 
 import DatabaseManager.*;
+import validation.CursistNameTools;
+import validation.DateTools;
+import validation.MailTools;
+import validation.PostalCode;
 import validation.Validation;
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -33,11 +37,18 @@ public class CursistGUI extends Application {
     private Button backToCodeCademy;
     private BorderPane homePane;
     private Validation validator;
+    private MailTools mailValidator;
+    private PostalCode postalValidator;
+    private DateTools dateValidator;
+    private CursistNameTools nameValidator;
 
     // Constructor
     public CursistGUI(CursistController cursistController) {
         this.cursistController = cursistController;
         this.validator = new Validation();
+        this.mailValidator = new MailTools();
+        this.postalValidator = new PostalCode();
+        this.nameValidator = new CursistNameTools();
     }
 
     GUI gui = new GUI();
@@ -124,38 +135,68 @@ public class CursistGUI extends Application {
 
         addButton.setOnAction(f -> {
             try {
-                String naam = createNaamField.getText();
+                String name = createNaamField.getText();
                 String email = createEmailField.getText();
                 LocalDate birthDate = createBirthDateField.getValue();
                 String postal = createZipField.getText();
 
-                // check if email is entered
-                if (email.isEmpty()) {
+                // check name field
+                if (!nameValidator.validateCursistName(name)) {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
-                    alert.setContentText("Email cannot be empty.");
+                    alert.setContentText("Name format is empty/incorrect");
                     alert.showAndWait();
                     return;
                 }
 
-                if (!validator.validateMailAddress(email)) {
+
+                // check email field
+                if (!mailValidator.validateMailAddress(email)) {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
-                    alert.setContentText("Email format is incorrect");
+                    alert.setContentText("Email format is empty/incorrect");
                     alert.showAndWait();
                     return;
                 }
 
-                if (!validator.formatPostalCode(postal)) {
+                if (postal.isEmpty()) {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
-                    alert.setContentText("Postal format is incorrect");
+                    alert.setContentText("Zipcode cannot be empty.");
                     alert.showAndWait();
                     return;
                 }
+
+                // if (!validator.formatPostalCode(postal)) {
+                //     Alert alert = new Alert(AlertType.ERROR);
+                //     alert.setTitle("Error");
+                //     alert.setHeaderText(null);
+                //     alert.setContentText("Postal format is incorrect");
+                //     alert.showAndWait();
+                //     return;
+                // }
+
+                if (birthDate == null) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Birthdate cannot be empty.");
+                    alert.showAndWait();
+                    return;
+                }
+
+                if (!DateTools.validateDate(birthDate.getDayOfMonth(), birthDate.getMonthValue(), birthDate.getYear())) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Birthdate is not possible");
+                    alert.showAndWait();
+                    return;
+                }
+
 
                 // get values from form
                 String gender = genderChoiceBox.getValue();
@@ -167,7 +208,7 @@ public class CursistGUI extends Application {
                 Cursist newCursist = new Cursist();
 
                 // Set values
-                newCursist.setName(naam);
+                newCursist.setName(name);
                 newCursist.setEmailAddress(email);
                 newCursist.setBirthDate(birthDate);
                 newCursist.setSex(gender);
@@ -271,7 +312,7 @@ public class CursistGUI extends Application {
             infoButton.setStyle("-fx-background-color: #d2b48c;");
             infoButton.setPadding(buttonsMenuPadding);
 
-            HBox cursistPageButtons = new HBox(deleteButton, backHome, infoButton);
+            HBox cursistPageButtons = new HBox(backHome, deleteButton, infoButton);
             cursistPageButtons.setSpacing(10);
             Insets cursistPageButtonsPadding = new Insets(0, 15, 0, 15);
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
@@ -373,7 +414,7 @@ public class CursistGUI extends Application {
             chooseButton.setStyle("-fx-background-color: #d2b48c;");
 
             // Use the class-level backHome variable
-            HBox buttonsEdit = new HBox(chooseButton, backHome);
+            HBox buttonsEdit = new HBox(backHome, chooseButton);
             buttonsEdit.setSpacing(15);
 
             Insets buttonsEditPadding = new Insets(0, 15, 0, 15);
