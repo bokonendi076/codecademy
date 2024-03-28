@@ -40,7 +40,6 @@ public class DateTools {
         // Check if the given date is in the future
         LocalDate currentDate = LocalDate.now();
         LocalDate inputDate = LocalDate.of(year, month, day);
-        System.out.println(inputDate);
         if (inputDate.isAfter(currentDate)) {
             return false;
         } else {

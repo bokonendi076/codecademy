@@ -53,6 +53,19 @@ public class MailTools {
         } else if (!mailAddress.contains("@") || mailAddress.split("@")[1].split("\\.")[1].length() < 1) {
             return false;
         }
+        String domain = mailAddress.split("@")[1];
+        String[] domainParts = domain.split("\\.");
+
+        // Check if there is at least one part before the dot and at least one part
+        // after the dot
+        if (domainParts.length != 2 || domainParts[0].isEmpty() || domainParts[1].isEmpty()) {
+            return false;
+        }
+
+        // Check if the part after the dot contains only letters
+        if (!domainParts[1].matches("[a-zA-Z]+")) {
+            return false;
+        }
 
         return true;
 

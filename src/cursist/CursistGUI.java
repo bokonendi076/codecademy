@@ -243,7 +243,6 @@ public class CursistGUI extends Application {
                 alert.setHeaderText(null);
                 alert.setContentText("Failed to add cursist.");
                 alert.showAndWait();
-                e.printStackTrace();
             }
 
         });
