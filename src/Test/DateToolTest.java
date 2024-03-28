@@ -64,4 +64,11 @@ public class DateToolTest {
         year = 2023;
         assertFalse(DateTools.validateDate(day, month, year));
     }
+
+    @Test
+    public void validateDate30February2024ReturnsFalse() {
+        int day = 30, month = 2, year = 2024;
+        assertFalse(DateTools.validateDate(day, month, year));
+    }
 }
+

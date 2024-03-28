@@ -1,6 +1,7 @@
 package cursist;
 
 import DatabaseManager.*;
+import validation.DateTools;
 import validation.MailTools;
 import validation.PostalCode;
 import validation.Validation;
@@ -37,6 +38,7 @@ public class CursistGUI extends Application {
     private Validation validator;
     private MailTools mailValidator;
     private PostalCode postalValidator;
+    private DateTools dateValidator;
 
     // Constructor
     public CursistGUI(CursistController cursistController) {
@@ -154,14 +156,42 @@ public class CursistGUI extends Application {
                     return;
                 }
 
-                if (!validator.formatPostalCode(postal)) {
+                if (postal.isEmpty()) {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
-                    alert.setContentText("Postal format is incorrect");
+                    alert.setContentText("Zipcode cannot be empty.");
                     alert.showAndWait();
                     return;
                 }
+
+                // if (!validator.formatPostalCode(postal)) {
+                //     Alert alert = new Alert(AlertType.ERROR);
+                //     alert.setTitle("Error");
+                //     alert.setHeaderText(null);
+                //     alert.setContentText("Postal format is incorrect");
+                //     alert.showAndWait();
+                //     return;
+                // }
+
+                if (birthDate == null) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Birthdate cannot be empty.");
+                    alert.showAndWait();
+                    return;
+                }
+
+                if (!DateTools.validateDate(birthDate.getDayOfMonth(), birthDate.getMonthValue(), birthDate.getYear())) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Birthdate is not possible");
+                    alert.showAndWait();
+                    return;
+                }
+
 
                 // get values from form
                 String gender = genderChoiceBox.getValue();
