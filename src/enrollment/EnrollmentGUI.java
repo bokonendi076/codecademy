@@ -106,34 +106,44 @@ public class EnrollmentGUI extends Application {
         addButton.setStyle("-fx-background-color: #d2b48c;");
 
         addButton.setOnAction(f -> {
+            // check if input fields are empty
+            if (datePicker.getValue() == null || courseNameBox.getValue() == null
+                    || cursistEmailBox.getValue() == null) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Please fill in all the fields.");
+                alert.showAndWait();
 
-            LocalDate enrollmentDate = datePicker.getValue();
-            String courseName = courseNameBox.getValue().toString();
-            String cursistEmail = cursistEmailBox.getValue().toString();
+            } else {
 
-            Enrollment enrollment = new Enrollment();
-            enrollment.setEnrollmentDate(enrollmentDate);
-            enrollment.setCourseName(courseName);
-            enrollment.setCursistEmailAddress(cursistEmail);
+                LocalDate enrollmentDate = datePicker.getValue();
+                String courseName = courseNameBox.getValue().toString();
+                String cursistEmail = cursistEmailBox.getValue().toString();
 
-            // Add the enrollment to the database
-            enrollmentController.addEnrollment(enrollment);
+                Enrollment enrollment = new Enrollment();
+                enrollment.setEnrollmentDate(enrollmentDate);
+                enrollment.setCourseName(courseName);
+                enrollment.setCursistEmailAddress(cursistEmail);
 
-            // Show alert after adding a contentitem
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText(null);
-            alert.setContentText("Enrollment registered successfully.");
-            alert.showAndWait();
+                // Add the enrollment to the database
+                enrollmentController.addEnrollment(enrollment);
 
-            // Clear the input fields after adding a contentitem
-            datePicker.setValue(null);
-            courseNameBox.getSelectionModel().clearSelection();
-            cursistEmailBox.getSelectionModel().clearSelection();
+                // Show alert after adding a contentitem
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText(null);
+                alert.setContentText("Enrollment registered successfully.");
+                alert.showAndWait();
 
-            courseNameBox.setPromptText("Select course name");
-            cursistEmailBox.setPromptText("Select emailaddress");
+                // Clear the input fields after adding a contentitem
+                datePicker.setValue(null);
+                courseNameBox.getSelectionModel().clearSelection();
+                cursistEmailBox.getSelectionModel().clearSelection();
 
+                courseNameBox.setPromptText("Select course name");
+                cursistEmailBox.setPromptText("Select emailaddress");
+            }
         });
 
         VBox createFields = new VBox(datePicker, courseNameBox, cursistEmailBox, addButton);
