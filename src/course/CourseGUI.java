@@ -330,7 +330,16 @@ public class CourseGUI extends Application {
                     confirmButton.setPadding(buttonsMenuPadding);
                     confirmButton.setStyle("-fx-background-color: #d2b48c;");
 
-                    HBox editButtons = new HBox(backHome, confirmButton);
+                    // make seperate button that goes back to the list of courses
+                    Button backButton = new Button("< Back to list");
+                    backButton.setPadding(buttonsMenuPadding);
+                    backButton.setStyle("-fx-background-color: #d2b48c;");
+                    backButton.setOnAction(g -> {
+                        stage.setScene(updateScene);
+                        stage.show();
+                    });
+
+                    HBox editButtons = new HBox(backButton, confirmButton);
 
                     String selectedCourseName = list.getSelectionModel().getSelectedItem();
                     Course selectedCourse = courseController.getCourseByName(selectedCourseName);
