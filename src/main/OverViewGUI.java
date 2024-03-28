@@ -25,6 +25,7 @@ public class OverViewGUI extends Application {
     private Button backToCodeCademy;
     private BorderPane homePane;
     private OverViewController overViewController = new OverViewController();
+    private Button backToOptions;
 
     // Constructor
     public OverViewGUI() {
@@ -136,7 +137,15 @@ public class OverViewGUI extends Application {
                 Button showProgressButton = new Button("Show Average Progress per Module");
                 showProgressButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
 
-                VBox layout2 = new VBox(10, genderOverview1, courseComboBox, showProgressButton, backToHomeButton);
+                backToOptions = new Button("< Back");
+                backToOptions.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+                backToOptions.setPrefSize(150, 50);
+                backToOptions.setOnAction(event -> {
+                    stage.setScene(courseOverviewScene);
+                    stage.show();
+                });
+
+                VBox layout2 = new VBox(10, genderOverview1, courseComboBox, showProgressButton, backToOptions);
                 layout2.setAlignment(Pos.CENTER);
 
                 BorderPane overViewPane2 = new BorderPane();
@@ -198,14 +207,6 @@ public class OverViewGUI extends Application {
                 Button showProgressButton = new Button("Show Progress per Module (%)");
                 showProgressButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
                 showProgressButton.setPrefSize(150, 50);
-
-                Button backToOptions = new Button("< Overviews");
-                backToOptions.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
-                backToOptions.setPrefSize(150, 50);
-                backToOptions.setOnAction(event -> {
-                    stage.setScene(courseOverviewScene);
-                    stage.show();
-                });
 
                 VBox layout3 = new VBox(10, titleCertificateOverview, accountComboBox, courseComboBox,
                         showProgressButton, backToOptions);

@@ -113,6 +113,7 @@ public class CursistGUI extends Application {
 
         DatePicker createBirthDateField = new DatePicker();
         createBirthDateField.setPromptText("Birthdate");
+        createBirthDateField.setEditable(false);
 
         ChoiceBox<String> genderChoiceBox = new ChoiceBox<>();
         genderChoiceBox.getItems().addAll("Select gender", "Male", "Female", "Other");
@@ -150,7 +151,6 @@ public class CursistGUI extends Application {
                     return;
                 }
 
-
                 // check email field
                 if (!mailValidator.validateMailAddress(email)) {
                     Alert alert = new Alert(AlertType.ERROR);
@@ -171,12 +171,12 @@ public class CursistGUI extends Application {
                 }
 
                 // if (!validator.formatPostalCode(postal)) {
-                //     Alert alert = new Alert(AlertType.ERROR);
-                //     alert.setTitle("Error");
-                //     alert.setHeaderText(null);
-                //     alert.setContentText("Postal format is incorrect");
-                //     alert.showAndWait();
-                //     return;
+                // Alert alert = new Alert(AlertType.ERROR);
+                // alert.setTitle("Error");
+                // alert.setHeaderText(null);
+                // alert.setContentText("Postal format is incorrect");
+                // alert.showAndWait();
+                // return;
                 // }
 
                 if (birthDate == null) {
@@ -188,7 +188,8 @@ public class CursistGUI extends Application {
                     return;
                 }
 
-                if (!DateTools.validateDate(birthDate.getDayOfMonth(), birthDate.getMonthValue(), birthDate.getYear())) {
+                if (DateTools.validateDate(birthDate.getDayOfMonth(), birthDate.getMonthValue(),
+                        birthDate.getYear()) == false) {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
@@ -196,7 +197,6 @@ public class CursistGUI extends Application {
                     alert.showAndWait();
                     return;
                 }
-
 
                 // get values from form
                 String gender = genderChoiceBox.getValue();
