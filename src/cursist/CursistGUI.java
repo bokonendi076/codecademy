@@ -277,7 +277,7 @@ public class CursistGUI extends Application {
             infoButton.setStyle("-fx-background-color: #d2b48c;");
             infoButton.setPadding(buttonsMenuPadding);
 
-            HBox cursistPageButtons = new HBox(deleteButton, backHome, infoButton);
+            HBox cursistPageButtons = new HBox(backHome, deleteButton, infoButton);
             cursistPageButtons.setSpacing(10);
             Insets cursistPageButtonsPadding = new Insets(0, 15, 0, 15);
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
