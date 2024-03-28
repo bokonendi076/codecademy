@@ -314,79 +314,90 @@ public class CourseGUI extends Application {
             updateDifficultyLevel.getSelectionModel().selectFirst();
 
             chooseButton.setOnAction(f -> {
-                BorderPane editWindow = new BorderPane();
-                Label editWindowTitle = new Label("Edit window");
-                editWindowTitle.setStyle("-fx-font-size: 30;");
-                Button confirmButton = new Button("Confirm");
-                confirmButton.setPadding(buttonsMenuPadding);
-                confirmButton.setStyle("-fx-background-color: #d2b48c;");
-
-                HBox editButtons = new HBox(backHome, confirmButton);
-
-                String selectedCourseName = list.getSelectionModel().getSelectedItem();
-                Course selectedCourse = courseController.getCourseByName(selectedCourseName);
-
-                // Create labels
-                Label nameLabel = new Label("Name:");
-                Label subjectLabel = new Label("Subject:");
-                Label introductionLabel = new Label("Introduction:");
-                Label difficLabel = new Label("Difficulty Level:");
-
-                // Set text for each field based on selectedCourse
-                updateNameField.setText(selectedCourse.getName());
-                updateSubjectField.setText(selectedCourse.getSubject());
-                updateIntroductionText.setText(selectedCourse.getIntroductionText());
-                updateDifficultyLevel.setValue(String.valueOf(selectedCourse.getDifficultyLevel()));
-
-                // Create HBox for each label and corresponding field
-                HBox nameBox = new HBox(nameLabel, updateNameField);
-                HBox subjectBox = new HBox(subjectLabel, updateSubjectField);
-                HBox introductionBox = new HBox(introductionLabel, updateIntroductionText);
-                HBox difficultyLevelBox = new HBox(difficLabel, updateDifficultyLevel);
-
-                // Set spacing between elements in each HBox
-                nameBox.setSpacing(10);
-                subjectBox.setSpacing(10);
-                introductionBox.setSpacing(10);
-                difficultyLevelBox.setSpacing(10);
-
-                // Create VBox to hold all HBox elements
-                VBox updateFields = new VBox(nameBox, subjectBox, introductionBox, difficultyLevelBox);
-
-                // Set spacing between VBox children
-                updateFields.setSpacing(15);
-
-                editWindow.setTop(editWindowTitle);
-                BorderPane.setAlignment(editWindowTitle, Pos.CENTER);
-                editWindow.setCenter(updateFields);
-                editWindow.setBottom(editButtons);
-                editButtons.setAlignment(Pos.CENTER);
-                editButtons.setSpacing(15);
-                BorderPane.setMargin(editButtons, new Insets(0, 0, 25, 0));
-                BorderPane.setMargin(updateFields, new Insets(25));
-
-                Scene confirmEdit = new Scene(editWindow, 800, 600);
-                confirmEdit.getRoot().setStyle("-fx-background-color: #f5f5dc;");
-                stage.setScene(confirmEdit);
-                stage.show();
-
-                confirmButton.setOnAction(g -> {
-                    selectedCourse.setName(updateNameField.getText());
-                    selectedCourse.setSubject(updateSubjectField.getText());
-                    selectedCourse.setIntroductionText(updateIntroductionText.getText());
-                    selectedCourse.setDifficultyLevel((updateDifficultyLevel.getValue()));
-
-                    courseController.updateCourseFields(selectedCourse);
-
-                    // Add alert pop-up that course has been edited
+                // check if a course is selected
+                if (list.getSelectionModel().getSelectedIndex() == -1) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Course edited");
+                    alert.setTitle("No course selected");
                     alert.setHeaderText(null);
-                    alert.setContentText("Course has been edited successfully!");
+                    alert.setContentText("Please select a course to edit");
                     alert.showAndWait();
+                } else {
 
-                });
+                    BorderPane editWindow = new BorderPane();
+                    Label editWindowTitle = new Label("Edit window");
+                    editWindowTitle.setStyle("-fx-font-size: 30;");
+                    Button confirmButton = new Button("Confirm");
+                    confirmButton.setPadding(buttonsMenuPadding);
+                    confirmButton.setStyle("-fx-background-color: #d2b48c;");
+
+                    HBox editButtons = new HBox(backHome, confirmButton);
+
+                    String selectedCourseName = list.getSelectionModel().getSelectedItem();
+                    Course selectedCourse = courseController.getCourseByName(selectedCourseName);
+
+                    // Create labels
+                    Label nameLabel = new Label("Name:");
+                    Label subjectLabel = new Label("Subject:");
+                    Label introductionLabel = new Label("Introduction:");
+                    Label difficLabel = new Label("Difficulty Level:");
+
+                    // Set text for each field based on selectedCourse
+                    updateNameField.setText(selectedCourse.getName());
+                    updateSubjectField.setText(selectedCourse.getSubject());
+                    updateIntroductionText.setText(selectedCourse.getIntroductionText());
+                    updateDifficultyLevel.setValue(String.valueOf(selectedCourse.getDifficultyLevel()));
+
+                    // Create HBox for each label and corresponding field
+                    HBox nameBox = new HBox(nameLabel, updateNameField);
+                    HBox subjectBox = new HBox(subjectLabel, updateSubjectField);
+                    HBox introductionBox = new HBox(introductionLabel, updateIntroductionText);
+                    HBox difficultyLevelBox = new HBox(difficLabel, updateDifficultyLevel);
+
+                    // Set spacing between elements in each HBox
+                    nameBox.setSpacing(10);
+                    subjectBox.setSpacing(10);
+                    introductionBox.setSpacing(10);
+                    difficultyLevelBox.setSpacing(10);
+
+                    // Create VBox to hold all HBox elements
+                    VBox updateFields = new VBox(nameBox, subjectBox, introductionBox, difficultyLevelBox);
+
+                    // Set spacing between VBox children
+                    updateFields.setSpacing(15);
+
+                    editWindow.setTop(editWindowTitle);
+                    BorderPane.setAlignment(editWindowTitle, Pos.CENTER);
+                    editWindow.setCenter(updateFields);
+                    editWindow.setBottom(editButtons);
+                    editButtons.setAlignment(Pos.CENTER);
+                    editButtons.setSpacing(15);
+                    BorderPane.setMargin(editButtons, new Insets(0, 0, 25, 0));
+                    BorderPane.setMargin(updateFields, new Insets(25));
+
+                    Scene confirmEdit = new Scene(editWindow, 800, 600);
+                    confirmEdit.getRoot().setStyle("-fx-background-color: #f5f5dc;");
+                    stage.setScene(confirmEdit);
+                    stage.show();
+
+                    confirmButton.setOnAction(g -> {
+                        selectedCourse.setName(updateNameField.getText());
+                        selectedCourse.setSubject(updateSubjectField.getText());
+                        selectedCourse.setIntroductionText(updateIntroductionText.getText());
+                        selectedCourse.setDifficultyLevel((updateDifficultyLevel.getValue()));
+
+                        courseController.updateCourseFields(selectedCourse);
+
+                        // Add alert pop-up that course has been edited
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Course edited");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Course has been edited successfully!");
+                        alert.showAndWait();
+
+                    });
+                }
             });
+
         });
 
         homeScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");

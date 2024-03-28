@@ -9,6 +9,13 @@
       "name": "CursistGUI",
       "request": "launch",
       "mainClass": "cursist.CursistGUI",
+      "projectName": "CodeCademy - kopie_e794cfa3"
+    },
+    {
+      "type": "java",
+      "name": "CursistGUI",
+      "request": "launch",
+      "mainClass": "cursist.CursistGUI",
       "projectName": "codecademy_6b899ebd"
     },
     {
