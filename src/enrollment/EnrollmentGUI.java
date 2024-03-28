@@ -136,13 +136,11 @@ public class EnrollmentGUI extends Application {
                 alert.setContentText("Enrollment registered successfully.");
                 alert.showAndWait();
 
-                // Clear the input fields after adding a contentitem
+                // Clear input fields
                 datePicker.setValue(null);
-                courseNameBox.getSelectionModel().clearSelection();
-                cursistEmailBox.getSelectionModel().clearSelection();
+                courseNameBox.setValue(null);
+                cursistEmailBox.setValue(null);
 
-                courseNameBox.setPromptText("Select course name");
-                cursistEmailBox.setPromptText("Select emailaddress");
             }
         });
 

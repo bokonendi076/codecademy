@@ -108,6 +108,7 @@ public class OverViewGUI extends Application {
             averageProgressModule.setPrefSize(150, 50);
             progressPercentage.setPrefSize(150, 50);
             completedCourses.setPrefSize(150, 50);
+            backToHomeButton.setPrefSize(150, 50);
 
             VBox layout = new VBox(10, averageProgressModule, progressPercentage, completedCourses, backToHomeButton);
             layout.setAlignment(Pos.CENTER);
@@ -175,28 +176,35 @@ public class OverViewGUI extends Application {
             });
 
             averageProgressModule.setOnAction(b -> {
-                Stage certificateOverviewStage = new Stage(); // Create a new stage
 
                 Label titleCertificateOverview = new Label("Select an emailaddress and course:");
+                titleCertificateOverview.setStyle("-fx-font-size: 28;");
+                titleCertificateOverview.setPadding(new Insets(25, 0, 25, 0));
 
                 // Retrieve account emails using the CursistController method
                 ArrayList<String> accountEmails = cursistController.getAllCursistEmailAddress();
                 ComboBox<String> accountComboBox = new ComboBox<>(FXCollections.observableArrayList(accountEmails));
                 accountComboBox.setPromptText("Select emailaddress");
+                accountComboBox.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+                accountComboBox.setPrefSize(150, 50);
 
                 // Retrieve course names
                 List<String> courseNames = overViewController.getCourseNames();
                 ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
                 courseComboBox.setPromptText("Select course");
+                courseComboBox.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+                courseComboBox.setPrefSize(150, 50);
 
                 Button showProgressButton = new Button("Show Progress per Module (%)");
                 showProgressButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+                showProgressButton.setPrefSize(150, 50);
 
                 VBox layout3 = new VBox(10, titleCertificateOverview, accountComboBox, courseComboBox,
                         showProgressButton, backToHomeButton);
                 layout3.setAlignment(Pos.CENTER);
 
                 BorderPane certificateOverviewPane = new BorderPane();
+
                 certificateOverviewPane.setTop(titleCertificateOverview);
                 BorderPane.setAlignment(titleCertificateOverview, Pos.CENTER);
                 titleCertificateOverview.setPadding(new Insets(25, 0, 25, 0));
@@ -204,6 +212,7 @@ public class OverViewGUI extends Application {
                 certificateOverviewPane.setCenter(layout3);
 
                 Scene certificateOverviewScene = new Scene(certificateOverviewPane, 800, 600);
+                certificateOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
 
                 showProgressButton.setOnAction(event -> {
                     String selectedAccount = accountComboBox.getValue();
@@ -229,6 +238,8 @@ public class OverViewGUI extends Application {
                         alert.showAndWait();
                     }
                 });
+
+                // style the scene
 
                 stage.setScene(certificateOverviewScene);
                 stage.show(); // Show the new stage
@@ -283,7 +294,7 @@ public class OverViewGUI extends Application {
                 stage.setScene(completedOverviewScene);
                 stage.show();
             });
-            
+
         });
 
         certificateOverviewButton.setOnAction(e -> {
