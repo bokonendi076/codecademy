@@ -1,6 +1,8 @@
 package cursist;
 
 import DatabaseManager.*;
+import validation.MailTools;
+import validation.PostalCode;
 import validation.Validation;
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -33,11 +35,15 @@ public class CursistGUI extends Application {
     private Button backToCodeCademy;
     private BorderPane homePane;
     private Validation validator;
+    private MailTools mailValidator;
+    private PostalCode postalValidator;
 
     // Constructor
     public CursistGUI(CursistController cursistController) {
         this.cursistController = cursistController;
         this.validator = new Validation();
+        this.mailValidator = new MailTools();
+        this.postalValidator = new PostalCode();
     }
 
     GUI gui = new GUI();
@@ -139,7 +145,7 @@ public class CursistGUI extends Application {
                     return;
                 }
 
-                if (!validator.validateMailAddress(email)) {
+                if (!mailValidator.validateMailAddress(email)) {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
