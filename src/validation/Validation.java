@@ -2,9 +2,27 @@ package validation;
 
 public class Validation {
 
+           // Check if the name is not empty and if the name contains only letters and not longer than 50 characters
+    public boolean validateCursistName(String cursistName) {
+ 
+            if (cursistName.isEmpty()) {
+                return false;
+            }
+            
+            if (!cursistName.matches("[a-zA-Z]+") || cursistName.length() > 50) {
+                return false;
+            }
+            
+            return true;
+    }
+
     
     // check if email is correct according to below standards
     public boolean validateMailAddress(String mailAddress) {
+
+        if (mailAddress.isEmpty()) {
+            return false;
+        }
 
         if (!mailAddress.contains("@") || mailAddress.split("@")[0].length() < 1) {
             return false;

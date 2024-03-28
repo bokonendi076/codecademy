@@ -1,6 +1,7 @@
 package cursist;
 
 import DatabaseManager.*;
+import validation.CursistNameTools;
 import validation.DateTools;
 import validation.MailTools;
 import validation.PostalCode;
@@ -39,6 +40,7 @@ public class CursistGUI extends Application {
     private MailTools mailValidator;
     private PostalCode postalValidator;
     private DateTools dateValidator;
+    private CursistNameTools nameValidator;
 
     // Constructor
     public CursistGUI(CursistController cursistController) {
@@ -46,6 +48,7 @@ public class CursistGUI extends Application {
         this.validator = new Validation();
         this.mailValidator = new MailTools();
         this.postalValidator = new PostalCode();
+        this.nameValidator = new CursistNameTools();
     }
 
     GUI gui = new GUI();
@@ -132,26 +135,28 @@ public class CursistGUI extends Application {
 
         addButton.setOnAction(f -> {
             try {
-                String naam = createNaamField.getText();
+                String name = createNaamField.getText();
                 String email = createEmailField.getText();
                 LocalDate birthDate = createBirthDateField.getValue();
                 String postal = createZipField.getText();
 
-                // check if email is entered
-                if (email.isEmpty()) {
+                // check name field
+                if (!nameValidator.validateCursistName(name)) {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
-                    alert.setContentText("Email cannot be empty.");
+                    alert.setContentText("Name format is empty/incorrect");
                     alert.showAndWait();
                     return;
                 }
 
+
+                // check email field
                 if (!mailValidator.validateMailAddress(email)) {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
-                    alert.setContentText("Email format is incorrect");
+                    alert.setContentText("Email format is empty/incorrect");
                     alert.showAndWait();
                     return;
                 }
@@ -203,7 +208,7 @@ public class CursistGUI extends Application {
                 Cursist newCursist = new Cursist();
 
                 // Set values
-                newCursist.setName(naam);
+                newCursist.setName(name);
                 newCursist.setEmailAddress(email);
                 newCursist.setBirthDate(birthDate);
                 newCursist.setSex(gender);
