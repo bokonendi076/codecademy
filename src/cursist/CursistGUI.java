@@ -286,27 +286,37 @@ public class CursistGUI extends Application {
 
             // Handle info button action
             infoButton.setOnAction(f -> {
-                String selectedCursist = list.getSelectionModel().getSelectedItem();
-                Cursist selectedCursistForInfo = cursistController.getCursistByName(selectedCursist);
+                // check if a cursist is selected
+                if (list.getSelectionModel().getSelectedItem() == null) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("No cursist selected.");
+                    alert.showAndWait();
+                } else {
+                    String selectedCursist = list.getSelectionModel().getSelectedItem();
+                    Cursist selectedCursistForInfo = cursistController.getCursistByName(selectedCursist);
 
-                String name = selectedCursistForInfo.getName();
-                String email = selectedCursistForInfo.getEmailAddress();
-                String birthdate = selectedCursistForInfo.getBirthDate().toString();
-                String gender = selectedCursistForInfo.getSex();
-                String address = selectedCursistForInfo.getAddress();
-                String city = selectedCursistForInfo.getCity();
-                String country = selectedCursistForInfo.getCountry();
-                String zipCode = selectedCursistForInfo.getZipCode();
+                    String name = selectedCursistForInfo.getName();
+                    String email = selectedCursistForInfo.getEmailAddress();
+                    String birthdate = selectedCursistForInfo.getBirthDate().toString();
+                    String gender = selectedCursistForInfo.getSex();
+                    String address = selectedCursistForInfo.getAddress();
+                    String city = selectedCursistForInfo.getCity();
+                    String country = selectedCursistForInfo.getCountry();
+                    String zipCode = selectedCursistForInfo.getZipCode();
 
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Cursist info");
-                alert.setHeaderText(null);
-                alert.setContentText("Name: " + name + "\nEmail: " + email + "\nBirthdate: " + birthdate + "\nGender: "
-                        + gender + "\nAddress: " + address + "\nCity: " + city + "\nCountry: " + country + "\nZipCode: "
-                        + zipCode);
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Cursist info");
+                    alert.setHeaderText(null);
+                    alert.setContentText(
+                            "Name: " + name + "\nEmail: " + email + "\nBirthdate: " + birthdate + "\nGender: "
+                                    + gender + "\nAddress: " + address + "\nCity: " + city + "\nCountry: " + country
+                                    + "\nZipCode: "
+                                    + zipCode);
 
-                alert.showAndWait();
-
+                    alert.showAndWait();
+                }
             });
 
         });
