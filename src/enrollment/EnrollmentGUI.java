@@ -84,24 +84,37 @@ public class EnrollmentGUI extends Application {
         homePane.setPadding(padding);
         homeScene = new Scene(homePane, 800, 600);
 
-        // Create layout for the enrollment creation
+        // Label for Enrollment Date
+        Label enrollmentDateLabel = new Label("Enrollment Date:");
         DatePicker datePicker = new DatePicker();
         datePicker.setPromptText("Enrollment Date");
         datePicker.setEditable(false);
+        HBox datePickerBox = new HBox(enrollmentDateLabel, datePicker);
+        datePickerBox.setAlignment(Pos.CENTER);
+        datePickerBox.setSpacing(5);
 
-        // Combobox for available courses
+        // Label for Course Name
+        Label addCourseNameLabel = new Label("Course Name:");
         courseController = new courseController();
         ArrayList<String> courseNames = courseController.getAllCourses();
         ObservableList<String> options = FXCollections.observableArrayList(courseNames);
         ComboBox courseNameBox = new ComboBox<>(options);
         courseNameBox.setPromptText("Select course name");
+        HBox courseNameBoxWrapper = new HBox(addCourseNameLabel, courseNameBox);
+        courseNameBoxWrapper.setAlignment(Pos.CENTER);
+        courseNameBoxWrapper.setSpacing(5);
 
-        // Combobox for available cursists
+        // Label for Cursist Email
+        Label cursistEmailLabel = new Label("Cursist Email:");
         cursistController = new CursistController();
         ArrayList<String> cursistEmails = cursistController.getAllCursistEmailAddress();
         ObservableList<String> cursistOptions = FXCollections.observableArrayList(cursistEmails);
         ComboBox cursistEmailBox = new ComboBox<>(cursistOptions);
-        cursistEmailBox.setPromptText("Select emailaddress");
+        cursistEmailBox.setPromptText("Select email address");
+        HBox cursistEmailBoxWrapper = new HBox(cursistEmailLabel, cursistEmailBox);
+        cursistEmailBoxWrapper.setAlignment(Pos.CENTER);
+        cursistEmailBoxWrapper.setSpacing(5);
+
 
         Button addButton = new Button("Register enrollment Item");
         addButton.setStyle("-fx-background-color: #d2b48c;");
@@ -116,9 +129,9 @@ public class EnrollmentGUI extends Application {
                 alert.setHeaderText(null);
                 alert.setContentText("Please fill in all the fields.");
                 alert.showAndWait();
-
+        
             } else {
-
+        
                 // validate the input of date to not be in the future
                 if (datePicker.getValue().isAfter(LocalDate.now())) {
                     Alert alert = new Alert(AlertType.ERROR);
@@ -128,35 +141,35 @@ public class EnrollmentGUI extends Application {
                     alert.showAndWait();
                     return;
                 }
-
+        
                 LocalDate enrollmentDate = datePicker.getValue();
                 String courseName = courseNameBox.getValue().toString();
                 String cursistEmail = cursistEmailBox.getValue().toString();
-
+        
                 Enrollment enrollment = new Enrollment();
                 enrollment.setEnrollmentDate(enrollmentDate);
                 enrollment.setCourseName(courseName);
                 enrollment.setCursistEmailAddress(cursistEmail);
-
+        
                 // Add the enrollment to the database
                 enrollmentController.addEnrollment(enrollment);
-
-                // Show alert after adding a contentitem
+        
+                // Show alert after adding a content item
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText(null);
                 alert.setContentText("Enrollment registered successfully.");
                 alert.showAndWait();
-
+        
                 // Clear input fields
                 datePicker.setValue(null);
                 courseNameBox.setValue(null);
                 cursistEmailBox.setValue(null);
-
+        
             }
-        });
+        });        
 
-        VBox createFields = new VBox(datePicker, courseNameBox, cursistEmailBox, addButton);
+        VBox createFields = new VBox(datePickerBox, courseNameBoxWrapper, cursistEmailBoxWrapper, addButton);
         createFields.setSpacing(7);
         createFields.setAlignment(Pos.CENTER);
 
