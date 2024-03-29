@@ -200,11 +200,11 @@ public class CursistGUI extends Application {
 
                 // check if address, city and country are only letters
 
-                if (!validator.validateOnlyLetters(createAddressField.getText())) {
+                if (!validator.validateStreet(createAddressField.getText())) {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
-                    alert.setContentText("Address can only contain letters");
+                    alert.setContentText("Address should look like: Straatnaam 20");
                     alert.showAndWait();
                     return;
                 }
