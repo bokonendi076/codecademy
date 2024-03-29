@@ -87,6 +87,7 @@ public class EnrollmentGUI extends Application {
         // Create layout for the enrollment creation
         DatePicker datePicker = new DatePicker();
         datePicker.setPromptText("Enrollment Date");
+        datePicker.setEditable(false);
 
         // Combobox for available courses
         courseController = new courseController();
@@ -106,6 +107,7 @@ public class EnrollmentGUI extends Application {
         addButton.setStyle("-fx-background-color: #d2b48c;");
 
         addButton.setOnAction(f -> {
+
             // check if input fields are empty
             if (datePicker.getValue() == null || courseNameBox.getValue() == null
                     || cursistEmailBox.getValue() == null) {
@@ -116,6 +118,16 @@ public class EnrollmentGUI extends Application {
                 alert.showAndWait();
 
             } else {
+
+                // validate the input of date to not be in the future
+                if (datePicker.getValue().isAfter(LocalDate.now())) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Enrollment date cannot be in the future.");
+                    alert.showAndWait();
+                    return;
+                }
 
                 LocalDate enrollmentDate = datePicker.getValue();
                 String courseName = courseNameBox.getValue().toString();
