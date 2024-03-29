@@ -41,6 +41,7 @@ public class OverViewGUI extends Application {
 
         Button backToHomeButton = new Button("< Home");
         backToHomeButton.setStyle("-fx-background-color: #d2b48c;");
+        backToHomeButton.setPrefSize(150, 50);
         backHome = new Button("< Home");
         backHome.setStyle("-fx-background-color: #d2b48c;");
         backHome.setOnAction(k -> {
@@ -325,6 +326,7 @@ public class OverViewGUI extends Application {
             Label titleCertificateOverview = new Label("Certificate Overview:");
             Button viewCertificates = new Button("Gender Certificate %");
             Button generateCertificates = new Button("Account certificates");
+            Button backToPage = new Button("< Back");
 
             viewCertificates.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
             generateCertificates.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
@@ -343,17 +345,20 @@ public class OverViewGUI extends Application {
 
             viewCertificates.setOnAction(event -> {
                 Label genderOverview1 = new Label("Please choose a gender: ");
+                genderOverview1.setStyle("-fx-font-size: 24;");
+                genderOverview1.setPadding(new Insets(25, 0, 25, 0));
 
-                // Assuming you have a method to retrieve genders, replace getCourses() with the
-                // correct method
                 ChoiceBox<String> genderChoiceBox = new ChoiceBox<>();
                 genderChoiceBox.getItems().addAll("Select gender", "Male", "Female", "Other");
                 genderChoiceBox.getSelectionModel().selectFirst();
+                genderChoiceBox.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+                genderChoiceBox.setPrefSize(150, 50);
 
                 Button showProgressButton = new Button("Show Percentage Courses With Certificate");
                 showProgressButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+                showProgressButton.setPrefSize(150, 50);
 
-                VBox layout2 = new VBox(10, genderOverview1, genderChoiceBox, showProgressButton, backToHomeButton);
+                VBox layout2 = new VBox(10, genderOverview1, genderChoiceBox, showProgressButton, backToPage);
                 layout2.setAlignment(Pos.CENTER);
 
                 BorderPane overViewPane2 = new BorderPane();
@@ -364,6 +369,7 @@ public class OverViewGUI extends Application {
                 overViewPane2.setCenter(layout2);
 
                 Scene genderOverviewScene = new Scene(overViewPane2, 800, 600);
+                genderOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
 
                 showProgressButton.setOnAction(buttonEvent -> {
                     String selectedGender = genderChoiceBox.getValue();
@@ -396,15 +402,22 @@ public class OverViewGUI extends Application {
             generateCertificates.setOnAction(event -> {
 
                 Label accountOverview = new Label("Please choose an account: ");
+                accountOverview.setStyle("-fx-font-size: 24;");
+                accountOverview.setPadding(new Insets(25, 0, 25, 0));
+
                 ArrayList<String> accountEmails = cursistController.getAllCursistEmailAddress();
 
-                ChoiceBox<String> accountChoiceBox = new ChoiceBox<>();
+                ComboBox<String> accountChoiceBox = new ComboBox<>();
                 accountChoiceBox.getItems().addAll(accountEmails.toArray(new String[0]));
+                accountChoiceBox.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+                accountChoiceBox.setPrefSize(150, 50);
+                accountChoiceBox.setPromptText("Select Email");
 
                 Button generateButton = new Button("Generate");
                 generateButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+                generateButton.setPrefSize(150, 50);
 
-                VBox layoutBox = new VBox(10, accountOverview, accountChoiceBox, generateButton, backToHomeButton);
+                VBox layoutBox = new VBox(10, accountOverview, accountChoiceBox, generateButton, backToPage);
 
                 layoutBox.setPadding(new Insets(25, 0, 25, 0));
 
@@ -416,7 +429,6 @@ public class OverViewGUI extends Application {
                     if (selectedAccount != null) {
                         String completedCertificates = overViewController
                                 .getCompletedCertificates(selectedAccount.toString());
-                        System.out.println(completedCertificates + "------");
                         if (!completedCertificates.isEmpty()) {
                             Alert alert = new Alert(AlertType.INFORMATION);
                             alert.setTitle("Certificates achieved");
@@ -444,6 +456,7 @@ public class OverViewGUI extends Application {
                 });
 
                 Scene certificateOverviewScene = new Scene(layoutBox, 800, 600);
+                certificateOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
                 stage.setScene(certificateOverviewScene);
                 stage.show();
 
@@ -455,6 +468,14 @@ public class OverViewGUI extends Application {
             stage.setScene(certificateOverviewScene);
             certificateOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.show();
+
+            backToPage.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+            backToPage.setPrefSize(150, 50);
+            backToPage.setOnAction(k -> {
+                stage.setScene(certificateOverviewScene);
+                stage.show();
+            });
+
         });
 
         webcastOverview.setOnAction(e ->
