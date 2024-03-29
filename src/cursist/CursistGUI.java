@@ -174,7 +174,7 @@ public class CursistGUI extends Application {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
-                    alert.setContentText("Postal format is incorrect");
+                    alert.setContentText("Postal format is incorrect. Format example: 1234 AB");
                     alert.showAndWait();
                     return;
                 }

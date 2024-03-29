@@ -73,41 +73,13 @@ public class Validation {
         }
     }
 
-    // checks wheter the postal code is legit and to below standards
-    public static boolean formatPostalCode(String postalCode) throws NumberFormatException {
-        try {
-            if (postalCode == null) {
-                throw new NullPointerException("postalCode cannot be null");
-            }
-
-            postalCode = postalCode.trim();
-
-            if (postalCode.length() != 6) {
-                return false;
-            }
-
-            int firstFourDigits = Integer.parseInt(postalCode.substring(0, 4));
-
-            if (firstFourDigits <= 999 || firstFourDigits > 9999) {
-                return false;
-            }
-
-            String lastTwoCharacters = postalCode.substring(4).trim().toUpperCase();
-
-            if (lastTwoCharacters.length() != 2) {
-                return false;
-            }
-
-            char firstLetter = lastTwoCharacters.charAt(0);
-            char secondLetter = lastTwoCharacters.charAt(1);
-
-            if (firstLetter < 'A' || firstLetter > 'Z' || secondLetter < 'A' || secondLetter > 'Z') {
-                return false;
-            }
-
-            return true;
-        } catch (NullPointerException | IllegalArgumentException e) {
+    public static boolean formatPostalCode(String postalCode) {
+        if (postalCode == null) {
+            return false; // Postal code cannot be null
+        } else if (!postalCode.matches("[1-9]\\d{3} [A-Z]{2}")) {
             return false;
+        } else {
+            return true;
         }
     }
 

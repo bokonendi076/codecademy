@@ -59,10 +59,12 @@ public class PostalCode {
         char firstLetter = lastTwoCharacters.charAt(0);
         char secondLetter = lastTwoCharacters.charAt(1);
 
-        if (firstLetter < 'A' || firstLetter > 'Z' || secondLetter < 'A' || secondLetter > 'Z') {
+        if (firstLetter < 'A' || firstLetter > 'Z' || secondLetter < 'A' ||
+                secondLetter > 'Z') {
             throw new IllegalArgumentException("last two characters of postalCode must be capital letters");
         }
 
         return firstFourDigits + " " + lastTwoCharacters;
     }
+
 }
