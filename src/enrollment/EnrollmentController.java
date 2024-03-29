@@ -81,11 +81,10 @@ public class EnrollmentController {
         ArrayList<String> enrollments = new ArrayList<>();
 
         try {
-            ResultSet rs = query("SELECT * FROM Enrollment");
+            ResultSet rs = query("SELECT DISTINCT CursistEmailAddress FROM Enrollment");
 
             while (rs.next()) {
                 String emailAddress = rs.getString("CursistEmailAddress");
-                String courseName = rs.getString("CourseName");
                 String enrollmentDetails = emailAddress;
                 enrollments.add(enrollmentDetails);
             }
@@ -159,7 +158,7 @@ public class EnrollmentController {
     // address
     public Enrollment getEnrollmentByName(String name) {
         try {
-            String query = "SELECT * FROM Enrollment WHERE CursistEmailAddress = ?";
+            String query = "SELECT * FROM Enrollment WHERE CourseName = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, name);
                 ResultSet rs = statement.executeQuery();
@@ -193,6 +192,42 @@ public class EnrollmentController {
             e.printStackTrace();
         }
 
+        return enrollmentDates;
+    }
+
+    public ArrayList<String> getAllEnrollmentsByEmail(String email) {
+        ArrayList<String> enrollments = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM Enrollment WHERE CursistEmailAddress = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, email);
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    String courseName = rs.getString("CourseName");
+                    enrollments.add(courseName);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return enrollments;
+    }
+
+    public ArrayList<String> getAllEnrollmentDatesByEmail(String email) {
+        ArrayList<String> enrollmentDates = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM Enrollment WHERE CursistEmailAddress = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, email);
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    String date = rs.getString("EnrollmentDate");
+                    enrollmentDates.add(date);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return enrollmentDates;
     }
 

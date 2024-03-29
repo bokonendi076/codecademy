@@ -10,13 +10,17 @@ import java.util.ArrayList;
 import course.courseController;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -198,19 +202,12 @@ public class EnrollmentGUI extends Application {
         readButton.setOnAction(g -> {
             // arraylist with all watchedContent
             ArrayList<String> enrollments = enrollmentController.getAllEnrollments();
-            ArrayList<String> enrollmentCourseNames = enrollmentController.getAllEnrollmentCourseNames();
-            ArrayList<String> enrollmentDates = enrollmentController.getAllEnrollmentDates();
+            Button showEnrollments = new Button("Show all enrollments");
+            showEnrollments.setStyle("-fx-background-color: #d2b48c;");
 
             Button infoButton = new Button("More Info");
             infoButton.setPadding(buttonsMenuPadding);
             infoButton.setStyle("-fx-background-color: #d2b48c;");
-
-            Label emailLabel = new Label("EmailAddress ↓");
-            Label courseNameLabel = new Label("Coursename ↓");
-            HBox listHbox = new HBox(emailLabel, courseNameLabel);
-
-            emailLabel.setStyle("-fx-font-size: 20; -fx-padding: 0 12 0 0;");
-            courseNameLabel.setStyle("-fx-font-size: 20");
 
             items.clear(); // Clear previous items
             courseNamesItems.clear();
@@ -220,42 +217,14 @@ public class EnrollmentGUI extends Application {
                 items.add(enrollmentDetails); // Add enrollment details directly
             }
 
-            for (String enrollmentDetailsCourseNames : enrollmentCourseNames) {
-                courseNamesItems.add(enrollmentDetailsCourseNames); // Add enrollment details directly
-            }
-
-            for (String enrollmentDetailsDates : enrollmentDates) {
-                enrollmentDateItems.add(enrollmentDetailsDates); // Add enrollment details directly
-            }
-
             list.setItems(items);
             list.setStyle("-fx-font-size: 16; -fx-alignment: center;");
             list.setPadding(buttonsMenuPadding);
 
-            courseNamesList.setItems(courseNamesItems);
-            courseNamesList.setStyle("-fx-font-size: 16; -fx-alignment: center;");
-            courseNamesList.setPadding(buttonsMenuPadding);
-
-            enrollmentDateList.setItems(enrollmentDateItems);
-            enrollmentDateList.setStyle("-fx-font-size: 16; -fx-alignment: center;");
-            enrollmentDateList.setPadding(buttonsMenuPadding);
-
-            HBox listHbox2 = new HBox(list, courseNamesList, enrollmentDateList);
-            listHbox2.setSpacing(0);
-            listHbox2.setPadding(buttonsMenuPadding);
-            listHbox2.setAlignment(Pos.CENTER);
-
-            // create a label that tells you you have to select the email to delete and make
-            // the text faded
-            Label selectLabel = new Label("(To delete an enrollment, please select the emailaddress)");
-            selectLabel.setStyle("-fx-font-size: 20; -fx-padding: 0 12 0 0;");
-            selectLabel.setOpacity(0.5);
-
-            VBox centerBox = new VBox(listHbox2, selectLabel);
             BorderPane cursistPage = new BorderPane();
 
-            cursistPage.setCenter(centerBox);
-            BorderPane.setMargin(centerBox, new Insets(25));
+            cursistPage.setCenter(list);
+            BorderPane.setMargin(list, new Insets(25));
 
             Label cursistPageTitle = new Label("Overview all enrollments");
 
@@ -263,7 +232,7 @@ public class EnrollmentGUI extends Application {
             BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
             cursistPage.setTop(cursistPageTitle);
 
-            HBox cursistPageButtons = new HBox(backHome, deleteButton, infoButton);
+            HBox cursistPageButtons = new HBox(backHome, showEnrollments);
             cursistPageButtons.setSpacing(10);
             Insets cursistPageButtonsPadding = new Insets(0, 15, 0, 15);
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
@@ -280,6 +249,7 @@ public class EnrollmentGUI extends Application {
 
             infoButton.setOnAction(h -> {
                 String selectedEnrollment = list.getSelectionModel().getSelectedItem();
+
                 Enrollment enrollment = enrollmentController.getEnrollmentByName(selectedEnrollment);
 
                 if (enrollment != null) {
@@ -298,42 +268,106 @@ public class EnrollmentGUI extends Application {
                 }
             });
 
-        });
+            showEnrollments.setOnAction(h -> {
+                String selectedEmail = list.getSelectionModel().getSelectedItem();
 
-        // Handle delete button action
-        deleteButton.setOnAction(h -> {
-            String selectedEnrollment = list.getSelectionModel().getSelectedItem();
+                Label info = new Label(
+                        "These are all the enrollments for the cursist with the email: " + selectedEmail);
+                info.setStyle("-fx-font-size: 16; -fx-alignment: center;");
 
-            if (selectedEnrollment != null) {
-                // Haal het geselecteerde inschrijvingsobject op uit de lijst
-                Enrollment selectedEnrollmentObject = enrollmentController.getEnrollmentByName(selectedEnrollment);
+                Button backButtonOverview = new Button("<Back");
+                backButtonOverview.setStyle("-fx-background-color: #d2b48c;");
+                backButtonOverview.setPadding(buttonsMenuPadding);
+                backButtonOverview.setPrefSize(100, 50);
 
-                if (selectedEnrollmentObject != null) {
-                    // Roep de deleteEnrollment-methode aan met de vereiste parameters
-                    enrollmentController.deleteEnrollment(selectedEnrollmentObject.getCourseName(),
-                            selectedEnrollmentObject.getCursistEmailAddress(),
-                            selectedEnrollmentObject.getEnrollmentDate());
+                backButtonOverview.setOnAction(l -> {
+                    stage.setScene(mainScene);
+                    stage.show();
+                });
 
-                    // Verwijder het geselecteerde item uit de lijst
-                    items.remove(selectedEnrollment);
-                    courseNamesItems.remove(selectedEnrollment);
+                ArrayList<String> enrollmentDates = enrollmentController.getAllEnrollmentDatesByEmail(selectedEmail);
+                ObservableList<String> enrollmentDateObservableList = FXCollections
+                        .observableArrayList(enrollmentDates);
 
-                    // Verwijder het geselecteerde item uit de list
-                    list.getItems().remove(selectedEnrollment);
-                    courseNamesList.getItems().remove(selectedEnrollment);
+                enrollmentDateItems.clear();
+                enrollmentDateItems.addAll(enrollmentDateObservableList);
+                enrollmentDateList.setItems(enrollmentDateItems);
+                enrollmentDateList.setStyle("-fx-font-size: 16; -fx-alignment: center;");
+                enrollmentDateList.setPadding(buttonsMenuPadding);
 
-                    refreshContent();
-                }
-            }
+                ArrayList<String> courses = enrollmentController.getAllEnrollmentsByEmail(selectedEmail);
+                ObservableList<String> coursesObservableList = FXCollections
+                        .observableArrayList(courses);
+
+                courseNamesItems.clear();
+                courseNamesItems.addAll(coursesObservableList);
+                courseNamesList.setItems(courseNamesItems);
+                courseNamesList.setStyle("-fx-font-size: 16; -fx-alignment: center;");
+                courseNamesList.setPadding(buttonsMenuPadding);
+
+                HBox vBox2 = new HBox(courseNamesList, enrollmentDateList);
+                vBox2.setSpacing(10);
+                vBox2.setPadding(buttonsMenuPadding);
+
+                VBox vBox = new VBox(info, vBox2, backButtonOverview, deleteButton);
+                vBox.setSpacing(10);
+                vBox.setPadding(buttonsMenuPadding);
+
+                BorderPane cursistPage2 = new BorderPane();
+                cursistPage2.setCenter(vBox);
+
+                BorderPane.setAlignment(vBox, Pos.CENTER);
+                BorderPane.setMargin(vBox, new Insets(25));
+
+                Scene showEnrollmentsScene = new Scene(cursistPage2, 800, 600); // Assign mainScene here
+
+                stage.setTitle("Enrollments overview");
+                showEnrollmentsScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
+                stage.setScene(showEnrollmentsScene);
+                stage.show();
+
+                // Handle delete button action
+                deleteButton.setOnAction(m ->
+
+                {
+                    String selectedEnrollment = courseNamesList.getSelectionModel().getSelectedItem();
+
+                    if (selectedEnrollment != null) {
+                        // Haal het geselecteerde inschrijvingsobject op uit de lijst
+                        Enrollment selectedEnrollmentObject = enrollmentController
+                                .getEnrollmentByName(selectedEnrollment);
+
+                        if (selectedEnrollmentObject != null) {
+                            // Roep de deleteEnrollment-methode aan met de vereiste parameters
+                            enrollmentController.deleteEnrollment(selectedEnrollmentObject.getCourseName(),
+                                    selectedEnrollmentObject.getCursistEmailAddress(),
+                                    selectedEnrollmentObject.getEnrollmentDate());
+
+                            // Verwijder het geselecteerde item uit de lijst
+                            courseNamesList.getItems().remove(selectedEnrollmentObject.getCourseName());
+
+                            // Verwijder het geselecteerde item uit de ObservableList
+                            enrollmentDateObservableList.remove(selectedEnrollmentObject.getEnrollmentDate());
+
+                            refreshContent();
+
+                        }
+                    }
+                });
+
+            });
+
         });
 
         Label mainSceneTitle = new Label("Register new Enrollment");
         mainSceneTitle.setStyle("-fx-font-size: 30;");
-        Insets mainSceneTitlePadding = new Insets(0, 0, 25, 0);
+        Insets mainSceneTitlePadding = new Insets(0, 0, 25,
+                0);
         mainSceneTitle.setPadding(mainSceneTitlePadding);
         mainPane.setTop(mainSceneTitle);
         BorderPane.setAlignment(mainSceneTitle, Pos.CENTER);
-        Insets mainPanePadding = new Insets(25);
+        Insets mainPanePadding = new Insets(
+                25);
         mainPane.setPadding(mainPanePadding);
         backToHomeButton.setPadding(buttonsMenuPadding);
 
@@ -343,7 +377,8 @@ public class EnrollmentGUI extends Application {
             stage.show();
         });
 
-        Scene mainScene = new Scene(mainPane, 800, 600);
+        Scene mainScene = new Scene(mainPane, 800,
+                600);
         stage.setTitle("Enrollment management");
         stage.setScene(mainScene);
         stage.show();
