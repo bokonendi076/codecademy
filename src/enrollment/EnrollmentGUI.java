@@ -119,7 +119,6 @@ public class EnrollmentGUI extends Application {
         cursistEmailBoxWrapper.setAlignment(Pos.CENTER);
         cursistEmailBoxWrapper.setSpacing(5);
 
-
         Button addButton = new Button("Register enrollment Item");
         addButton.setStyle("-fx-background-color: #d2b48c;");
 
@@ -133,9 +132,9 @@ public class EnrollmentGUI extends Application {
                 alert.setHeaderText(null);
                 alert.setContentText("Please fill in all the fields.");
                 alert.showAndWait();
-        
+
             } else {
-        
+
                 // validate the input of date to not be in the future
                 if (datePicker.getValue().isAfter(LocalDate.now())) {
                     Alert alert = new Alert(AlertType.ERROR);
@@ -145,33 +144,33 @@ public class EnrollmentGUI extends Application {
                     alert.showAndWait();
                     return;
                 }
-        
+
                 LocalDate enrollmentDate = datePicker.getValue();
                 String courseName = courseNameBox.getValue().toString();
                 String cursistEmail = cursistEmailBox.getValue().toString();
-        
+
                 Enrollment enrollment = new Enrollment();
                 enrollment.setEnrollmentDate(enrollmentDate);
                 enrollment.setCourseName(courseName);
                 enrollment.setCursistEmailAddress(cursistEmail);
-        
+
                 // Add the enrollment to the database
                 enrollmentController.addEnrollment(enrollment);
-        
+
                 // Show alert after adding a content item
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText(null);
                 alert.setContentText("Enrollment registered successfully.");
                 alert.showAndWait();
-        
+
                 // Clear input fields
                 datePicker.setValue(null);
                 courseNameBox.setValue(null);
                 cursistEmailBox.setValue(null);
-        
+
             }
-        });        
+        });
 
         VBox createFields = new VBox(datePickerBox, courseNameBoxWrapper, cursistEmailBoxWrapper, addButton);
         createFields.setSpacing(7);
@@ -217,6 +216,7 @@ public class EnrollmentGUI extends Application {
             ArrayList<String> enrollments = enrollmentController.getAllEnrollments();
             Button showEnrollments = new Button("Show all enrollments");
             showEnrollments.setStyle("-fx-background-color: #d2b48c;");
+            showEnrollments.setPrefSize(150, 40);
 
             Button infoButton = new Button("More Info");
             infoButton.setPadding(buttonsMenuPadding);
@@ -288,10 +288,10 @@ public class EnrollmentGUI extends Application {
                         "These are all the enrollments for the cursist with the email: " + selectedEmail);
                 info.setStyle("-fx-font-size: 16; -fx-alignment: center;");
 
-                Button backButtonOverview = new Button("<Back");
+                Button backButtonOverview = new Button("< Back");
                 backButtonOverview.setStyle("-fx-background-color: #d2b48c;");
                 backButtonOverview.setPadding(buttonsMenuPadding);
-                backButtonOverview.setPrefSize(100, 50);
+                backButtonOverview.setPrefSize(100, 40);
 
                 backButtonOverview.setOnAction(l -> {
                     stage.setScene(mainScene);
@@ -321,16 +321,20 @@ public class EnrollmentGUI extends Application {
                 HBox vBox2 = new HBox(courseNamesList, enrollmentDateList);
                 vBox2.setSpacing(10);
                 vBox2.setPadding(buttonsMenuPadding);
+                vBox2.setAlignment(Pos.CENTER); // Align the HBox content to center horizontally
 
-                VBox vBox = new VBox(info, vBox2, backButtonOverview, deleteButton);
+                HBox buttonsEnrollemnt = new HBox(backButtonOverview, deleteButton);
+                buttonsEnrollemnt.setSpacing(10);
+                buttonsEnrollemnt.setPadding(buttonsMenuPadding);
+                buttonsEnrollemnt.setAlignment(Pos.CENTER); // Align the HBox content to center horizontally
+
+                VBox vBox = new VBox(info, vBox2, buttonsEnrollemnt);
                 vBox.setSpacing(10);
                 vBox.setPadding(buttonsMenuPadding);
+                vBox.setAlignment(Pos.CENTER); // Align the VBox content to center horizontally and vertically
 
                 BorderPane cursistPage2 = new BorderPane();
                 cursistPage2.setCenter(vBox);
-
-                BorderPane.setAlignment(vBox, Pos.CENTER);
-                BorderPane.setMargin(vBox, new Insets(25));
 
                 Scene showEnrollmentsScene = new Scene(cursistPage2, 800, 600); // Assign mainScene here
 
