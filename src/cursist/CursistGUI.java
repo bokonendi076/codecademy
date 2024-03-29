@@ -170,14 +170,14 @@ public class CursistGUI extends Application {
                     return;
                 }
 
-                // if (!validator.formatPostalCode(postal)) {
-                // Alert alert = new Alert(AlertType.ERROR);
-                // alert.setTitle("Error");
-                // alert.setHeaderText(null);
-                // alert.setContentText("Postal format is incorrect");
-                // alert.showAndWait();
-                // return;
-                // }
+                if (!validator.formatPostalCode(postal)) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Postal format is incorrect");
+                    alert.showAndWait();
+                    return;
+                }
 
                 if (birthDate == null) {
                     Alert alert = new Alert(AlertType.ERROR);
@@ -194,6 +194,35 @@ public class CursistGUI extends Application {
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
                     alert.setContentText("Birthdate is not possible");
+                    alert.showAndWait();
+                    return;
+                }
+
+                // check if address, city and country are only letters
+
+                if (!validator.validateOnlyLetters(createAddressField.getText())) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Address can only contain letters");
+                    alert.showAndWait();
+                    return;
+                }
+
+                if (!validator.validateOnlyLetters(createCityField.getText())) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("City can only contain letters");
+                    alert.showAndWait();
+                    return;
+                }
+
+                if (!validator.validateOnlyLetters(createCountryField.getText())) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Country can only contain letters");
                     alert.showAndWait();
                     return;
                 }
