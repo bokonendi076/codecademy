@@ -126,24 +126,30 @@ public class OverViewGUI extends Application {
             courseOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.show();
 
+            backToOptions = new Button("< Back");
+            backToOptions.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+            backToOptions.setPrefSize(150, 50);
+            backToOptions.setOnAction(event -> {
+                stage.setScene(courseOverviewScene);
+                stage.show();
+            });
+
             progressPercentage.setOnAction(a -> {
 
                 Label genderOverview1 = new Label("Please choose a course: ");
+                genderOverview1.setStyle("-fx-font-size: 28; ");
+                genderOverview1.setPadding(new Insets(25, 0, 25, 0));
 
                 // Retrieve course names
                 List<String> courseNames = overViewController.getCourseNames();
                 ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
+                courseComboBox.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+                courseComboBox.setPrefSize(150, 50);
+                courseComboBox.setPromptText("Select course");
 
                 Button showProgressButton = new Button("Show Average Progress per Module");
                 showProgressButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
-
-                backToOptions = new Button("< Back");
-                backToOptions.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
-                backToOptions.setPrefSize(150, 50);
-                backToOptions.setOnAction(event -> {
-                    stage.setScene(courseOverviewScene);
-                    stage.show();
-                });
+                showProgressButton.setPrefSize(150, 50);
 
                 VBox layout2 = new VBox(10, genderOverview1, courseComboBox, showProgressButton, backToOptions);
                 layout2.setAlignment(Pos.CENTER);
@@ -153,9 +159,14 @@ public class OverViewGUI extends Application {
                 BorderPane.setAlignment(genderOverview1, Pos.CENTER);
                 genderOverview1.setPadding(new Insets(25, 0, 25, 0));
 
-                overViewPane.setCenter(layout2);
+                overViewPane2.setCenter(layout2);
 
                 Scene courseOverviewScene2 = new Scene(overViewPane2, 800, 600);
+
+                // Set the scene and show the stage
+                courseOverviewScene2.getRoot().setStyle("-fx-background-color: #f5f5dc;");
+                stage.setScene(courseOverviewScene2);
+                stage.show();
 
                 showProgressButton.setOnAction(event -> {
                     String selectedCourse = courseComboBox.getValue();
@@ -180,8 +191,6 @@ public class OverViewGUI extends Application {
                     }
                 });
 
-                stage.setScene(courseOverviewScene);
-                stage.show(); // Show the new stage
             });
 
             averageProgressModule.setOnAction(b -> {
@@ -255,19 +264,23 @@ public class OverViewGUI extends Application {
             });
 
             completedCourses.setOnAction(event -> {
-                Stage completedOverviewStage = new Stage();
                 Label titleCompletedOverview = new Label("Completed courses");
+                titleCompletedOverview.setStyle("-fx-font-size: 28;");
+                titleCompletedOverview.setPadding(new Insets(25, 0, 25, 0));
 
                 // Retrieve course names
                 List<String> courseNames = overViewController.getCourseNames();
                 ComboBox<String> courseComboBox = new ComboBox<>(FXCollections.observableArrayList(courseNames));
                 courseComboBox.setPromptText("Please select a course");
+                courseComboBox.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+                courseComboBox.setPrefSize(150, 50);
 
                 Button selectCourseButton = new Button("Show completed courses");
                 selectCourseButton.setStyle("-fx-font-size: 12; -fx-background-color: #d2b48c;");
+                selectCourseButton.setPrefSize(150, 50);
 
                 VBox layout4 = new VBox(10, titleCompletedOverview, courseComboBox, selectCourseButton,
-                        backToHomeButton);
+                        backToOptions);
                 layout4.setAlignment(Pos.CENTER);
 
                 BorderPane completedOverviewPane = new BorderPane();
@@ -300,6 +313,7 @@ public class OverViewGUI extends Application {
                     }
 
                 });
+                completedOverviewScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
                 stage.setScene(completedOverviewScene);
                 stage.show();
             });
