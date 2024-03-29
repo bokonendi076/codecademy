@@ -245,7 +245,13 @@ public class EnrollmentGUI extends Application {
             listHbox2.setPadding(buttonsMenuPadding);
             listHbox2.setAlignment(Pos.CENTER);
 
-            VBox centerBox = new VBox(listHbox2);
+            // create a label that tells you you have to select the email to delete and make
+            // the text faded
+            Label selectLabel = new Label("(To delete an enrollment, please select the emailaddress)");
+            selectLabel.setStyle("-fx-font-size: 20; -fx-padding: 0 12 0 0;");
+            selectLabel.setOpacity(0.5);
+
+            VBox centerBox = new VBox(listHbox2, selectLabel);
             BorderPane cursistPage = new BorderPane();
 
             cursistPage.setCenter(centerBox);
